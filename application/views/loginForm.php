@@ -8,7 +8,7 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <title>Youtuve-Login</title>
-        <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     </head>
     <body>
         <form action="User/login" method="post">
