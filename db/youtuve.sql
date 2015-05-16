@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.10.1deb1
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 14-05-2015 a las 11:40:15
--- Versión del servidor: 5.5.41
--- Versión de PHP: 5.3.10-1ubuntu3.16
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 16-05-2015 a las 05:34:59
+-- Versión del servidor: 5.6.24
+-- Versión de PHP: 5.6.8
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -27,14 +27,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `channel` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `description` varchar(500) NOT NULL,
-  `frontImgUrl` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idUser` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `frontImgUrl` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -43,12 +41,11 @@ CREATE TABLE IF NOT EXISTS `channel` (
 --
 
 CREATE TABLE IF NOT EXISTS `comment` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
-  `comment` varchar(150) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `comment` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -61,8 +58,7 @@ CREATE TABLE IF NOT EXISTS `follower` (
   `IdChannel` int(11) NOT NULL,
   `seen` tinyint(4) NOT NULL DEFAULT '0',
   `confirmed` tinyint(4) NOT NULL DEFAULT '0',
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`idUser`,`IdChannel`)
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -72,10 +68,10 @@ CREATE TABLE IF NOT EXISTS `follower` (
 --
 
 CREATE TABLE IF NOT EXISTS `playlist` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `Name` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `idUser` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -86,8 +82,7 @@ CREATE TABLE IF NOT EXISTS `playlist` (
 CREATE TABLE IF NOT EXISTS `rate` (
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
-  `rate` int(11) NOT NULL,
-  PRIMARY KEY (`idUser`,`idVideo`)
+  `rate` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -101,8 +96,7 @@ CREATE TABLE IF NOT EXISTS `suggestion` (
   `idUserToSuggest` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
   `seen` tinyint(4) NOT NULL DEFAULT '0',
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`idUser`,`idUserToSuggest`,`idVideo`)
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -112,10 +106,9 @@ CREATE TABLE IF NOT EXISTS `suggestion` (
 --
 
 CREATE TABLE IF NOT EXISTS `tag` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -124,17 +117,15 @@ CREATE TABLE IF NOT EXISTS `tag` (
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(30) NOT NULL,
   `name` int(30) NOT NULL,
   `lastname` int(30) NOT NULL,
   `birthday` date NOT NULL,
   `gender` char(1) NOT NULL,
-  `thumbUrl` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `thumbUrl` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -143,16 +134,14 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 CREATE TABLE IF NOT EXISTS `video` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `idChannel` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `link` varchar(30) NOT NULL,
   `date` date NOT NULL,
   `durationInSeconds` int(11) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK_user` (`idChannel`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -163,8 +152,7 @@ CREATE TABLE IF NOT EXISTS `video` (
 CREATE TABLE IF NOT EXISTS `videoplaylist` (
   `idVideo` int(11) NOT NULL,
   `idPlaylist` int(11) NOT NULL,
-  `isWatchLater` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`idVideo`,`idPlaylist`)
+  `isWatchLater` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -175,8 +163,7 @@ CREATE TABLE IF NOT EXISTS `videoplaylist` (
 
 CREATE TABLE IF NOT EXISTS `videotag` (
   `idVideo` int(11) NOT NULL,
-  `idTag` int(11) NOT NULL,
-  PRIMARY KEY (`idVideo`,`idTag`)
+  `idTag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -188,10 +175,119 @@ CREATE TABLE IF NOT EXISTS `videotag` (
 CREATE TABLE IF NOT EXISTS `viewhistory` (
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (`idUser`,`idVideo`)
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `channel`
+--
+ALTER TABLE `channel`
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `idUser` (`idUser`);
+
+--
+-- Indices de la tabla `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `follower`
+--
+ALTER TABLE `follower`
+  ADD PRIMARY KEY (`idUser`,`IdChannel`);
+
+--
+-- Indices de la tabla `playlist`
+--
+ALTER TABLE `playlist`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `rate`
+--
+ALTER TABLE `rate`
+  ADD PRIMARY KEY (`idUser`,`idVideo`);
+
+--
+-- Indices de la tabla `suggestion`
+--
+ALTER TABLE `suggestion`
+  ADD PRIMARY KEY (`idUser`,`idUserToSuggest`,`idVideo`);
+
+--
+-- Indices de la tabla `tag`
+--
+ALTER TABLE `tag`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indices de la tabla `video`
+--
+ALTER TABLE `video`
+  ADD PRIMARY KEY (`id`), ADD KEY `FK_user` (`idChannel`);
+
+--
+-- Indices de la tabla `videoplaylist`
+--
+ALTER TABLE `videoplaylist`
+  ADD PRIMARY KEY (`idVideo`,`idPlaylist`);
+
+--
+-- Indices de la tabla `videotag`
+--
+ALTER TABLE `videotag`
+  ADD PRIMARY KEY (`idVideo`,`idTag`);
+
+--
+-- Indices de la tabla `viewhistory`
+--
+ALTER TABLE `viewhistory`
+  ADD PRIMARY KEY (`idUser`,`idVideo`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `channel`
+--
+ALTER TABLE `channel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `playlist`
+--
+ALTER TABLE `playlist`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `tag`
+--
+ALTER TABLE `tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `video`
+--
+ALTER TABLE `video`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -39,7 +39,6 @@ class Video extends CI_Controller {
      */
     public function add() {
         $this->load->model('video_model');
-        $this->video_model->table="Video";
         //control
         //solo permitido si esta logeuado
         //

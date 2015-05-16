@@ -4,11 +4,13 @@ class Video_model extends MY_Model {
 
     public function __construct() {
         parent::__construct();
+        $this->table = "video";
     }
 
     public function push($idUser, $name, $link, $date, $durationInSec, $active) {
         $data["idUser"] = $idUser;
         $data["name"] = $name;
+        $data["date"] = $date;
         $data["link"] = $link;
         $data["durationInSeconds"] = $durationInSec;
         $data["active"] = $active;
@@ -35,14 +37,16 @@ class Video_model extends MY_Model {
         return $this->update($data, "id=" . $idVideo);
     }
 
+    //lo tiene que traer con las tags
     public function getById($idVideo) {
         $conditions["id"] = $idVideo;
         $this->search($conditions, $this->tableName, $limit, $offset);
         //return data
     }
 
-    public function getByIdUser($idUser, $lmit = 1, $offset = 0) {
-        $conditions["id"] = $idVideo;
+    //lo tiene que traer con las tags
+    public function getByIdChannel($idChannel, $lmit = 1, $offset = 0) {
+        $conditions["idChannel"] = $idChannel;
         $this->search($conditions, $this->tableName, $limit, $offset);
         //return data
     }
