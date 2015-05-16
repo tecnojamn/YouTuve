@@ -2,73 +2,167 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Video extends CI_Controller {
-
-    const ACTIVE_DEFAULT_VALUE = '1';
+class User extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        //cargo librerias,helpers necesarios en constructor.
+//cargo librerias,helpers necesarios en constructor.
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
+        $this->load->helper('security');
+        $this->load->library('session');
+        $this->load->helper('url');
     }
 
     public function index() {
-        //esta es la pagina se entra si se pone www.mipagina.com/Video 
+//esta es la pagina se entra si se pone www.mipagina.com/User 
+//Es el perfil de usuario
+//solo permitido SI esta logeuado
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "Que haces por acá Picaron?.";
+            $this->load->view('home_layout', $data);
+            exit; //andate de esta funcion
+        } else {
+//aca lo mandaria a un nuevo layout
+        }
     }
 
     /**
-     * Muestra la pagina de el formulario de agregar videos
+     * Desloguea al usuario conectado
      */
-    public function formAdd() {
-        //no models needed.. obviously
-        //
-        //solo permitido si esta logeuado
-        //muestra alguna pagina todavia no sabemos cual
-        /* if(!logueado){
-          //muestra alguna pagina todavia no sabemos cual
-          $this->load->view('caca');
-          }else{
-          //muestra alguna pagina todavia no sabemos cual
-          $this->load->view('mostrar formpage');
-          } */
+    public function logOut() {
+        $this->session->sess_destroy();
+        redirect('/', 'refresh');
     }
 
     /**
-     * Persiste un video en la BD 
+     * Muestra el loginForm
      */
-    public function add() {
-        $this->load->model('video_model');
-        //control
-        //solo permitido si esta logeuado
-        //
-        //saco el id de user de la sesion
-        //
+    public function loginForm() {
+        $data["error"] = 0;
+        $this->load->view('login_layout', $data);
+    }
+
+    /**
+     * Muestra el loginForm
+     */
+    public function registerForm() {
+        $data["error"] = 0;
+        $this->load->view('register_layout', $data);
+    }
+
+    /**
+     * user login
+     */
+    public function doLogin() {
+        $this->load->model('user_model');
         $user = "";
-        //valido la data del form
-        $this->form_validation->set_rules('name', 'name', 'required');
-        $this->form_validation->set_rules('link', 'link', 'required');
-        $this->form_validation->set_rules('duration', 'duration', 'required');
-        //date= now();
-        $date = date('Y-m-d H:i:s'); //no se si es la misma que sql hay que ver esto cuando se haga
-        //asigno variables
-        $name = $this->input->post('name');
-        $link = $this->input->post('link');
-        $durationInSec = $this->input->post('duration');
-        $active = Video::ACTIVE_DEFAULT_VALUE; //ByDefault
+//solo permitido si NO esta logeuado
+        if ($this->isAuthorized()) {
+
+            $data["error"] = 1;
+            $data["error_message"] = "Que haces por acá Picaron?.";
+            $this->load->view('home_layout', $data);
+            return; //andate de esta funcion
+        }
+
+//valido la data del form
+        $this->form_validation->set_rules('email', 'email', 'required');
+        $this->form_validation->set_rules('password', 'password', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            //muestra alguna pagina todavia no sabemos cual
-            $this->load->view('homePage');
+
+            $data["error"] = 1;
+            $data["error_message"] = "Asegurese que escribió correctamente.";
+            $this->load->view('login_layout', $data);
         } else {
-            //inserta y redirige a algun lado todavia no sabemos
-            if ($this->video_model->push($idUser, $name, $link, $date, $durationInSec, $active)) {
-                //muestra alguna pagina todavia no sabemos cual
-                $this->load->view('homePage');
-                exit; //andate de esta funcion
+            $email = $this->input->post('email');
+            $password = do_hash($this->input->post('password'), 'md5');
+
+            $user = $this->user_model->authorize($email, $password);
+            if ($user) {
+
+//armo session 
+                $session = array(
+                    'userId' => $user->id,
+                    'email' => $user->email,
+                    'logged_in' => TRUE
+                );
+                $this->session->set_userdata($session); //guarda en session
+//mando a homepage
+                redirect('/', 'refresh');
+                return;
             }
-            //muestra alguna pagina todavia no sabemos cual
-            $this->load->view('homePage');
+            $data["error"] = 1;
+            $data["error_message"] = "Email o contraseña invalidos.";
+            $this->load->view('login_layout', $data);
+        }
+    }
+
+//Devuelve true si está logueado
+    public function isAuthorized() {
+        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
+    }
+
+    /**
+     * Persiste un user en la BD 
+     */
+    public function register() {
+        $this->load->model('user_model');
+//control
+//solo permitido si NO esta logeuado
+        if ($this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "Que haces por acá Picaron?.";
+            $this->load->view('home_layout', $data);
+            exit; //andate de esta funcion
+        }
+//valido la data del form
+        $this->form_validation->set_rules('email', 'email', 'required');
+        $this->form_validation->set_rules('name', 'name', 'required');
+        $this->form_validation->set_rules('password', 'password', 'required');
+        $this->form_validation->set_rules('lastname', 'lastname', 'required');
+        $this->form_validation->set_rules('birthday', 'birthday', 'required');
+        $this->form_validation->set_rules('gender', 'gender', 'required');
+//$this->form_validation->set_rules('thumbUrl', 'thumbUrl', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data["error"] = 1;
+            $data["error_message"] = "Asegurese que escribió correctamente.";
+            $this->load->view('home_layout', $data);
+        } else {
+            $email = $this->input->post('email');
+            $name = $this->input->post('name');
+            $nick = $this->input->post('nick');
+            $password = do_hash($this->input->post('password'), 'md5');
+            $lastname = $this->input->post('lastname');
+            $birthday = $this->input->post('birthday');
+            $gender = $this->input->post('gender');
+            $thumbUrl = "";
+//inserta y redirige a algun lado todavia no sabemos
+            if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
+//muestra alguna pagina todavia no sabemos cual
+                $data["error"] = 0;
+                redirect('/', 'refresh');
+                return;
+            }
+            $data["error"] = 1;
+            $data["error_message"] = "Ha ocurrido un error inesperado.";
+            $this->load->view('home_layout', $data);
+        }
+    }
+
+    /**
+     * Se fija si el user tiene un canal
+     */
+    private function hasChannel($idUser) {
+        $this->load->model('channel_model');
+        $data = $this->channel_model->selectByIdUser($idUser);
+        if ($data) {
+            return $data["id"];
+        } else {
+            return 0;
         }
     }
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2015 a las 05:34:59
+-- Tiempo de generación: 16-05-2015 a las 23:16:36
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `id` int(11) NOT NULL,
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
-  `comment` varchar(150) NOT NULL
+  `comment` varchar(150) NOT NULL,
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -119,13 +120,21 @@ CREATE TABLE IF NOT EXISTS `tag` (
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(30) NOT NULL,
-  `name` int(30) NOT NULL,
-  `lastname` int(30) NOT NULL,
+  `password` varchar(60) NOT NULL,
+  `nick` varchar(20) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `lastname` varchar(30) NOT NULL,
   `birthday` date NOT NULL,
   `gender` char(1) NOT NULL,
   `thumbUrl` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `nick`, `name`, `lastname`, `birthday`, `gender`, `thumbUrl`) VALUES
+(8, 'armandito@gmail.com', '365d5b8a9bb4ccd7fe8e986626b6af', 'asdasdasd', 'asdasd', 'asdasd', '0000-00-00', '1', '');
 
 -- --------------------------------------------------------
 
@@ -282,7 +291,7 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `video`
 --

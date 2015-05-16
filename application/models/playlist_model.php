@@ -23,13 +23,13 @@ class Playlist_model extends MY_Model {
         return $this->update($data, "id=" . $id);
     }
 
-    public function getById($id) {
+    public function selectById($id) {
         $conditions["id"] = $id;
         $this->search($conditions, $this->tableName, 1, 0);
         //return data
     }
 
-    public function getByName($name, $lmit = 1, $offset = 0) {
+    public function selectByName($name, $lmit = 1, $offset = 0) {
         $conditions["name"] = $name;
         $this->search($conditions, $this->tableName, $limit, $offset);
         //return data

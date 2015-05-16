@@ -22,13 +22,13 @@ class Channel_model extends MY_Model {
         return $this->update($data, "id=" . $id);
     }
 
-    public function getById($id) {
+    public function selectById($id) {
         $conditions["id"] = $id;
         $this->search($conditions, $this->tableName, 1, 0);
         //return data
     }
 
-    public function getByIdUser($idUser) {
+    public function selectByIdUser($idUser) {
         $conditions["idUser"] = $idUser;
         $this->search($conditions, $this->tableName, 1, 0);
         //return data

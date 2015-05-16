@@ -29,8 +29,15 @@
                         </form>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
-                       <li><a href="<?php echo base_url(); ?>User/loginForm">Login</a></li>
-                        <li><a href="<?php echo base_url(); ?>User/registerForm">Registro</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                User <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Mi canal</a></li>
+                                <li><a href="#">Configuración</a></li>
+                            </ul>
+                        </li>
+                         <li><a href="<?php echo base_url(); ?>User/logOut">Salir</a></li>
                     </ul>
 
 

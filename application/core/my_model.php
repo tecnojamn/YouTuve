@@ -2,19 +2,15 @@
 
 class MY_Model extends CI_Model {
 
-    private $table = "";
+    protected $table = "";
 
     public function __construct() {
         parent::__construct();
         $this->load->database();
     }
 
-    public function setTable($tableName) {
-        $this->table = $tableName;
-    }
-
     public function save($data, $tablename = "") {
-        if ($tablename == "") {
+        if ($tablename === "") {
             $tablename = $this->table;
         }
         $op = 'update';

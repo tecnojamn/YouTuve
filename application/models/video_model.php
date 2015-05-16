@@ -38,14 +38,14 @@ class Video_model extends MY_Model {
     }
 
     //lo tiene que traer con las tags
-    public function getById($idVideo) {
+    public function selectById($idVideo) {
         $conditions["id"] = $idVideo;
         $this->search($conditions, $this->tableName, $limit, $offset);
         //return data
     }
 
     //lo tiene que traer con las tags
-    public function getByIdChannel($idChannel, $lmit = 1, $offset = 0) {
+    public function selectByIdChannel($idChannel, $lmit = 1, $offset = 0) {
         $conditions["idChannel"] = $idChannel;
         $this->search($conditions, $this->tableName, $limit, $offset);
         //return data

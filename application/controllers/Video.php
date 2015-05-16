@@ -18,28 +18,11 @@ class Video extends CI_Controller {
     }
 
     /**
-     * Muestra la pagina de el formulario de agregar videos
-     */
-    public function formAdd() {
-        //no models needed.. obviously
-        //
-        //solo permitido si esta logeuado
-        //muestra alguna pagina todavia no sabemos cual
-        /* if(!logueado){
-          //muestra alguna pagina todavia no sabemos cual
-          $this->load->view('caca');
-          }else{
-          //muestra alguna pagina todavia no sabemos cual
-          $this->load->view('mostrar formpage');
-          } */
-    }
-
-    /**
      * Persiste un video en la BD 
      */
     public function add() {
         $this->load->model('video_model');
-        $this->video_model->table="Video";
+        $this->video_model->table = "Video";
         //control
         //solo permitido si esta logeuado
         //
@@ -71,6 +54,11 @@ class Video extends CI_Controller {
             //muestra alguna pagina todavia no sabemos cual
             $this->load->view('homePage');
         }
+    }
+
+//Devuelve true si está logueado
+    public function isAuthorized() {
+        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
     }
 
 }

@@ -16,7 +16,7 @@ class Comments_model extends MY_Model {
 
     
 
-    public function getByVideo($idVideo) {
+    public function selectByVideo($idVideo) {
         $conditions["idVideo"] = $idVideo;
         $this->search($conditions, $this->tableName, 1, 0);
         //return data
