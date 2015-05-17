@@ -18,11 +18,20 @@ class Video extends CI_Controller {
     }
 
     /**
+     * Es la pantalla de ver video
+     */
+    public function view() {
+        $this->load->model('video_model');
+        //HARDCODED PAGE
+        $this->load->view('video_layout');
+    }
+
+    /**
      * Persiste un video en la BD 
      */
     public function add() {
         $this->load->model('video_model');
-        $this->video_model->table = "Video";
+
         //control
         //solo permitido si esta logeuado
         //
@@ -43,16 +52,16 @@ class Video extends CI_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             //muestra alguna pagina todavia no sabemos cual
-            $this->load->view('homePage');
+            $this->load->view('home_layout');
         } else {
             //inserta y redirige a algun lado todavia no sabemos
             if ($this->video_model->push($idUser, $name, $link, $date, $durationInSec, $active)) {
                 //muestra alguna pagina todavia no sabemos cual
-                $this->load->view('homePage');
+                $this->load->view('home_layout');
                 exit; //andate de esta funcion
             }
             //muestra alguna pagina todavia no sabemos cual
-            $this->load->view('homePage');
+            $this->load->view('home_layout');
         }
     }
 

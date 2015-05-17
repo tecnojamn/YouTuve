@@ -1,13 +1,14 @@
 <?php ?>
-<div class="col-lg-12">
-    <div class="page-header"style="
-         height: 75px;
-         border: none;
-         padding-bottom: 30px;
-         margin:0;
-         ">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
+<div class="container">
+    <div class="col-lg-12">
+        <div class="page-header"style="
+             height: 70px;
+             border: none;
+             padding-bottom: 20px;
+             margin: 0;
+             ">
+            <nav class="navbar navbar-default">
+
 
                 <div class="navbar-header">                    
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true">
@@ -16,11 +17,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">YouTuve</a>
+                    <a class="navbar-brand" href="<?php echo base_url(); ?>">YouTuve</a>
                 </div>
 
                 <div class="navbar-collapse  collapse in" id="bs-example-navbar-collapse-1" aria-expanded="true">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <form class="navbar-form navbar-left" role="search">
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
@@ -29,15 +30,15 @@
                         </form>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
-                       <li><a href="<?php echo base_url(); ?>User/loginForm">Login</a></li>
+                        <li><a href="<?php echo base_url(); ?>User/loginForm">Login</a></li>
                         <li><a href="<?php echo base_url(); ?>User/registerForm">Registro</a></li>
                     </ul>
 
 
                 </div>
-            </div>
-        </nav>
+
+            </nav>
+
+        </div>
 
     </div>
-
-</div>
