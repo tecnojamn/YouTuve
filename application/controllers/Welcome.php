@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends MY_Controller {
 
     /**
      * Index Page for this controller.
@@ -27,11 +27,6 @@ class Welcome extends CI_Controller {
             $data["log"] = 1;
         }
         $this->load->view('home_layout', $data);
-    }
-
-//Devuelve true si está logueado
-    private function isAuthorized() {
-        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
     }
 
 }

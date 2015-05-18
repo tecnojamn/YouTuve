@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class User extends MY_Controller {
 
     function __construct() {
         parent::__construct();
@@ -68,8 +68,8 @@ class User extends CI_Controller {
         }
 
 //valido la data del form
-        $this->form_validation->set_rules('email', 'email', 'required');
-        $this->form_validation->set_rules('password', 'password', 'required');
+        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|callback_validate_mail');
+        $this->form_validation->set_rules('password', 'password', 'trim|required|callback_validate_password');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -101,11 +101,6 @@ class User extends CI_Controller {
         }
     }
 
-//Devuelve true si está logueado
-    public function isAuthorized() {
-        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
-    }
-
     /**
      * Persiste un user en la BD 
      */
@@ -120,13 +115,13 @@ class User extends CI_Controller {
             exit; //andate de esta funcion
         }
 //valido la data del form
-        $this->form_validation->set_rules('email', 'email', 'required');
-        $this->form_validation->set_rules('name', 'name', 'required');
-        $this->form_validation->set_rules('nick', 'nick', 'required');
-        $this->form_validation->set_rules('password', 'password', 'required');
-        $this->form_validation->set_rules('lastname', 'lastname', 'required');
-        $this->form_validation->set_rules('birthday', 'birthday', 'required');
-        $this->form_validation->set_rules('gender', 'gender', 'required');
+        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('name', 'name', 'trim|required');
+        $this->form_validation->set_rules('nick', 'nick', 'trim|required');
+        $this->form_validation->set_rules('password', 'password', 'trim|required');
+        $this->form_validation->set_rules('lastname', 'lastname', 'trim|required');
+        $this->form_validation->set_rules('birthday', 'birthday', 'trim|required');
+        $this->form_validation->set_rules('gender', 'gender', 'trim|required');
 //$this->form_validation->set_rules('thumbUrl', 'thumbUrl', 'required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -167,5 +162,7 @@ class User extends CI_Controller {
             return 0;
         }
     }
+
+
 
 }

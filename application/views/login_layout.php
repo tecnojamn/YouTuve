@@ -38,12 +38,14 @@ $this->load->helper('url');
                                 <label for="email" class="col-lg-2 control-label" style="text-align: left ">Email</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
+                                    <?php echo form_error('email', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-lg-2 control-label" >Password</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Password" name="password" id="password"/>
+                                    <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">

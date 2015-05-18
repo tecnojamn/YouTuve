@@ -31,4 +31,9 @@ and open the template in the editor.
     float: right;
     left: -10px;
 }
+.form-group .error{
+    font-size: 11px;
+    padding: 5px;
+    color: red;
+}
 

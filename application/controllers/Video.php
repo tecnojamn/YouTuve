@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Video extends CI_Controller {
+class Video extends Base_Controller {
 
     const ACTIVE_DEFAULT_VALUE = '1';
 
@@ -65,9 +65,5 @@ class Video extends CI_Controller {
         }
     }
 
-//Devuelve true si está logueado
-    public function isAuthorized() {
-        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
-    }
 
 }
