@@ -13,16 +13,16 @@ $this->load->helper('url');
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!-- estilo formulario -->
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
-        <link href="../../calendario/css/calendario.css" rel="stylesheet" type="text/css"/>
-        <script src="../../calendario/js/calendario.js" type="text/javascript"></script>
-        <script src="../../calendario/js/jquery.js" type="text/javascript"></script>
+        <link href="<?php echo base_url(); ?>css/calendar/css/calendario.css" rel="stylesheet" type="text/css"/>
+        <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
+
         <script type="text/javascript">
 		$(function(){
 			$("#birthday").datepicker({
 				changeMonth:true,
 				changeYear:true,
 				showOn: "button",
-				buttonImage: "../../calendario/css/images/ico.png",
+				buttonImage: "<?php echo base_url(); ?>/css/calendar/css/images/ico.png",
 				buttonImageOnly: true,
 				showButtonPanel: true,
 			})
