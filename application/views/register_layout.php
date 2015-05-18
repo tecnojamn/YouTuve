@@ -11,26 +11,105 @@ $this->load->helper('url');
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/bootswatch.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!-- estilo formulario -->
+        <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
+        <link href="<?php echo base_url(); ?>css/calendar/css/calendario.css" rel="stylesheet" type="text/css"/>
+        <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#birthday").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOn: "button",
+                    buttonImage: "<?php echo base_url(); ?>/css/calendar/css/images/ico.png",
+                    buttonImageOnly: true,
+                    showButtonPanel: true,
+                })
+            })
+        </script>
     </head>
 
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <?php
+                if (isset($error) && $error) {
+                    ?>
+                    <div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
+                        <?php echo $error_message; ?>
+                    </div>
+                    <?php
+                }
+                ?>
+                <form action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
+                    <div class="well col-lg-12">
+                        <fieldset>
+                            <center><legend>Registro</legend></center>
+                            <div class="form-group">
+                                <label for="email" class="col-lg-2 control-label" style="text-align: left">Email</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="nick" class="col-lg-2 control-label" style="text-align: left">Nickname</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="Nickname" name="nick" id="nick"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Password</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="password" placeholder="Password" name="password" id="password"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Name</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="Name" name="name" id="name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastname" class="col-lg-2 control-label" style="text-align: left">LastName</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="Last Name" name="lastname" id="lastname"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthday" class="col-lg-2 control-label" style="text-align: left">Birthday</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="text" placeholder="dd/mm/YYY" name="birthday" id="birthday"/>
 
-        <form action="<?php echo base_url(); ?>User/Register" method="post">
+                                </div>
 
-            <input type="text" placeholder="email" name="email"/>
+                            </div>
+                            <!-- calendario -->
+                            <!-- ACA UN JS QUE NOS DEJE ELEGIR LA FECHA-->
+                            <div class="form-group">
+                                <label for="gender" class="col-lg-2 control-label" style="text-align: left">Gender</label>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="gender" name="gender">
+                                        <option value="0">Masculine</option>
+                                        <option value="1">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-primary " value="Enter" name="whocares">Submit</button>
+                                </div>
+                            </div>
 
-            <input type="text" placeholder="nick" name="nick"/>
-            <input type="password" placeholder="password" name="password"/>
-            <input type="text" placeholder="name" name="name"/>
-            <input type="text" placeholder="lastname" name="lastname"/>
-            <!-- ACA UN JS QUE NOS DEJE ELEGIR LA FECHA-->
-            <input type="text" placeholder="birthday" name="birthday"/>
-            <input type="text" placeholder="gender" name="gender"/>
+                        </fieldset>
 
-            <input type="submit" value="Enter" name="whocares"/>
-        </form>
-
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
 
         <?php $this->load->view('footer'); ?>
     </body>

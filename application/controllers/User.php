@@ -87,6 +87,7 @@ class User extends CI_Controller {
                 $session = array(
                     'userId' => $user->id,
                     'email' => $user->email,
+                    'nick' => $user->nick,
                     'logged_in' => TRUE
                 );
                 $this->session->set_userdata($session); //guarda en session
@@ -115,12 +116,13 @@ class User extends CI_Controller {
         if ($this->isAuthorized()) {
             $data["error"] = 1;
             $data["error_message"] = "Que haces por acá Picaron?.";
-            $this->load->view('home_layout', $data);
+            $this->load->view('register_layout', $data);
             exit; //andate de esta funcion
         }
 //valido la data del form
         $this->form_validation->set_rules('email', 'email', 'required');
         $this->form_validation->set_rules('name', 'name', 'required');
+        $this->form_validation->set_rules('nick', 'nick', 'required');
         $this->form_validation->set_rules('password', 'password', 'required');
         $this->form_validation->set_rules('lastname', 'lastname', 'required');
         $this->form_validation->set_rules('birthday', 'birthday', 'required');
@@ -130,7 +132,7 @@ class User extends CI_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
-            $this->load->view('home_layout', $data);
+            $this->load->view('register_layout', $data);
         } else {
             $email = $this->input->post('email');
             $name = $this->input->post('name');
@@ -149,7 +151,7 @@ class User extends CI_Controller {
             }
             $data["error"] = 1;
             $data["error_message"] = "Ha ocurrido un error inesperado.";
-            $this->load->view('home_layout', $data);
+            $this->load->view('register_layout', $data);
         }
     }
 

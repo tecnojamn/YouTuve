@@ -124,7 +124,7 @@ label {
     color: $headings-color;
   }
 
-  a:hover,.active > a, {
+  a:hover , .active > a, {
     border-color: $brand-primary;
     color: #fff;
   }
