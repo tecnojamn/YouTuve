@@ -3,9 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/video_layout.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Welcome.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
+=======
+            <file>file:/C:/xampp/htdocs/YouTuve/application/views/login_layout.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/views/register_layout.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/calendario/index.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/calendario/css/estilos.css</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/css/calendario.css</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/calendario/css/calendario.css</file>
+>>>>>>> origin/My-branch
         </group>
     </open-files>
 </project-private>
