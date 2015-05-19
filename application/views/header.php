@@ -25,7 +25,7 @@
                             <div class="form-group">
                                 <input type="text" class="form-control" placeholder="Search">
                             </div>
-                            <button type="submit" class="btn btn-default">Search</button>
+                            <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
@@ -35,6 +35,7 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#">Mi canal</a></li>
                                 <li><a href="#">Configuración</a></li>
+                                 <li><a href="<?php echo base_url(); ?>user/profile/me">Ver Perfil</a></li>
                             </ul>
                         </li>
                         <li><a href="<?php echo base_url(); ?>User/logOut">Salir</a></li>

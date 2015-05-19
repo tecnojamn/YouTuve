@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_Controller {
 
+    private $ALT_PROFILE_PIC;
+
     function __construct() {
         parent::__construct();
 //cargo librerias,helpers necesarios en constructor.
@@ -12,19 +14,42 @@ class User extends MY_Controller {
         $this->load->helper('security');
         $this->load->library('session');
         $this->load->helper('url');
+        $this->ALT_PROFILE_PIC = base_url() . "css/images/default_user.jpg";
     }
 
-    public function index() {
-//esta es la pagina se entra si se pone www.mipagina.com/User 
-//Es el perfil de usuario
-//solo permitido SI esta logeuado
+    public function profile() {
+        //Es el perfil de usuario
+        //solo permitido SI esta logeuado
         if (!$this->isAuthorized()) {
             $data["error"] = 1;
             $data["error_message"] = "Que haces por acá Picaron?.";
             $this->load->view('home_layout', $data);
-            exit; //andate de esta funcion
+            return; //andate de esta funcion
         } else {
-//aca lo mandaria a un nuevo layout
+            $this->load->model('user_model');
+            $data["log"] = 1;
+            $data["error"] = 0;
+            $res = false;
+
+            if (($this->uri->segment(3) === null) || $this->uri->segment(3) === "" || $this->uri->segment(3) === "me" || $this->uri->segment(3) === $this->session->userdata('nick')) {
+                $data["profile"] = "me";
+                $res = $this->user_model->selectByNick($this->session->userdata('nick'));
+            } else if ($this->uri->segment(3) !== "" || ($this->uri->segment(3) !== null)) {
+                $data["profile"] = "alien";
+                $res = $this->user_model->selectByNick("" . $this->uri->segment(3) . "");
+            }
+            if ($res !== false) {
+                if ($res->thumbUrl === "") {
+                    $res->thumbUrl = $this->ALT_PROFILE_PIC;
+                }
+                $data["user_data"] = $res;
+                //aca habria que pedir videos
+                $this->load->view('user_layout', $data);
+                return; //andate de esta funcion  
+            } else {
+                show_404();
+                return;
+            }
         }
     }
 
@@ -60,7 +85,6 @@ class User extends MY_Controller {
         $user = "";
 //solo permitido si NO esta logeuado
         if ($this->isAuthorized()) {
-
             $data["error"] = 1;
             $data["error_message"] = "Que haces por acá Picaron?.";
             $this->load->view('home_layout', $data);
@@ -68,8 +92,8 @@ class User extends MY_Controller {
         }
 
 //valido la data del form
-        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|callback_validate_mail');
-        $this->form_validation->set_rules('password', 'password', 'trim|required|callback_validate_password');
+        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+        $this->form_validation->set_rules('password', 'password', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
 
@@ -91,6 +115,7 @@ class User extends MY_Controller {
                     'logged_in' => TRUE
                 );
                 $this->session->set_userdata($session); //guarda en session
+                $data["log"] = 1;
 //mando a homepage
                 redirect('/', 'refresh');
                 return;
@@ -162,7 +187,5 @@ class User extends MY_Controller {
             return 0;
         }
     }
-
-
 
 }

@@ -51,6 +51,24 @@ class User_model extends MY_Model {
         //return
     }
 
+    public function selectByNick($nick) {
+        $condition["nick"] = $nick;
+        $result = $this->search($condition);
+        if (count($result) === 1) {
+            $user = new UserDTO();
+            $user->lastname = $result[0]->lastname;
+            $user->name = $result[0]->name;
+            $user->gender = $result[0]->gender;
+            $user->id = $result[0]->id;
+            $user->nick = $result[0]->nick;
+            $user->email = $result[0]->email;
+             $user->thumbUrl = $result[0]->thumbUrl;
+            return $user;
+        } else {
+            return false;
+        }
+    }
+
     public function emailExists($mail) {
         $condition["email"] = $mail;
         return $this->search($condition);

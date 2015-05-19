@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Video extends Base_Controller {
+class Video extends MY_Controller {
 
     const ACTIVE_DEFAULT_VALUE = '1';
 
@@ -11,6 +11,7 @@ class Video extends Base_Controller {
         //cargo librerias,helpers necesarios en constructor.
         $this->load->helper(array('form', 'url'));
         $this->load->library('form_validation');
+        $this->load->library('session');
     }
 
     public function index() {
@@ -21,9 +22,13 @@ class Video extends Base_Controller {
      * Es la pantalla de ver video
      */
     public function view() {
+        $data=array();
+        if ($this->isAuthorized()) {
+            $data["log"] = 1;
+        }
         $this->load->model('video_model');
         //HARDCODED PAGE
-        $this->load->view('video_layout');
+        $this->load->view('video_layout',$data);
     }
 
     /**
@@ -64,6 +69,5 @@ class Video extends Base_Controller {
             $this->load->view('home_layout');
         }
     }
-
 
 }
