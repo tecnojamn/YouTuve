@@ -36,7 +36,7 @@ $this->load->helper('url');
             <div class="col-lg-4"></div>
             <div class="col-lg-4">
                 <?php
-                if (isset($error) && $error) {
+                if (isset($error) && $error && isset($error_message) && $error_message !== "") {
                     ?>
                     <div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
                         <?php echo $error_message; ?>
@@ -52,36 +52,42 @@ $this->load->helper('url');
                                 <label for="email" class="col-lg-2 control-label" style="text-align: left">Email</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
+                                    <?php echo form_error('email', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="nick" class="col-lg-2 control-label" style="text-align: left">Nickname</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Nickname" name="nick" id="nick"/>
+                                    <?php echo form_error('nick', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="password" class="col-lg-2 control-label" style="text-align: left">Password</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="password" placeholder="Password" name="password" id="password"/>
+                                    <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="name" class="col-lg-2 control-label" style="text-align: left">Name</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Name" name="name" id="name"/>
+                                    <?php echo form_error('name', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="lastname" class="col-lg-2 control-label" style="text-align: left">LastName</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Last Name" name="lastname" id="lastname"/>
+                                    <?php echo form_error('lastname', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="birthday" class="col-lg-2 control-label" style="text-align: left">Birthday</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="dd/mm/YYY" name="birthday" id="birthday"/>
+                                    <?php echo form_error('birthday', '<div class="error">', '</div>'); ?>
 
                                 </div>
 
@@ -95,6 +101,7 @@ $this->load->helper('url');
                                         <option value="0">Masculine</option>
                                         <option value="1">Female</option>
                                     </select>
+                                    <?php echo form_error('gender', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">

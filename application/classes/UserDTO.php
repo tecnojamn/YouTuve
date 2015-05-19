@@ -15,6 +15,7 @@ class UserDTO {
     public $lastname;
     public $birthday;
     public $gender;
+    public $utlThumb;
 
     function __construct() {
         
