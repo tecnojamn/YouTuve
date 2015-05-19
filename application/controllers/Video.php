@@ -69,5 +69,5 @@ class Video extends CI_Controller {
     public function isAuthorized() {
         return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
     }
-
+   
 }

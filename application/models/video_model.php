@@ -3,7 +3,9 @@
 defined('BASEPATH') && defined('APPPATH') OR exit('No direct script access allowed');
 
 include APPPATH . 'classes/VideoDTO.php';
+include APPPATH . 'classes/VideoListDto.php';
 include APPPATH . 'classes/TagListDTO.php';
+include APPPATH . 'classes/TagDTO.php';
 
 class Video_model extends MY_Model {
 
@@ -108,22 +110,86 @@ class Video_model extends MY_Model {
             $totalRate += $row->rate;
             $count++;
         }
-        $video->rate = $totalRate / $count;
+//Para evitar dividir entre 0 cuando no hay rates
+        if ($count == 0) {
+            $video->rate = 0;
+        } else {
+            $video->rate = $totalRate / $count;
+        }
         $this->db->flush_cache();
-        
-        /*
-          Armar un TagListDTO y meterlo en $video->tags
-          TagListDTO tiene un array de objetos tipo TagDTO .
-         */
-        
-        var_dump($video);
+
+        $conditionsTag["idVideo"] = $idVideo;
+        $this->db->join("videotag", "videotag.idtag = tag.id");
+        $result = $this->search($conditionsTag, "tag");
+        $tagList = new TagListDTO;
+        foreach ($result as $row) {
+            $tag = new TagDTO;
+            $tag->name = $row->name;
+            $tag->id = $row->id;
+            $tagList->addTag($tag);
+        }
+        $video->tags = $tagList;
         return $video;
     }
 
-
     public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
         $conditions["idChannel"] = $idChannel;
-        $this->search($conditions, $this->tableName, $limit, $offset);
+        $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, "
+                . "active, idUser, nick, thumbUrl");
+        $this->db->join("channel", "channel.id = video.idChannel");
+        $this->db->join("user", "channel.idUser = user.id");
+
+        $result = $this->search($conditions, "video");
+        $videoList = new VideoListDto;
+        foreach ($result as $row) {
+            $video = new VideoDTO;
+            $video->id = $row->id;
+            $video->idChannel = $row->idChannel;
+            $video->name = $row->name;
+            $video->link = $row->link;
+            $video->date = $row->date;
+            $video->duration = $row->durationInSeconds;
+            $video->active = $row->active;
+            $video->idUser = $row->idUser;
+            $video->usernick = $row->nick;
+            $video->userthumb = $row->thumbUrl;
+//rates del video
+            $this->db->flush_cache();
+            $conditionsRate["idVideo"] = $video->id;
+            $this->db->select("rate");
+            $result = $this->search($conditionsRate, "rate");
+            $totalRate = 0;
+            $count = 0;
+            foreach ($result as $row) {
+                $totalRate += $row->rate;
+                $count++;
+            }
+//Para evitar dividir entre 0 cuando no hay rates
+            if ($count == 0) {
+                $video->rate = 0;
+            } else {
+                $video->rate = $totalRate / $count;
+            }
+            $this->db->flush_cache();
+//view del video
+            $conditionsView["idVideo"] = $video->id;
+            $this->db->where($conditionsView);
+            $video->views = $this->db->count_all_results("viewhistory");
+//tags del video            
+            $this->db->flush_cache();
+            $conditionsTag["idVideo"] = $video->id;
+            $this->db->join("videotag", "videotag.idtag = tag.id");
+            $result = $this->search($conditionsTag, "tag");
+            $tagList = new TagListDTO;
+            foreach ($result as $row) {
+                $tag = new TagDTO;
+                $tag->name = $row->name;
+                $tag->id = $row->id;
+                $tagList->addTag($tag);
+            }
+            $video->tags = $tagList;
+            var_dump($video);
+        }
 //return data
     }
 
