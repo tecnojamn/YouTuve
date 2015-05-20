@@ -188,9 +188,9 @@ class Video_model extends MY_Model {
                 $tagList->addTag($tag);
             }
             $video->tags = $tagList;
-            var_dump($video);
+            $videoList->addVideo($video);
         }
-//return data
+        return $videoList;
     }
 
     public function activate($idVideo) {
