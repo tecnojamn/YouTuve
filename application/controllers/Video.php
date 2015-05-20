@@ -70,4 +70,12 @@ class Video extends MY_Controller {
         }
     }
 
+<<<<<<< HEAD
+=======
+//Devuelve true si está logueado
+    public function isAuthorized() {
+        return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
+    }
+    
+>>>>>>> origin/video-model
 }
