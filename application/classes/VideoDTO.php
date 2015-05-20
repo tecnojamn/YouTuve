@@ -10,6 +10,8 @@
  * Description of VideoDTO
  *
  * @author Nicolás
+ * 
+ * 
  */
 class VideoDTO {
 
@@ -21,12 +23,15 @@ class VideoDTO {
     public $duration;
     public $active;
     //datos de usuario
+    public $idUser;
     public $usernick;
     public $userthumb;
     //vistas
     public $views;
-    //rate promedial
-    public $rate;
+    //rate promedial 
+    public $rate; //Float
+    //tags
+    public $tags; //TagListDTO
 
     function __construct() {
         

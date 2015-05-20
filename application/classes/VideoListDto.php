@@ -19,8 +19,12 @@ class VideoListDto {
         
     }
 
-    function addVideo($tagDto) {
-        array_push($list, $tagDto);
+    function addVideo($videoDto) {
+//array_push no funciona sobre array vacios  
+        if ($this->list==null) {
+            $this->list[0] = $videoDto;
+        } else
+        array_push($this->list, $videoDto);
     }
 
     function removeVideo($index) {

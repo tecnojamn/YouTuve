@@ -14,7 +14,11 @@ class TagListDTO {
     }
 
     function addTag($tagDto) {
-        array_push($list, $tagDto);
+//array_push no funciona sobre array vacios        
+        if ($this->list==null) {
+            $this->list[0] = $tagDto;
+        } else
+            array_push($this->list, $tagDto);
     }
 
     function removeTag($index) {
