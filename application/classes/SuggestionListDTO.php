@@ -20,7 +20,11 @@ class SuggestionListDTO {
     }
 
     function addSuggestion($suggestionDTO) {
-        array_push($list, $suggestionDTO);
+        if($this->list==NULL){
+            $this->list[0]=$suggestionDTO;
+        }else{
+            array_push($this->list, $suggestionDTO);
+        }
     }
 
     function removeSuggestion($index) {
