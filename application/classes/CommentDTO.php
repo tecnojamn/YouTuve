@@ -14,12 +14,13 @@
 class CommentDTO {
 
     public $id;
-    public $idUser;
     public $idVideo;
     public $comment;
     public $date;
-
-    public $userDTO;//para tener datos del user como la img
+    //datos del usuario
+    public $idUser;
+    public $usernick;
+    public $userthumb;
 
     function __construct() {
         
