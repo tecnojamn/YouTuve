@@ -39,9 +39,9 @@ class Comments_model extends MY_Model {
                 $comment->idUser = $row->idUser;
                 $comment->usernick = $row->nick;
                 $comment->userthumb = $row->thumbUrl;
-                $commentList . addComment($comment);
+                $commentList->addComment($comment);
             }
-            return $commentLlist;
+            return $commentList;
         }
         return FALSE;
     }
@@ -63,7 +63,7 @@ class Comments_model extends MY_Model {
                 $comment->idUser = $row->idUser;
                 $comment->usernick = $row->nick;
                 $comment->userthumb = $row->thumbUrl;
-                $commentList . addComment($comment);
+                $commentList->addComment($comment);
             }
             return $commentLlist;
         }
@@ -88,10 +88,9 @@ class Comments_model extends MY_Model {
                 $comment->idUser = $row->idUser;
                 $comment->usernick = $row->nick;
                 $comment->userthumb = $row->thumbUrl;
-                $commentList . addComment($comment);
+                $commentList->addComment($comment);
             }
-            var_dump($commentList);
-            return $commentLlist;
+            return $commentList;
         }
         return FALSE;
     }
@@ -104,12 +103,12 @@ class Comments_model extends MY_Model {
 
     public function edit($comment, $idComment) {
         $conditions["id"] = $idComment;
-        if (isset($comment) != FALSE) {
+        if (isset($comment)) {
             $data["comment"] = $comment;
             $result = $this->update($data, $conditions);
             return ($result > 0) ? true : false;
         } else {
-            return FALSE;
+            return false;
         }
     }
 

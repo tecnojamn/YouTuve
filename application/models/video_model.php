@@ -111,11 +111,7 @@ class Video_model extends MY_Model {
             $count++;
         }
 //Para evitar dividir entre 0 cuando no hay rates
-        if ($count == 0) {
-            $video->rate = 0;
-        } else {
-            $video->rate = $totalRate / $count;
-        }
+        $video->rate = ($count == 0) ? 0 : $video->rate = $totalRate / $count;
         $this->db->flush_cache();
 
         $conditionsTag["idVideo"] = $idVideo;
