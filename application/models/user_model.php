@@ -17,32 +17,30 @@ class User_model extends MY_Model {
         $data["name"] = $name;
         $data["password"] = $password;
         $data["lastname"] = $lastname;
-        $data["birthday"] = $birthday;
+        $bdaySQL = date('Y-m-d H:i:s', strtotime($birthday));
+        $data["birthday"] = $bdaySQL;
         $data["gender"] = $gender;
         $data["thumbUrl"] = $thumbUrl;
         $result = $this->save($data);
         return ($result > 0) ? true : false;
     }
 
-    public function edit($id, $email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl) {
-        if ($nick !== "")
-            $data["nick"] = $nick;
-        if ($email !== "")
-            $data["email"] = $email;
+    public function edit($id, $name, $lastname, $birthday, $gender, $thumbUrl) {
         if ($name !== "")
             $data["name"] = $name;
-        if ($password !== "")
-            $data["password"] = $password;
         if ($lastname !== "")
             $data["lastname"] = $lastname;
-        if ($birthday !== "")
-            $data["birthday"] = $birthday;
+        if ($birthday !== "") {
+            $bdaySQL = date('Y-m-d H:i:s', strtotime($birthday));
+            $data["birthday"] = $bdaySQL;
+        }
         if ($gender !== "")
             $data["gender"] = $gender;
         if ($thumbUrl !== "") {
             $data["thumbUrl"] = $thumbUrl;
         }
-        return $this->update($data, "id=" . $id);
+        $result = $this->update($data, "id=" . $id);
+        return ($result > 0) ? true : false;
     }
 
     public function selectById($id) {
@@ -57,12 +55,13 @@ class User_model extends MY_Model {
         if (count($result) === 1) {
             $user = new UserDTO();
             $user->lastname = $result[0]->lastname;
+            $user->birthday = $result[0]->birthday;
             $user->name = $result[0]->name;
             $user->gender = $result[0]->gender;
             $user->id = $result[0]->id;
             $user->nick = $result[0]->nick;
             $user->email = $result[0]->email;
-             $user->thumbUrl = $result[0]->thumbUrl;
+            $user->thumbUrl = $result[0]->thumbUrl;
             return $user;
         } else {
             return false;
