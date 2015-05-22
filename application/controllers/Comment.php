@@ -28,5 +28,7 @@ class Comment extends CI_Controller {
         //esta es la pagina se entra si se pone www.mipagina.com/Video 
     }
     
-    
+    public function getById(){
+        
+    }
 }
