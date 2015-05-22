@@ -16,7 +16,7 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         ACA VA EL CONTENT
-        <a href="<?php echo base_url(); ?>video/view" value="1">EXAMPLE VIDEO</a>
+        <a href="<?php echo base_url(); ?>video/view">EXAMPLE VIDEO</a>
 
         <?php $this->load->view('footer'); ?>
     </body>

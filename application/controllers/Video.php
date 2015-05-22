@@ -26,12 +26,8 @@ class Video extends MY_Controller {
         if ($this->isAuthorized()) {
             $data["log"] = 1;
         }
-        //$idVideo = $this->input->get("idVideo");
-        $idVideo = $this->uri->segment(3,0);
         $this->load->model('video_model');
-        $video = $this->video_model->selectById($idVideo);
-        $data["video"] = $video;
-//HARDCODED PAGE
+        //HARDCODED PAGE
         $this->load->view('video_layout',$data);
     }
 
@@ -72,12 +68,6 @@ class Video extends MY_Controller {
             //muestra alguna pagina todavia no sabemos cual
             $this->load->view('home_layout');
         }
-    }
-    public function prueba(){
-        $this->load->model("video_model");
-        $video = $this->video_model->selectById("1");
-        $data["video"] = "https://www.youtube.com/embed/".$video->link;
-        $this->load->view("video_layout", $data);
     }
 
 }

@@ -24,7 +24,7 @@ $this->load->helper('url');
                     <div id="thater" style="height:510px;background: black;">
                         <div class='col-lg-2' ></div>
                         <div>
-                            <iframe style="padding: 0;"class="col-lg-8 text-center" width="100%" height="510" src=<?php echo "https://www.youtube.com/embed/" . $video->link ?> frameborder="0" allowfullscreen></iframe>
+                            <iframe style="padding: 0;"class="col-lg-8 text-center" width="100%" height="510" src="https://www.youtube.com/embed/BE9CXWV1alg" frameborder="0" allowfullscreen></iframe>
                         </div>
                         <div class='col-lg-2'></div>
                     </div>
@@ -36,8 +36,6 @@ $this->load->helper('url');
                          margin-top: 20px;
                          height: 140px;">
                         USER AND VIDEO DATA GOES HERE
-                        <br><?= $video->name ?>
-                        <br><?= $video->rate ?>
                     </div>
                 </div>
             </div>
@@ -92,7 +90,8 @@ $this->load->helper('url');
                     </div> 
                 </div>
             </div>
-            <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
+            <?php
+            echo (isset($error) && $error == 1)  ? $error_message  : ""; ?>
             <?php $this->load->view('footer'); ?>
     </body>
 </html>
