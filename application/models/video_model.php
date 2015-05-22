@@ -111,11 +111,7 @@ class Video_model extends MY_Model {
             $count++;
         }
 //Para evitar dividir entre 0 cuando no hay rates
-        if ($count == 0) {
-            $video->rate = 0;
-        } else {
-            $video->rate = $totalRate / $count;
-        }
+        $video->rate = ($count == 0) ? 0 : $video->rate = $totalRate / $count;
         $this->db->flush_cache();
 
         $conditionsTag["idVideo"] = $idVideo;
@@ -140,9 +136,9 @@ class Video_model extends MY_Model {
         $this->db->join("user", "channel.idUser = user.id");
 
         $result = $this->search($conditions, "video");
-        $videoList = new VideoListDto;
+        $videoList = new VideoListDto();
         foreach ($result as $row) {
-            $video = new VideoDTO;
+            $video = new VideoDTO();
             $video->id = $row->id;
             $video->idChannel = $row->idChannel;
             $video->name = $row->name;
@@ -180,17 +176,17 @@ class Video_model extends MY_Model {
             $conditionsTag["idVideo"] = $video->id;
             $this->db->join("videotag", "videotag.idtag = tag.id");
             $result = $this->search($conditionsTag, "tag");
-            $tagList = new TagListDTO;
+            $tagList = new TagListDTO();
             foreach ($result as $row) {
-                $tag = new TagDTO;
+                $tag = new TagDTO();
                 $tag->name = $row->name;
                 $tag->id = $row->id;
                 $tagList->addTag($tag);
             }
             $video->tags = $tagList;
-            var_dump($video);
+            $videoList->addVideo($video);
         }
-//return data
+        return $videoList;
     }
 
     public function activate($idVideo) {

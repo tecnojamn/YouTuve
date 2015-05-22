@@ -62,6 +62,44 @@ class User extends MY_Controller {
     }
 
     /**
+     * Editar datos de usuario
+     */
+    public function editInfo() {
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "Que haces por acá Picaron?.";
+            $this->load->view('home_layout', $data);
+            return; //andate de esta funcion
+        }
+        $this->load->model('user_model');
+        $data["log"] = 1;
+        //valido la data del form
+        $this->form_validation->set_rules('name', 'name', 'trim|required');
+        $this->form_validation->set_rules('lastname', 'lastname', 'trim|required');
+        $this->form_validation->set_rules('birthday', 'birthday', 'trim|required');
+        $this->form_validation->set_rules('gender', 'gender', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $data["error"] = 1;
+            $data["error_message"] = "Asegurese que escribió correctamente.";
+            $this->load->view('user_layout', $data);
+        } else {
+            $name = $this->input->post('name');
+            $lastname = $this->input->post('lastname');
+            $birthday = $this->input->post('birthday');
+            $gender = $this->input->post('gender');
+            if ($this->user_model->edit($this->session->userdata('userId'), $name, $lastname, $birthday, $gender, "")) {
+//muestra alguna pagina todavia no sabemos cual
+                $data["error"] = 0;
+                redirect('/user/profile/me', 'refresh');
+                return;
+            }
+            $data["error"] = 1;
+            $data["error_message"] = "Ha ocurrido un error inesperado.";
+            $this->load->view('user_layout', $data);
+        }
+    }
+
+    /**
      * Muestra el loginForm
      */
     public function loginForm() {
@@ -90,23 +128,18 @@ class User extends MY_Controller {
             $this->load->view('home_layout', $data);
             return; //andate de esta funcion
         }
-
 //valido la data del form
         $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
         $this->form_validation->set_rules('password', 'password', 'trim|required');
-
         if ($this->form_validation->run() == FALSE) {
-
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
             $this->load->view('login_layout', $data);
         } else {
             $email = $this->input->post('email');
             $password = do_hash($this->input->post('password'), 'md5');
-
             $user = $this->user_model->authorize($email, $password);
             if ($user) {
-
 //armo session 
                 $session = array(
                     'userId' => $user->id,
@@ -148,7 +181,6 @@ class User extends MY_Controller {
         $this->form_validation->set_rules('birthday', 'birthday', 'trim|required');
         $this->form_validation->set_rules('gender', 'gender', 'trim|required');
 //$this->form_validation->set_rules('thumbUrl', 'thumbUrl', 'required');
-
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
