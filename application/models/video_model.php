@@ -56,6 +56,7 @@ class Video_model extends MY_Model {
     public function selectById($idVideo) {
         $video = new VideoDTO();
         $conditions["id"] = $idVideo;
+        $conditions["active"] = 1;
         $result = $this->search($conditions, $this->table);
         if (sizeof($result) === 1) {
             $video->id = $idVideo;
@@ -199,4 +200,10 @@ class Video_model extends MY_Model {
         return $this->update($data, "id=" . $idVideo);
     }
 
+    public function searchVideo($search) {
+        $this->db->where("active", "1");
+        $this->db->like("name", $search);
+        $result = $this->db->get($this->table)->result();
+        return $result;
+    }
 }

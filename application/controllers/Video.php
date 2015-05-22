@@ -22,13 +22,25 @@ class Video extends MY_Controller {
      * Es la pantalla de ver video
      */
     public function view() {
-        $data=array();
+        $data = array();
         if ($this->isAuthorized()) {
             $data["log"] = 1;
         }
         $this->load->model('video_model');
+        $id = $this->uri->segment(3, 0);
+        if ($id != FALSE) {
+            $video = $this->video_model->selectById($id);
+            if ($video != FALSE) {
+                $data["video"] = $video;
+                $this->load->view('video_layout', $data);
+                return;
+            }else{
+                $data["error"] = 1;
+                $data["error_message"]="Pagina no encontrada";
+            }
+        }
         //HARDCODED PAGE
-        $this->load->view('video_layout',$data);
+        $this->load->view('home_layout', $data);
     }
 
     /**
@@ -68,6 +80,19 @@ class Video extends MY_Controller {
             //muestra alguna pagina todavia no sabemos cual
             $this->load->view('home_layout');
         }
+    }
+
+    public function search() {
+        $search = $this->input->post("search");
+        if ($search == NULL) {
+            $this->load->view("home_layout");
+        } else {
+            $this->load->model("video_model");
+            $videos = $this->video_model->searchVideo($search);
+            $data["videos"] = $videos;
+            $this->load->view("search_layout", $data);
+        }
+        return;
     }
 
 }
