@@ -68,8 +68,11 @@ and open the template in the editor.
     line-height: 40px;  padding: 10px 35px;
 
 }
+#profile-nav ul li:hover a,#profile-nav ul li.active a{
+    color: rgb(53, 53, 53);font-weight: bold;
+}
 #profile-nav ul li a{
-    color: rgb(194, 194, 194);text-decoration: none;
+    color: rgb(128, 128, 128);text-decoration: none;
 
 }
 #profile-nav ul li:hover,#profile-nav ul li.active{
@@ -79,8 +82,56 @@ and open the template in the editor.
     cursor: pointer;
 
 }
-#profile-nav ul li:hover a,#profile-nav ul li.active a{
-    color: white;
 
 
+.well-blue{
+    border-top: 1px solid #76a7fa;
+    -webkit-box-shadow: inset 0 2px 0 #76a7fa;
+    box-shadow: inset 0 2px 0 #76a7fa;
+}
+.well-red{
+    border-top: 1px solid #e46f61;
+    -webkit-box-shadow: inset 0 2px 0 #e46f61;
+    box-shadow: inset 0 2px 0 #e46f61;
+}
+.well-green{
+    border-top: 1px solid #53a93f;
+    -webkit-box-shadow: inset 0 2px 0 #53a93f;
+    box-shadow: inset 0 2px 0 #53a93f;
+}
+.well-violet{
+    border-top: 1px solid #bc5679;
+    -webkit-box-shadow: inset 0 2px 0 #bc5679;
+    box-shadow: inset 0 2px 0 #bc5679;
+}
+.well-yellow{
+    border-top: 1px solid #fbcb43;
+    -webkit-box-shadow: inset 0 2px 0 #fbcb43;
+    box-shadow: inset 0 2px 0 #fbcb43;
+}
+.well-turq{
+    border-top: 1px solid #4dbfd9;
+    -webkit-box-shadow: inset 0 2px 0 #4dbfd9;
+    box-shadow: inset 0 2px 0 #4dbfd9;
+}
+body{
+    background-color: #e5e5e5;
+}
+.well,well-lg{
+    border-radius: 0px; 
+}
+.circular1:hover #cam{
+    display:block;
+}
+#cam{
+    display: none;
+    height: 50px;
+    width: 60px;
+    background-image: url('http://localhost/YouTuve/css/images/camera-icon.png');
+    position: absolute;
+    top: 80px;
+    left: 140px;
+    background-size: 60px;
+    background-repeat: no-repeat;
+    cursor: pointer;
 }
