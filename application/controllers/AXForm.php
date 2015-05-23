@@ -27,5 +27,11 @@ class AxForm extends CI_Controller {
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }
+    public function formUserEditThumb() {
+        $formString = $this->load->view('axviews/ax_edit_user_thumb_form', '', true);
+        $arr = array('result' => 'true', 'html' => $formString);
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
+    }
 
 }

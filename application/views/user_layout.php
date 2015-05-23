@@ -14,10 +14,12 @@ $this->load->helper('url');
     </head>
 
     <body>
-        <script>
-            $(document).ready(function () {
-<?php if ($profile === "me") { ?>
-                    //EDIT MODAL
+
+        <?php if ($profile === "me") { ?>
+            <script>
+                $(document).ready(function () {
+
+                    //LOAD EDIT MODAL
                     $("#editBtn").click(function () {
                         $("#editModal").modal("show");
                         console.log($('#editModal').find("#editFormHolder").data("loaded"));
@@ -30,31 +32,72 @@ $this->load->helper('url');
                                     $('#editModal').find("#editFormHolder").data("loaded", "true")
                                 }
                             }, "json");
-
                         }
-                    })
-                    $('#closeEditModal').click(function () {
-                        $('#editModal').modal('hide');
                     });
-<?php } ?>
+                    //LOAD EDIT THUMB MODAL
+                    $("#cam").click(function () {
+                        $("#editThumbModal").modal("show");
+                        console.log($('#editThumbModal').find("#editThumbHolder").data("loaded"));
+                        if ($('#editThumbModal').find("#editThumbHolder").data("loaded") === false) {
+                            $.get("<?php echo base_url(); ?>AXForm/formUserEditThumb", function (data) {
+                                if (data.result) {
+                                    //si el resultado es verdadero lo agrego
+                                    $("#editThumbHolder").append(data.html);
+                                    $('#editThumbModal').find("#editThumbHolder").data("loaded", "true")
+                                }
+                            }, "json");
+                        } else {
+                            $("#errorThumbForm").hide();
+                        }
 
-            });
-        </script>
+
+                    });
+                    //UPLOAD IMAGE
+                    $(document).on('submit', '#uploadimage', function (e) {
+                        e.preventDefault();
+                        var formData = new FormData($(this)[0]);
+                        $.ajax({
+                            url: "<?php echo base_url(); ?>user/uploadThumb",
+                            type: "POST",
+                            data: formData,
+                            async: true,
+                            complete: function (data) {
+                                console.log(data);
+                                var data = data.responseJSON;
+
+                                if (data.error === false) {
+                                    $("#editThumbModal").modal("hide");
+                                    $("mainMsgDisplay").show().removeClass("alert-danger").addClass("alert-success").prepend("Image Uploaded");
+                                    $src = $(".circular1 img").attr("src");
+                                    $(".circular1 img").removeAttr("src").attr("src", $src + "?" + new Date().getTime());
+                                } else {
+                                    $("#errorThumbForm").show();
+                                    $("#errorThumbForm #msg").addClass("alert-danger").html(data.error_msg);
+                                }
+                            },
+                            dataType: "json",
+                            cache: false,
+                            contentType: false,
+                            processData: false
+                        });
+                        /*$.post("<?php echo base_url(); ?>user/uploadThumb", formData, function (data) {
+                         if (!data.error) {
+                         
+                         $("mainMsgDisplay").show().removeClass("alert-danger").addClass("alert-success").prepend("Image Uploaded");
+                         } else {
+                         $("#errorThumbForm").show();
+                         $("#errorThumbForm #msg").addClass("alert-danger").html(data.error_msg);
+                         }
+                         }, "json");*/
+                        return false;
+                    });
+                });
+            </script>
+        <?php } ?>
+
+
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <div class="row" >
-            <div id="editModal" style="display:none" class="modal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="false">×</button>
-                            <h4 class="modal-title">Editar Información Básica</h4>
-                        </div>
-                        <div id="editFormHolder" data-loaded="false" class="modal-body">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div id="presentation" class="col-lg-12" style="background: url('<?php echo base_url(); ?>css/images/default_cover.jpg')no-repeat fixed center;   background-size: 1100px 100%;
                  padding: 0px 30px;
@@ -62,7 +105,7 @@ $this->load->helper('url');
                  <?php
                  if (isset($error) && $error) {
                      ?>
-                    <div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
+                    <div id="mainMsgDisplay" class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
                         <?php echo $error_message; ?>
                     </div>
                     <?php
@@ -72,9 +115,13 @@ $this->load->helper('url');
                      background: rgba(0, 0, 0, 0.8);">
                     <div id="presentation" class="col-lg-12" style="padding:60px 40px;">
                         <div id="presentation" class="circular1">
-                            <img src="<?php echo $user_data->thumbUrl; ?>" />
-                            <?php if ($profile === "me") { ?>
-                                <div id="cam"></div>
+                            <img   style="min-height: 100px;
+                                   min-width: 100px;
+                                   width: auto;
+                                   max-width: 200px;
+                                   max-height: 200px;" src="<?php echo $user_data->thumbUrl; ?>" />
+                                   <?php if ($profile === "me") { ?>
+                                <div data-toggle="editThumbModal" id="cam"></div>
                             <?php } ?>
 
                         </div>
@@ -119,9 +166,9 @@ $this->load->helper('url');
                         <p>Nombre: <?php echo $user_data->name; ?></p>
                         <p>Apellido: <?php echo $user_data->lastname; ?></p>
                         <p>Fecha de nacimiento: <?php echo $user_data->birthday; ?></p>
-                        <p>Sexo: <?php echo ($user_data->gender === '1') ? "Hombre" : "Mujer"; ?></p>
+                        <p>Sexo: <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></p>
                         <?php if ($profile === "me") { ?>
-                            <a id="editBtn" href="#" style="font-size:15px">Editar</a>
+                            <a data-toggle="editModal" id="editBtn" href="#" style="font-size:15px">Editar</a>
                         <?php } ?>
                     </div>
                     <div class="tab-pane fade" id="my_channel">
@@ -132,6 +179,34 @@ $this->load->helper('url');
                     <div class="tab-pane fade" id="my_lists">
                         <div class="progress progress-striped active">
                             <div class="progress-bar" style="width: 45%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="editModal" style="display:none" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="false">×</button>
+                            <h4 class="modal-title">Editar Información Básica</h4>
+                        </div>
+                        <div id="editFormHolder" data-loaded="false" class="modal-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="editThumbModal" style="display:none" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="false">×</button>
+                            <h4 class="modal-title">Editar Imagen</h4>
+                        </div>
+                        <div id="editThumbHolder" data-loaded="false" class="modal-body">
+
                         </div>
                     </div>
                 </div>
