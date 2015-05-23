@@ -22,4 +22,18 @@ class MY_Controller extends CI_Controller {
         return (isset($this->session->userdata()["logged_in"]) && $this->session->userdata()["logged_in"] === TRUE);
     }
 
+    /**
+     * Se fija si el user tiene un canal
+     */
+    public function getChannel($idUser) {
+        $this->load->model('channel_model');
+        $data = $this->channel_model->selectByIdUser($idUser);
+        //var_dump($data);
+        if ($data) {
+            return $data->id;
+        } else {
+            return false;
+        }
+    }
+
 }
