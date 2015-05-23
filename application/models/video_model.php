@@ -58,6 +58,7 @@ class Video_model extends MY_Model {
         $conditions["id"] = $idVideo;
         $conditions["active"] = 1;
         $result = $this->search($conditions, $this->table);
+
         if (sizeof($result) === 1) {
             $video->id = $idVideo;
             $video->idChannel = $result[0]->idChannel;
@@ -71,7 +72,7 @@ class Video_model extends MY_Model {
             return false;
         }
         $conditionsChannel["id"] = $video->idChannel;
-        $result = $this->search($conditionsChannel, "channel");
+        $result = $this->search($conditionsChannel, "channel", 1, 0);
         if (sizeof($result) === 1) {
             $video->idUser = $result[0]->idUser;
         } else {
@@ -200,17 +201,19 @@ class Video_model extends MY_Model {
         return $this->update($data, "id=" . $idVideo);
     }
 
-    public function searchVideo($search) {
+    public function searchVideo($search, $limit, $offset) {
         $this->db->where("active", "1");
         $this->db->like("name", $search);
+        $this->db->limit($offset, $limit);
         $result = $this->db->get($this->table)->result();
+        // var_dump($this->db->last_query());
         return $result;
     }
 
     //si orderByRate = true :ordena por rate
     //si orderByRate = false :ordena por fecha
     //channel debe ser array
-    public function getVideos($orderByRate = false, $channel = false, $limit = 0) {
+    public function getVideos($orderByRate = false, $channel = false, $limit = 1, $offset = 0) {
         if ($channel) {
             $this->db->where("channel.name", $channel);
         }
@@ -221,18 +224,18 @@ class Video_model extends MY_Model {
             $this->db->from("rate");
             $this->db->group_by("idVideo");
             $subquery = $this->db->get_compiled_select();
-            $subquery = "(".$subquery.") as rate";
-            
+            $subquery = "(" . $subquery . ") as rate";
+
             $this->db->flush_cache();
             $this->db->select("video.*, rate.rate, channel.id as idChan, channel.frontImgUrl as imgChan");
             $this->db->from($subquery);
             $this->db->where("video.active", "1");
             $this->db->join($this->table, "rate.idVideo=video.id");
             $this->db->join("channel", "video.idChannel=channel.id");
-            if($limit!=0){
-                $this->db->limit($limit);
+            if ($limit != 0) {
+                $this->db->limit($limit, $offset);
             }
-            $this->db->order_by("rate","desc");
+            $this->db->order_by("rate", "desc");
             $result = $this->db->get()->result();
             $videos = new VideoListDto();
             foreach ($result as $row) {

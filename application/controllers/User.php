@@ -231,17 +231,6 @@ class User extends MY_Controller {
         }
     }
 
-    /**
-     * Se fija si el user tiene un canal
-     */
-    private function hasChannel($idUser) {
-        $this->load->model('channel_model');
-        $data = $this->channel_model->selectByIdUser($idUser);
-        if ($data) {
-            return $data["id"];
-        } else {
-            return 0;
-        }
-    }
+    
 
 }

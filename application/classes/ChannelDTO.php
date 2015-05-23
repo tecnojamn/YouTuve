@@ -1,5 +1,7 @@
 <?php
 
+include APPPATH . 'classes/TagDTO.php';
+
 /**
  * Description of User
  *

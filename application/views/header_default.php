@@ -1,4 +1,4 @@
-<?php 
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 $this->load->helper('url');
 ?>
@@ -25,9 +25,9 @@ $this->load->helper('url');
 
                 <div class="navbar-collapse  collapse in" id="bs-example-navbar-collapse-1" aria-expanded="true">
                     <div class="col-md-6">
-                        <form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>/Video/search" method="POST">
+                        <form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>video/search" method="GET">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search" name="search" id="search">
+                                <input type="text" name="query" class="form-control" placeholder="">
                             </div>
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>

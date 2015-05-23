@@ -21,9 +21,9 @@
 
                 <div class="navbar-collapse  collapse in" id="bs-example-navbar-collapse-1" aria-expanded="true">
                     <div class="col-md-6">
-                        <form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>/Video/search" method="POST">
+                        <form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>video/search" method="GET">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Search">
+                                <input type="text" name="query" class="form-control" placeholder="">
                             </div>
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
@@ -35,7 +35,8 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="#">Mi canal</a></li>
                                 <li><a href="#">Configuración</a></li>
-                                 <li><a href="<?php echo base_url(); ?>user/profile/me">Ver Perfil</a></li>
+                                <li><a href="<?php echo base_url(); ?>user/profile/me">Ver Perfil</a></li>
+                                <li><a href="<?php echo base_url(); ?>video/upload">Subir Video</a></li>
                             </ul>
                         </li>
                         <li><a href="<?php echo base_url(); ?>User/logOut">Salir</a></li>
