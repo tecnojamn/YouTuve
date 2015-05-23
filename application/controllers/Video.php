@@ -16,6 +16,15 @@ class Video extends MY_Controller {
 
     public function index() {
         //esta es la pagina se entra si se pone www.mipagina.com/Video 
+        $this->load->library('session');
+        $data["log"] = 0;
+        if ($this->isAuthorized()) {
+            $data["log"] = 1;
+        }
+        $this->load->model("video_model");
+        $videos = $this->video_model->getVideos(true);
+        $data["videos"] = $videos;
+        $this->load->view('home_layout', $data);
     }
 
     /**
@@ -94,5 +103,10 @@ class Video extends MY_Controller {
         }
         return;
     }
-
+    //si orderBy = 1 :ordena por fecha
+    //si orderBy = 0 :ordena por rate
+    //channel debe ser array
+//    private function getVideos($orderBy, $channel=false, $limit=0) {
+//        
+//    }
 }

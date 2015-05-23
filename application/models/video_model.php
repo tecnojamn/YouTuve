@@ -206,4 +206,47 @@ class Video_model extends MY_Model {
         $result = $this->db->get($this->table)->result();
         return $result;
     }
+
+    //si orderByRate = true :ordena por rate
+    //si orderByRate = false :ordena por fecha
+    //channel debe ser array
+    public function getVideos($orderByRate = false, $channel = false, $limit = 0) {
+        if ($channel) {
+            $this->db->where("channel.name", $channel);
+        }
+        //selecciona videos con sus respectivo rate ( avg(rate) de la tabla rate )
+        if ($orderByRate) {
+            $this->db->select("idVideo");
+            $this->db->select_avg("rate");
+            $this->db->from("rate");
+            $this->db->group_by("idVideo");
+            $subquery = $this->db->get_compiled_select();
+            $subquery = "(".$subquery.") as rate";
+            
+            $this->db->flush_cache();
+            $this->db->select("video.*, rate.rate, channel.id as idChan, channel.frontImgUrl as imgChan");
+            $this->db->from($subquery);
+            $this->db->where("video.active", "1");
+            $this->db->join($this->table, "rate.idVideo=video.id");
+            $this->db->join("channel", "video.idChannel=channel.id");
+            if($limit!=0){
+                $this->db->limit($limit);
+            }
+            $this->db->order_by("rate","desc");
+            $result = $this->db->get()->result();
+            $videos = new VideoListDto();
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->id = $row->id;
+                $video->name = $row->name;
+                $video->link = $row->link;
+                $video->idChannel = $row->idChan;
+                $video->rate = $row->rate;
+                $video->duration = $row->durationInSeconds;
+                $videos->addVideo($video);
+            }
+            return $videos;
+        }
+    }
+
 }
