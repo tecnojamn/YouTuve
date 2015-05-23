@@ -41,6 +41,8 @@ class User extends MY_Controller {
             if ($res !== false) {
                 if ($res->thumbUrl === "") {
                     $res->thumbUrl = $this->ALT_PROFILE_PIC;
+                } else {
+                    $res->thumbUrl = base_url() . USER_THUMB_IMAGE_UPLOAD . $res->thumbUrl;
                 }
                 $data["user_data"] = $res;
                 //aca habria que pedir videos
@@ -59,6 +61,28 @@ class User extends MY_Controller {
     public function logOut() {
         $this->session->sess_destroy();
         redirect('/', 'refresh');
+    }
+
+    public function uploadThumb() {
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "Que haces por acá Picaron?.";
+            $this->load->view('home_layout', $data);
+            return; //andate de esta funcion
+        }
+        $data["log"] = 1;
+
+        //save file
+        $this->load->helper('MY_upload');
+        $filename = "thumb.png";
+        $uploadResult = upload_user_thumb($this->session->userdata('nick'), $filename, "user_thumb");
+        if ($uploadResult["error"] === false) {
+            //save on DB
+            $this->load->model('user_model');
+            $res = $this->user_model->edit($this->session->userdata('userId'), "", "", "", "", $this->session->userdata('nick') . "/" . $filename);
+        }
+        echo json_encode($uploadResult);
+        return;
     }
 
     /**
