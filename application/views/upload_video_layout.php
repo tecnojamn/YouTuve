@@ -16,6 +16,64 @@ $this->load->helper('url');
     </head>
 
     <body>
+        <script>
+            var tags =<?php echo $tags ?>;
+            var lastTagSearchVal = "";
+            var tagsAdded = 0;
+            console.log(tags);
+            $(document).ready(function () {
+                $("#videUploadForm").submit(function (e) {
+                    //e.preventDefault();
+                    $("#tagBox").children('.littleTag').each(function () {
+                        $("#videUploadForm").append("<input type='hidden' name='tags[]' value='" + $(this).attr("data-id") + "'/>")
+                    });
+                });
+                $(document).on("click", ".littleTag span", function () {
+                    $(this).parent(".littleTag").remove();
+                    tagsAdded--;
+                    $("#tagForm").show();
+                });
+                $(document).on("click", ".videoTag", function () {
+                    $("#tagBox").append("<div data-id='" + $(this).attr("data-id") + "' class='littleTag'>" + $(this).text() + "<span>×</span></div>");
+                    resetTagResults();
+                    $("#tagTexter").val("");
+                    tagsAdded++;
+                    if (tagsAdded === 3) {
+                        $("#tagForm").hide();
+                    }
+                });
+                $("#tagTexter").keyup(function (e) {
+                    if (e.which === 46 || e.wich === 8) {
+
+                        return;
+                    }
+                    resetTagResults();
+                    var val = $.trim(this.value);
+                    var totalRes = 0;
+                    if (val !== lastTagSearchVal && val.length > 0) {
+                        lastTagSearchVal = val;
+                        jQuery.each(tags.list, function (i, Obj) {
+                            if (Obj.name.toLowerCase().indexOf(val.toLocaleLowerCase()) >= 0) {
+                                totalRes++;
+                                addToTagResults(Obj.id, Obj.name);
+                            }
+                        });
+                        if (totalRes > 0) {
+                            $("#tagResults").show();
+                        }
+                    }
+                });
+
+                function addToTagResults(id, name) {
+                    $("#tagResults").append("<p class='videoTag' data-id='" + id + "'>" + name + "</p>");
+                }
+                function resetTagResults() {
+                    $("#tagResults").empty().hide();
+                    var lastTagSearchVal = "";
+                }
+            });
+
+        </script>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="row">
@@ -28,7 +86,7 @@ $this->load->helper('url');
                         <?php echo $error_message; ?>
                     </div>
                 <?php } ?>
-                <form action="<?php echo base_url(); ?>video/doUpload" method="post" class="form-horizontal">
+                <form id="videUploadForm" autocomplete="off" action="<?php echo base_url(); ?>video/doUpload" method="post" class="form-horizontal">
                     <div class="well col-lg-12">
                         <fieldset>
                             <center><legend>Subir video</legend></center>
@@ -52,6 +110,23 @@ $this->load->helper('url');
                                     <input class="form-control" type="text" placeholder="Duración (en segundos)" name="duration" id="name"/>
                                     <?php echo form_error('duration', '<div class="error">', '</div>'); ?>
                                 </div>
+                            </div>
+                            <div class="form-group" id="tagForm">
+                                <label  for="duration" class="col-lg-2 control-label" style="text-align: left">Tags</label> 
+
+                                <div class="col-lg-10">
+                                    <input id="tagTexter" class="form-control" type="text" placeholder="Busque tag" name="x" id="name"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10" style=""id="tagResults">
+
+                                </div></div>
+                            <div class="form-group"><label  for="duration" class="col-lg-2 control-label" style="text-align: left"></label> 
+                                <div class="col-lg-10">
+                                    <div id="tagBox" >
+
+                                    </div></div>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-2">

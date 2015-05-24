@@ -1,8 +1,10 @@
 <?php
+
 defined('BASEPATH') && defined('APPPATH') OR exit('No direct script access allowed');
 
-include APPPATH . 'classes/TagListDTO.php';
-include APPPATH . 'classes/TagDTO.php';
+include_once APPPATH . 'classes/TagListDTO.php';
+include_once APPPATH . 'classes/TagDTO.php';
+
 class Tags_model extends MY_Model {
 
     public function __construct() {
@@ -14,30 +16,51 @@ class Tags_model extends MY_Model {
         $data["name"] = $name;
         return $this->save($data);
     }
-    
+
+    /**
+     * Anda NO tocar
+     * @param type $tagsArr
+     * @param type $idVideo
+     * @return type
+     */
+    public function pushTagsForVideo($idVideo, $tagsArr) {
+        $tagData = [];
+        $i = 0;
+        foreach ($tagsArr as $tag) {
+            $tagData[$i] = array(
+                'idVideo' => $idVideo,
+                'idTag' => $tag
+            );
+            $i++;
+        }
+        return $this->db->insert_batch('videotag', $tagData);
+    }
+
     public function addTag($tagName) {
         $conditions["name"] = $tagName;
         $result = $this->search($conditions, "tag");
-        if($result==null){
-            $data["name"]=$tagName;
+        if ($result == null) {
+            $data["name"] = $tagName;
             $this->db->insert("tag", $data);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
+
     public function removeTag($tagName) {
         $conditions["name"] = $tagName;
         $result = $this->search($conditions, "tag");
-        if($result!=null){
-            $data["name"]=$tagName;
+        if ($result != null) {
+            $data["name"] = $tagName;
             $this->db->delete("tag", $data);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    public function getTagFromVideo($idVideo) {
+
+    public function getTagsFromVideo($idVideo) {
         $conditions["idVideo"] = $idVideo;
         $this->db->join("tag", "idTag = id");
         $result = $this->search($conditions, "videoTag");
@@ -50,7 +73,8 @@ class Tags_model extends MY_Model {
         }
         return $tagList;
     }
-    public function getAllTag() {
+
+    public function getAllTags() {
         $result = $this->db->get("tag");
         $tagList = new TagListDTO();
         foreach ($result->result() as $row) {
@@ -61,4 +85,5 @@ class Tags_model extends MY_Model {
         }
         return $tagList;
     }
+
 }

@@ -25,7 +25,10 @@ class Video extends MY_Controller {
             return; //andate de esta funcion
         }
         $data["log"] = 1;
-        $this->load->view('upload_video_layout');
+        $this->load->model('tags_model');
+        $arrTags = $this->tags_model->getAllTags();
+        $data["tags"] = json_encode($arrTags);
+        $this->load->view('upload_video_layout', $data);
         return; //andate de esta funcion
     }
 
@@ -40,6 +43,9 @@ class Video extends MY_Controller {
             $this->load->view('register_layout', $data);
             return; //andate de esta funcion
         }
+
+
+
         $data["log"] = 1;
         $this->form_validation->set_rules('name', 'name', 'trim|required');
         $this->form_validation->set_rules('link', 'link', 'trim|required');
@@ -47,6 +53,9 @@ class Video extends MY_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
+            $this->load->model('tags_model');
+            $arrTags = $this->tags_model->getAllTags();
+            $data["tags"] = json_encode($arrTags);
             $this->load->view('upload_video_layout', $data);
             return;
         } else {
@@ -62,8 +71,17 @@ class Video extends MY_Controller {
                 $idChannel = $this->channel_model->push($this->session->userdata('userId'), "El canal de " . $this->session->userdata('nick'), "", "");
             }
             //intentamos insertarlo
-            if ($idChannel !== false && $this->video_model->push($idChannel, $name, $link, date('Y-m-d H:i:s'), $duration, 1)) {
+            $videoId = $this->video_model->push($idChannel, $name, $link, date('Y-m-d H:i:s'), $duration, 1);
+            if ($idChannel !== false && $videoId !== false) {
                 //Lo subió
+                //subimos las tags
+                $tags = $this->input->post('tags');
+                $this->load->model('tags_model');
+                if ($tags !== NULL) {
+                    //faltaria chequear que me lleguen cosas lindas y no feas...
+                    $this->tags_model->pushTagsForVideo($videoId,$tags);
+                }
+                //
                 redirect('/', 'refresh');
             }
         }
@@ -111,10 +129,11 @@ class Video extends MY_Controller {
 //HARDCODED PAGE
         $this->load->view('home_layout', $data);
     }
-/**
- * Ya se deja paginar ej: /video/search?query=pepe&page=1
- * @return type
- */
+
+    /**
+     * Ya se deja paginar ej: /video/search?query=pepe&page=1
+     * @return type
+     */
     public function search() {
         if ($this->isAuthorized()) {
             $data["log"] = 1;

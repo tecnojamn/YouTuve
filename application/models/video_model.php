@@ -2,10 +2,10 @@
 
 defined('BASEPATH') && defined('APPPATH') OR exit('No direct script access allowed');
 
-include APPPATH . 'classes/VideoDTO.php';
-include APPPATH . 'classes/VideoListDto.php';
-include APPPATH . 'classes/TagListDTO.php';
-include APPPATH . 'classes/TagDTO.php';
+include_once APPPATH . 'classes/VideoDTO.php';
+include_once APPPATH . 'classes/VideoListDto.php';
+include_once APPPATH . 'classes/TagListDTO.php';
+include_once APPPATH . 'classes/TagDTO.php';
 
 class Video_model extends MY_Model {
 
@@ -22,7 +22,7 @@ class Video_model extends MY_Model {
         $data["durationInSeconds"] = $durationInSec;
         $data["active"] = $active;
         $result = $this->save($data);
-        return ($result > 0) ? true : false;
+        return ($result) ? $this->db->insert_id() : $result;
     }
 
     public function remove($idVideo) {
@@ -117,6 +117,7 @@ class Video_model extends MY_Model {
         $this->db->flush_cache();
 
         $conditionsTag["idVideo"] = $idVideo;
+
         $this->db->join("videotag", "videotag.idtag = tag.id");
         $result = $this->search($conditionsTag, "tag");
         $tagList = new TagListDTO;

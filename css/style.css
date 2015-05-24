@@ -25,6 +25,43 @@ and open the template in the editor.
     box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.05);
 }
 */
+#tagBox{
+    height: 100px;
+    background-color: rgb(242, 242, 242);
+    margin: 0 15px;
+    border-top: 1px solid rgb(231, 231, 231);
+}
+#tagBox span{
+    float: right;
+    color: rgb(38, 77, 199);
+    font-size: 20px;
+    line-height: 20px;
+    cursor: pointer;
+}
+.littleTag{
+    margin: 5px;
+    background-color: rgb(66, 124, 231);
+    color: white;
+    padding: 3px 10px;
+}
+#tagResults{
+    display: none;
+    padding: 0 0;
+    height: auto;
+    position: relative;
+    top: -20px;
+    left: 73px;
+    background-color: white;
+}
+#tagResults p{
+    margin: 2px;
+    padding: 5px;
+}
+#tagResults p:hover{
+    background: red;  background: rgb(221, 221, 221);
+    color: black;
+    cursor: pointer;
+}
 .ui-datepicker-trigger{
     position: relative;
     top: -30px;
