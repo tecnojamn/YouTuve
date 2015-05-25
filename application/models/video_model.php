@@ -93,15 +93,6 @@ class Video_model extends MY_Model {
         $video->views = $this->db->count_all_results("viewhistory");
 
         $this->db->flush_cache();
-
-
-        /* //ALTERNATIVA 1
-          $conditionsRate["idVideo"]=$idVideo;
-          $this->db->where($conditionsRate);
-          $this->db->select("rate");
-          $query = $this->db->get("rate");
-          var_dump($query->result()[0]->rate); */
-
         //ALTERNATIVA 2
         $conditionsRate["idVideo"] = $idVideo;
         $this->db->select("rate");
