@@ -17,6 +17,7 @@ class VideoDTO {
 
     public $id;
     public $idChannel;
+    public $channelName;
     public $name;
     public $link;
     public $date;
