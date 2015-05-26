@@ -90,4 +90,4 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
 define('USER_THUMB_IMAGE_UPLOAD', 'uploads/users/'); // highest automatically-assigned error code
-define('SEARCH_VIDEOS_LIMIT', 10); // highest automatically-assigned error code
+define('SEARCH_VIDEOS_LIMIT', 5); // highest automatically-assigned error code

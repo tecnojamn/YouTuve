@@ -193,22 +193,63 @@ class Video_model extends MY_Model {
         return $this->update($data, "id=" . $idVideo);
     }
 
-    public function searchVideo($search, $limit, $offset) {
-        $this->db->where("active", "1");
-        $this->db->like("name", $search);
-        $this->db->limit($offset, $limit);
+    public function getVideosByNameLike($query, $limit, $offset) {
+
+        $this->db->select("*,channel.name as channelName,video.name as videoName");
+        $this->db->where("video.active", "1");
+        $this->db->like("video.name", $query);
+        $this->db->join("channel", "channel.id=video.idChannel");
+        $this->db->limit($limit, $offset);
         $result = $this->db->get($this->table)->result();
-        // var_dump($this->db->last_query());
-        return $result;
+        //echo "" . count($result) . " " . $offset . " " . $limit . " " . $this->db->last_query();
+        if (count($result) < 1) {
+            return false;
+        }
+        $videos = new VideoListDto;
+        foreach ($result as $row) {
+            $video = new VideoDTO();
+            $video->id = $row->id;
+            $video->name = $row->videoName;
+            $video->link = $row->link;
+            $video->date = $row->date;
+            $video->idChannel = $row->idChannel;
+            $video->channelName = $row->channelName;
+            $video->duration = $row->durationInSeconds;
+
+            $videos->addVideo($video);
+        }
+        return $videos;
     }
 
-    //si orderByRate = true :ordena por rate
-    //si orderByRate = false :ordena por fecha
-    //channel debe ser array
-    public function getVideos($orderByRate = false, $channel = false, $limit = 1, $offset = 0) {
-        if ($channel) {
-            $this->db->where("channel.name", $channel);
+    public function selectByTagId($idTag) {
+        $condition["idTag"] = $idTag;
+        $this->db->join("videotag", "videotag.idVideo=video.id");
+        $result = $this->search($condition);
+        $videoList = new VideoListDto();
+        foreach ($result as $row) {
+            $video = new VideoDTO();
+            $video->id = $row->id;
+            $video->name = $row->name;
+            $video->link = $row->link;
+            $video->date = $row->date;
+            $video->duration = $row->durationInSeconds;
+            $video->active = $row->active;
+            $videoList->addVideo($video);
         }
+        return $videoList;
+    }
+
+    /**
+     * devuelve videos
+     * si orderbyrate == false  devuelve por fecha, si no por rate
+     * @param type $orderByRate
+     * @param type $channel
+     * @param type $limit
+     * @param type $offset
+     * @return \VideoListDto
+     */
+    public function getVideos($orderByRate = false, $channelId = 0, $limit = 0, $offset = 0) {
+
         //selecciona videos con sus respectivo rate ( avg(rate) de la tabla rate )
         if ($orderByRate) {
             $this->db->select("idVideo");
@@ -218,30 +259,39 @@ class Video_model extends MY_Model {
             $subquery = $this->db->get_compiled_select();
             $subquery = "(" . $subquery . ") as rate";
 
-            $this->db->flush_cache();
-            $this->db->select("video.*, rate.rate, channel.id as idChan, channel.frontImgUrl as imgChan");
+            $this->db->select("video.*, rate.rate, channel.id as idChan,channel.id as idChan,channel.name as channelName, channel.frontImgUrl as imgChan");
             $this->db->from($subquery);
-            $this->db->where("video.active", "1");
             $this->db->join($this->table, "rate.idVideo=video.id");
-            $this->db->join("channel", "video.idChannel=channel.id");
-            if ($limit != 0) {
-                $this->db->limit($limit, $offset);
-            }
             $this->db->order_by("rate", "desc");
-            $result = $this->db->get()->result();
-            $videos = new VideoListDto();
-            foreach ($result as $row) {
-                $video = new VideoDTO();
-                $video->id = $row->id;
-                $video->name = $row->name;
-                $video->link = $row->link;
-                $video->idChannel = $row->idChan;
-                $video->rate = $row->rate;
-                $video->duration = $row->durationInSeconds;
-                $videos->addVideo($video);
-            }
-            return $videos;
+        } else {
+            $this->db->select("video.*, channel.id as idChan,channel.name as channelName,channel.frontImgUrl as imgChan");
+            $this->db->from($this->table);
+            $this->db->order_by("date", "desc");
         }
+        if ($limit != 0)
+            $this->db->limit($limit, $offset);
+        if ($channelId !== 0)
+            $this->db->where("channel.id", $channelId);
+
+        $this->db->where("video.active", "1");
+        $this->db->join("channel", "video.idChannel=channel.id");
+
+        $result = $this->db->get()->result();
+        $videos = new VideoListDto();
+        foreach ($result as $row) {
+            $video = new VideoDTO();
+            $video->id = $row->id;
+            $video->name = $row->name;
+            $video->link = $row->link;
+            $video->channelName = $row->channelName;
+            $video->idChannel = $row->idChan;
+            if ($orderByRate) {
+                $video->rate = $row->rate;
+            }
+            $video->duration = $row->durationInSeconds;
+            $videos->addVideo($video);
+        }
+        return $videos;
     }
 
 }

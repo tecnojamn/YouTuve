@@ -79,7 +79,7 @@ class Video extends MY_Controller {
                 $this->load->model('tags_model');
                 if ($tags !== NULL) {
                     //faltaria chequear que me lleguen cosas lindas y no feas...
-                    $this->tags_model->pushTagsForVideo($videoId,$tags);
+                    $this->tags_model->pushTagsForVideo($videoId, $tags);
                 }
                 //
                 redirect('/', 'refresh');
@@ -151,7 +151,7 @@ class Video extends MY_Controller {
         $page = ($page > 0) ? $page : 1;
         $this->load->model("video_model");
         //var_dump(SEARCH_VIDEOS_LIMIT);
-        $videos = $this->video_model->searchVideo($search, SEARCH_VIDEOS_LIMIT, $page - 1);
+        $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
         $data["searched_query"] = $search;
         $data["searched_videos"] = $videos;
         $this->load->view("search_layout", $data);
@@ -160,10 +160,25 @@ class Video extends MY_Controller {
         return;
     }
 
-//si orderBy = 1 :ordena por fecha
-//si orderBy = 0 :ordena por rate
-//channel debe ser array
-//    private function getVideos($orderBy, $channel=false, $limit=0) {
-//        
-//    }
+    /**
+     * Funcion que devuelve un json con mas videos en la busqueda
+     * @return type
+     */
+    public function searchMoreVideosAX() {
+        $this->load->model("video_model");
+        $searchText = $this->input->post("searchText");
+        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
+        $searchPage = ($searchPage > 0) ? $searchPage : 1;
+        $videos = $this->video_model->getVideosByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if ($videos) {
+            $data["videos"] = $videos;
+            $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
+            $arr = array('result' => 'true', 'html' => $formString);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
+    }
+
 }
