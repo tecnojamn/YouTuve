@@ -48,10 +48,13 @@ and open the template in the editor.
     display: none;
     padding: 0 0;
     height: auto;
-    position: relative;
-    top: -20px;
-    left: 73px;
+    position: absolute;
+    width: 100%;
+    left: 0px;
     background-color: white;
+    z-index: 100;
+    margin-top: -20px;
+    border-top: 2px solid rgb(66, 124, 231);
 }
 #tagResults p{
     margin: 2px;
@@ -174,4 +177,13 @@ body{
     background-size: 60px;
     background-repeat: no-repeat;
     cursor: pointer;
+}
+@font-face {
+    font-family: 'MyWebFont';
+    src: url('webfont.eot'); /* IE9 Compat Modes */
+    src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+        url('webfont.woff2') format('woff2'), /* Super Modern Browsers */
+        url('webfont.woff') format('woff'), /* Pretty Modern Browsers */
+        url('webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+        url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
 }

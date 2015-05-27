@@ -113,12 +113,24 @@ class Video extends MY_Controller {
             $data["log"] = 1;
         }
         $this->load->model('video_model');
+        $this->load->model('user_model');
         $id = $this->uri->segment(3, 0);
 
         if ($id != FALSE) {
             $video = $this->video_model->selectById($id);
             if ($video != FALSE) {
+
+                if ($video->userthumb === "") {
+                    $video->userthumb = base_url() . ALT_PROFILE_PIC;
+                } else {
+                    $video->userthumb = base_url() . USER_THUMB_IMAGE_UPLOAD . $video->userthumb;
+                }
+                $userId = $this->session->userdata('userId');
+                $data["follower"] = $this->user_model->isfollowingChannel($userId, $video->idChannel);
                 $data["video"] = $video;
+
+                $data["userID"] = $userId;
+                $data["isMyVideo"] = $video->idUser === $userId ? true : false;
                 $this->load->view('video_layout', $data);
                 return;
             } else {
@@ -126,7 +138,8 @@ class Video extends MY_Controller {
                 $data["error_message"] = "Pagina no encontrada";
             }
         }
-//HARDCODED PAGE
+        $data["error"] = 1;
+        $data["error_msg"] = "El video solicitado no existe.";
         $this->load->view('home_layout', $data);
     }
 

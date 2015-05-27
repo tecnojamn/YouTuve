@@ -55,16 +55,18 @@ class Video_model extends MY_Model {
     //return: VideoDTO
     public function selectById($idVideo) {
         $video = new VideoDTO();
-        $conditions["id"] = $idVideo;
+        $conditions["video.id"] = $idVideo;
         $conditions["active"] = 1;
+        $this->db->select("Video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
+        $this->db->join("channel", "channel.id = video.idChannel");
         $result = $this->search($conditions, $this->table);
-
         if (sizeof($result) === 1) {
             $video->id = $idVideo;
-            $video->idChannel = $result[0]->idChannel;
-            $video->name = $result[0]->name;
+            $video->name = $result[0]->videoName;
             $video->link = $result[0]->link;
             $video->date = $result[0]->date;
+            $video->idChannel = $result[0]->idChannel;
+            $video->channelName = $result[0]->channelName;
             $video->duration = $result[0]->durationInSeconds;
             $video->active = $result[0]->active;
         } else {
@@ -195,13 +197,13 @@ class Video_model extends MY_Model {
 
     public function getVideosByNameLike($query, $limit, $offset) {
 
-        $this->db->select("*,channel.name as channelName,video.name as videoName");
+        $this->db->select("Video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
         $this->db->where("video.active", "1");
         $this->db->like("video.name", $query);
         $this->db->join("channel", "channel.id=video.idChannel");
         $this->db->limit($limit, $offset);
         $result = $this->db->get($this->table)->result();
-        //echo "" . count($result) . " " . $offset . " " . $limit . " " . $this->db->last_query();
+        // echo "" . count($result) . " " . $offset . " " . $limit . " " . $this->db->last_query();
         if (count($result) < 1) {
             return false;
         }
@@ -284,6 +286,7 @@ class Video_model extends MY_Model {
             $video->name = $row->name;
             $video->link = $row->link;
             $video->channelName = $row->channelName;
+
             $video->idChannel = $row->idChan;
             if ($orderByRate) {
                 $video->rate = $row->rate;

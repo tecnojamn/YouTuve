@@ -21,7 +21,7 @@
 
                 <div class="navbar-collapse  collapse in" id="bs-example-navbar-collapse-1" aria-expanded="true">
                     <div class="col-md-6">
-                        <form class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>video/search" method="GET">
+                        <form autocomplete="off" class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>video/search" method="GET">
                             <div class="form-group">
                                 <input type="text" name="query" class="form-control" placeholder="">
                             </div>
