@@ -4,8 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_Controller {
 
-    private $ALT_PROFILE_PIC;
-
     function __construct() {
         parent::__construct();
 //cargo librerias,helpers necesarios en constructor.
@@ -14,7 +12,6 @@ class User extends MY_Controller {
         $this->load->helper('security');
         $this->load->library('session');
         $this->load->helper('url');
-        $this->ALT_PROFILE_PIC = base_url() . "css/images/default_user.jpg";
     }
 
     public function profile() {
@@ -40,7 +37,7 @@ class User extends MY_Controller {
             }
             if ($res !== false) {
                 if ($res->thumbUrl === "") {
-                    $res->thumbUrl = $this->ALT_PROFILE_PIC;
+                    $res->thumbUrl = base_url() . ALT_PROFILE_PIC;
                 } else {
                     $res->thumbUrl = base_url() . USER_THUMB_IMAGE_UPLOAD . $res->thumbUrl;
                 }
@@ -231,6 +228,29 @@ class User extends MY_Controller {
         }
     }
 
-    
+    //ajaxalyzed json borghes was here
+    public function followChannelAX() {
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "No tienes autorización";
+            $this->load->view('home_layout', $data);
+            exit; //andate de esta funcion
+        } $this->load->model('user_model');
+        $data["log"] = 1;
+        $channelId = $this->input->post('channel');
+
+        $userId = $this->session->userdata('userId');
+
+        if ($this->user_model->followChannel($userId, $channelId)) {
+
+            //ACA MANDARIA UN MAIL O AGREGARIA A COLA DE MAILS POR NUEVO SEGUIDOR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
+            return;
+        } else {
+            echo json_encode(array('result' => 'false', 'html' => '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'));
+            return;
+        }
+    }
 
 }

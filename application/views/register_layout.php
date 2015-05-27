@@ -44,7 +44,7 @@ $this->load->helper('url');
                     <?php
                 }
                 ?>
-                <form action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
+                <form autocomplete="off" action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
                     <div class="well col-lg-12">
                         <fieldset>
                             <center><legend>Registro</legend></center>

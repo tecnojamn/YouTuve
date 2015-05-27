@@ -82,7 +82,6 @@ class User_model extends MY_Model {
 
         if (count($result) === 1) {
             $user = new UserDTO();
-
             $user->lastname = $result[0]->lastname;
             $user->name = $result[0]->name;
             $user->gender = $result[0]->gender;
@@ -93,6 +92,44 @@ class User_model extends MY_Model {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Devuelve true si sigue a ese canal
+     * @param type $idUser
+     * @param type $idChannel
+     * @return boolean
+     */
+    public function isfollowingChannel($idUser, $idChannel) {
+        $data["idUser"] = $idUser;
+        $data["idChannel"] = $idChannel;
+        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        if ($row)
+            return true;
+        return false;
+    }
+
+    /**
+     * Hace que un user siga un canal 
+     * @param type $idUser
+     * @param type $idChannel
+     * @return boolean
+     */
+    public function followChannel($idUser, $idChannel) {
+
+        $date = date('Y-m-d H:i:s');
+        $data["idUser"] = $idUser;
+        $data["idChannel"] = $idChannel;
+        $data["date"] = $date;
+        $data["confirmed"] = 0;
+        $data["seen"] = 0;
+
+        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        if ($row)
+            return false;
+        $this->db->flush_cache();
+        $result = $this->insert($data, 'follower');
+        return ($result > 0) ? true : false;
     }
 
 }
