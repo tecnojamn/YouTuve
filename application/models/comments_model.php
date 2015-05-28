@@ -55,6 +55,7 @@ class Comments_model extends MY_Model {
         $this->db->join("user", "user.id = comment.idUser ");
         $this->db->limit($limit, $offset);
         $this->db->order_by("date", "desc");
+        $this->db->where($conditions);
         //$result = $this->search($conditions);
         $result = $this->db->get($this->table)->result();
         if (count($result) > 0) {
