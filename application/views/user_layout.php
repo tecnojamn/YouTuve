@@ -18,7 +18,6 @@ $this->load->helper('url');
         <?php if ($profile === "me") { ?>
             <script>
                 $(document).ready(function () {
-
                     //LOAD EDIT MODAL
                     $("#editBtn").click(function () {
                         $("#editModal").modal("show");
