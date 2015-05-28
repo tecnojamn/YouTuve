@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/playlist_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/CommentListDTO.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/config/constants.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/header.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/core/my_controller.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/header_default.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/PlaylistListDTO.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/core/my_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/PlaylistDTO.php</file>
         </group>
     </open-files>
 </project-private>

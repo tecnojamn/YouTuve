@@ -20,7 +20,11 @@ class PlaylistListDTO {
     }
 
     function addPlayList($playListDTO) {
-        array_push($list, $playListDTO);
+        if ($this->list == null) {
+            $this->list[0] = $playListDTO;
+        } else {
+            array_push($this->list, $playListDTO);
+        }
     }
 
     function removePlayList($index) {
