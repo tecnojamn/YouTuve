@@ -13,21 +13,50 @@ class Comments_model extends MY_Model {
         $this->table = "comment";
     }
 
-    public function push($idUser, $idVideo, $comment) {
+    public function push($idVideo, $idUser, $comment, $date) {
         //puede llevar modificaciones si tiene un padre
         $data["idUser"] = $idUser;
         $data["idVideo"] = $idVideo;
         $data["comment"] = $comment;
+        $data["date"] = $date;
         $result = $this->save($data);
-        return ($result > 0) ? true : false;
+        if ($result > 0) {
+            $id = $this->db->insert_id();
+            return $id;
+        }
+        return false;
     }
 
-    public function selectByVideo($idVideo) {
+    public function selectById($idComment) {
+        $conditions["comment.id"] = $idComment;
+        $this->db->select("comment.id, comment.idVideo, comment.comment, comment.date,"
+                . " comment.idUser, nick, thumbUrl");
+        $this->db->join("user", "user.id = comment.idUser ");
+        $row = $this->search($conditions);
+        if (count($row) === 1) {
+            $row = $row[0];
+            $comment = new CommentDTO();
+            $comment->id = $row->id;
+            $comment->idVideo = $row->idVideo;
+            $comment->comment = $row->comment;
+            $comment->date = $row->date;
+            $comment->idUser = $row->idUser;
+            $comment->usernick = $row->nick;
+            $comment->userthumb = $row->thumbUrl;
+            return $comment;
+        }
+        return false;
+    }
+
+    public function selectByVideo($idVideo, $limit, $offset) {
         $conditions["idVideo"] = $idVideo;
         $this->db->select("comment.id, comment.idVideo, comment.comment, comment.date,"
                 . " comment.idUser, nick, thumbUrl");
         $this->db->join("user", "user.id = comment.idUser ");
-        $result = $this->search($conditions);
+        $this->db->limit($limit, $offset);
+        $this->db->order_by("date", "desc");
+        //$result = $this->search($conditions);
+        $result = $this->db->get($this->table)->result();
         if (count($result) > 0) {
             $commentList = new CommentListDTO();
             foreach ($result as $row) {
