@@ -193,5 +193,4 @@ class Video extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => ''));
         return;
     }
-
 }
