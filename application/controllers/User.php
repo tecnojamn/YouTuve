@@ -185,6 +185,7 @@ class User extends MY_Controller {
      */
     public function register() {
         $this->load->model('user_model');
+        $this->load->library("email");
 //control
 //solo permitido si NO esta logeuado
         if ($this->isAuthorized()) {
@@ -217,6 +218,10 @@ class User extends MY_Controller {
             $thumbUrl = "";
 //inserta y redirige a algun lado todavia no sabemos
             if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
+            $to=$email;
+            $message="<h1>verificacion de youtuve</h1>";
+            $subject="verificacion de youtuve";
+            $this->email->sendMail($to, $message, $subject);
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
                 redirect('/', 'refresh');
@@ -244,13 +249,18 @@ class User extends MY_Controller {
         if ($this->user_model->followChannel($userId, $channelId)) {
 
             //ACA MANDARIA UN MAIL O AGREGARIA A COLA DE MAILS POR NUEVO SEGUIDOR!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+            
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {
             echo json_encode(array('result' => 'false', 'html' => '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'));
             return;
         }
+    }
+    public function prueba() {
+        $this->load->helper("email_content");
+        $mailVal = validationMail("julio");
+        var_dump($mailVal);
     }
 
 }

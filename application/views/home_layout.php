@@ -26,7 +26,6 @@ $this->load->helper('url');
             <?php
         }
         ?>
-        
 
         <?php $this->load->view('footer'); ?>
     </body>

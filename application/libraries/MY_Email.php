@@ -728,7 +728,15 @@ class MY_Email extends CI_Email {
         return $full_html;
     }
 
-
+    public function sendMail($to, $message, $subject) {
+        $this->from('youtuve.notificaciones@gmail.com');
+        $this->to($message);
+        $this->subject($subject);
+        $this->message($message);
+        $result = $this->send();
+        return $result; 
+    }
+    
     // Protected methods -------------------------------------------------------
 
     protected function _get_alt_message() {

@@ -102,7 +102,7 @@ if (!function_exists('valid_email')) {
                 return (boolean)filter_var($address, FILTER_VALIDATE_EMAIL);
         }
     }
-
+    
 }
 
 if (!function_exists('name_email_format')) {
