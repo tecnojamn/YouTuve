@@ -33,8 +33,12 @@ $this->load->helper('url');
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <div class="row">
+<<<<<<< HEAD
             <div class="col-lg-4"></div>
             <div class="col-lg-4 col-lg-offset-0 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+=======
+            <div class="col-lg-4 col-lg-offset-4">
+>>>>>>> origin/view-branch
                 <?php
                 if (isset($error) && $error && isset($error_message) && $error_message !== "") {
                     ?>
@@ -115,7 +119,6 @@ $this->load->helper('url');
                     </div>
                 </form>
             </div>
-            <div class="col-lg-4"></div>
         </div>
 
         <?php $this->load->view('footer'); ?>

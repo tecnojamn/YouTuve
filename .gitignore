@@ -6,3 +6,6 @@ nbproject/private/private.xml
 application/controllers/Video.php
 nbproject/private/private.xml
 nbproject/private/private.xml
+application/views/register_layout.php
+application/config/config.php
+css/bootstrap.min.css

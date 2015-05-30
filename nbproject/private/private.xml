@@ -4,11 +4,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/video_layout.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
+=======
+>>>>>>> origin/view-branch
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
+<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/YouTuve/css/style.css</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/search_layout.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/axviews/ax_video_comment.php</file>
@@ -25,6 +30,10 @@
             <file>file:/C:/xampp/htdocs/YouTuve/application/core/my_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/classes/PlaylistDTO.php</file>
 >>>>>>> origin/rate-branch
+=======
+            <file>file:/C:/xampp/htdocs/YouTuve/application/core/my_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/config/config.php</file>
+>>>>>>> origin/view-branch
         </group>
     </open-files>
 </project-private>
