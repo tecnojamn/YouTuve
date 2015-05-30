@@ -91,7 +91,7 @@ $this->load->helper('url');
                         <fieldset>
                             <center><legend>Subir video</legend></center>
                             <div class="form-group">
-                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Nombre:</label>
+                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Nombre</label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Nombre" name="name" id="email"/>
                                     <?php echo form_error('name', '<div class="error">', '</div>'); ?>

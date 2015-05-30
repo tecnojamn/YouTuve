@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/video_layout.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
@@ -13,6 +14,17 @@
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/axviews/ax_video_comment.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Comment.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/comments_model.php</file>
+=======
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/playlist_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/CommentListDTO.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/PlaylistListDTO.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/core/my_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/PlaylistDTO.php</file>
+>>>>>>> origin/rate-branch
         </group>
     </open-files>
 </project-private>

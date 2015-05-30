@@ -34,7 +34,7 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <div class="row">
             <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-lg-offset-0 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
                 <?php
                 if (isset($error) && $error && isset($error_message) && $error_message !== "") {
                     ?>
@@ -49,42 +49,42 @@ $this->load->helper('url');
                         <fieldset>
                             <center><legend>Registro</legend></center>
                             <div class="form-group">
-                                <label for="email" class="col-lg-2 control-label" style="text-align: left">Email</label>
+                                <label for="email" class="col-lg-2 control-label" style="text-align: left">Email </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
                                     <?php echo form_error('email', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="nick" class="col-lg-2 control-label" style="text-align: left">Nickname</label>
+                                <label for="nick" class="col-lg-2 control-label" style="text-align: left">Nickname </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Nickname" name="nick" id="nick"/>
                                     <?php echo form_error('nick', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Password</label>
+                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Password </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="password" placeholder="Password" name="password" id="password"/>
                                     <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Name</label>
+                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Name </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Name" name="name" id="name"/>
                                     <?php echo form_error('name', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="lastname" class="col-lg-2 control-label" style="text-align: left">LastName</label>
+                                <label for="lastname" class="col-lg-2 control-label" style="text-align: left">LastName </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Last Name" name="lastname" id="lastname"/>
                                     <?php echo form_error('lastname', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="birthday" class="col-lg-2 control-label" style="text-align: left">Birthday</label>
+                                <label for="birthday" class="col-lg-2 control-label" style="text-align: left">Birthday </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="dd/mm/YYY" name="birthday" id="birthday"/>
                                     <?php echo form_error('birthday', '<div class="error">', '</div>'); ?>
@@ -95,7 +95,7 @@ $this->load->helper('url');
                             <!-- calendario -->
                             <!-- ACA UN JS QUE NOS DEJE ELEGIR LA FECHA-->
                             <div class="form-group">
-                                <label for="gender" class="col-lg-2 control-label" style="text-align: left">Gender</label>
+                                <label for="gender" class="col-lg-2 control-label" style="text-align: left">Gender </label>
                                 <div class="col-lg-10">
                                     <select class="form-control" id="gender" name="gender">
                                         <option value="0">Masculine</option>
