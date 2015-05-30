@@ -17,16 +17,7 @@ $this->load->helper('url');
 
         ACA VA EL CONTENT
        
-            <?php
-        foreach ($videos->list as $video) {
-            ?>
-            <a href="<?php echo base_url(); ?>/Video/view/<?php echo $video->id ?>">
-               <img src="http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-            </a>
-            <?php
-        }
-        ?>
-        
+       
 
         <?php $this->load->view('footer'); ?>
     </body>
