@@ -1,4 +1,7 @@
 <?php
+include APPPATH . 'classes/ChannelDTO.php';
+include APPPATH . 'classes/VideoDTO.php';
+include APPPATH . 'classes/UserDTO.php';
 
 class Channel_model extends MY_Model {
 
@@ -34,8 +37,18 @@ class Channel_model extends MY_Model {
 
     public function selectById($id) {
         $conditions["id"] = $id;
-        $this->search($conditions, $this->table, 1, 0);
-        //return data
+        $result = $this->search($conditions, $this->table, 1, 0);
+        if (count($result) > 0) {
+            $channel = new ChannelDTO;
+            $channel->idUser = $result[0]->idUser;
+            $channel->description = $result[0]->description;
+            $channel->name = $result[0]->name;
+            $channel->id = $id;
+            $channel->frontImgUrl = $result[0]->frontImgUrl;
+            return $channel;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -45,9 +58,10 @@ class Channel_model extends MY_Model {
     public function selectByIdUser($idUser) {
         $conditions["idUser"] = $idUser;
         $res = $this->search($conditions, $this->table, 1, 0);
+        
         if (count($res) > 0) {
-            $data = new VideoDTO();
-            $data->idUser = $res[0]->idUser;
+            $data = new ChannelDTO;
+            $data->idUser = $idUser;
             $data->description = $res[0]->description;
             $data->name = $res[0]->name;
             $data->id = $res[0]->id;
@@ -80,6 +94,29 @@ class Channel_model extends MY_Model {
         $data["id"] = $idChannel;
         $this->delete($data, "suggestion");
         //return
+    }
+    //Devuelve todos los seguidores de un canal
+    public function getFollower($idChannel){
+        $condition["idChannel"] = $idChannel;
+        $this->db->join("user", "user.id=follower.idUser");
+        $res = $this->search($condition, "follower");
+        $count = 0;
+        if($res==NULL){
+            return FALSE;
+        }
+        foreach ($res as $row) {
+            $user = new UserDTO();
+            $user->id = $row->id;
+            $user->name = $row->name;
+            $user->nick = $row->nick;
+            $user->email = $row->email;
+            $user->gender = $row->gender;
+            $user->lastname = $row->lastname;
+            $user->birthday = $row->birthday;
+            $userList[$count] = $user;
+            $count++;
+        }
+        return $userList;
     }
 
 }

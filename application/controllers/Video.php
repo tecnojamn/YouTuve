@@ -63,6 +63,8 @@ class Video extends MY_Controller {
             $link = $this->input->post('link');
             $duration = $this->input->post('duration');
             $this->load->model('video_model');
+            $this->load->model('channel_model');
+            $this->load->helper('email_content');
             //vemos si tiene un canal
             $idChannel = $this->getChannel($this->session->userdata('userId'));
             if (!$idChannel) {
@@ -81,7 +83,19 @@ class Video extends MY_Controller {
                     //faltaria chequear que me lleguen cosas lindas y no feas...
                     $this->tags_model->pushTagsForVideo($videoId, $tags);
                 }
-                //
+                //envio mail a los seguidores del canal
+                $followerUsers = $this->channel_model->getFollower($idChannel);
+                if ($followerUsers != FALSE) {
+                    $count = 0;
+                    foreach ($followerUsers as $user) {
+                        $to[$count] = $user->email;
+                        $count++;
+                    }
+                    $channel = $this->channel_model->selectById($idChannel);
+                    $mailContent = newChannelVideoMail($channel->name, $videoId);
+                    $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
+                }
+
                 redirect('/', 'refresh');
             }
         }

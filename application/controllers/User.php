@@ -186,6 +186,7 @@ class User extends MY_Controller {
     public function register() {
         $this->load->model('user_model');
         $this->load->library("email");
+        $this->load->helper("email_content");
 //control
 //solo permitido si NO esta logeuado
         if ($this->isAuthorized()) {
@@ -217,11 +218,11 @@ class User extends MY_Controller {
             $gender = $this->input->post('gender');
             $thumbUrl = "";
 //inserta y redirige a algun lado todavia no sabemos
+            $valCode = valCode();
             if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
             $to=$email;
-            $message="<h1>verificacion de youtuve</h1>";
-            $subject="verificacion de youtuve";
-            $this->email->sendMail($to, $message, $subject);
+            $mailContent=validationMail($name, $valCode);
+            $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
                 redirect('/', 'refresh');
@@ -235,20 +236,29 @@ class User extends MY_Controller {
 
     //ajaxalyzed json borghes was here
     public function followChannelAX() {
+        $this->load->helper("email_content");
+        $this->load->library("email");
+        $this->load->model("channel_model");
+        $this->load->model("user_model");
         if (!$this->isAuthorized()) {
             $data["error"] = 1;
             $data["error_message"] = "No tienes autorización";
             $this->load->view('home_layout', $data);
             exit; //andate de esta funcion
-        } $this->load->model('user_model');
+        } 
+        $this->load->model('user_model');
         $data["log"] = 1;
         $channelId = $this->input->post('channel');
 
         $userId = $this->session->userdata('userId');
 
         if ($this->user_model->followChannel($userId, $channelId)) {
-
-            //ACA MANDARIA UN MAIL O AGREGARIA A COLA DE MAILS POR NUEVO SEGUIDOR!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+            //Envio de Email al dueño del canal
+            $followerChan = $this->channel_model->selectByIdUser($userId);
+            $userChan = $this->channel_model->selectByIdChannel($channelId);
+            $mailContent = newFollowMail($followerChan->name, $followerChan->id);
+            $this->email->sendMail($userChan->email, $mailContent->message, $mailContent->subject);
             
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
@@ -257,10 +267,6 @@ class User extends MY_Controller {
             return;
         }
     }
-    public function prueba() {
-        $this->load->helper("email_content");
-        $mailVal = validationMail("julio");
-        var_dump($mailVal);
-    }
+    
 
 }
