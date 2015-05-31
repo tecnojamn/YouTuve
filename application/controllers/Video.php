@@ -31,7 +31,6 @@ class Video extends MY_Controller {
         $this->load->view('upload_video_layout', $data);
         return; //andate de esta funcion
     }
-
     /**
      * 
      * Hace la subida de video
@@ -193,5 +192,4 @@ class Video extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => ''));
         return;
     }
-
 }

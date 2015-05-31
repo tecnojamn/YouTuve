@@ -131,6 +131,14 @@ class User extends MY_Controller {
     /**
      * Muestra el loginForm
      */
+    public function changePassForm() {
+        $data["error"] = 0;
+        $this->load->view('change_password_layout', $data);
+    }
+
+    /**
+     * Muestra el loginForm
+     */
     public function registerForm() {
         $data["error"] = 0;
         $this->load->view('register_layout', $data);
@@ -250,6 +258,36 @@ class User extends MY_Controller {
         } else {
             echo json_encode(array('result' => 'false', 'html' => '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'));
             return;
+        }
+    }
+
+    public function changePassword() {
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "Debes estar logueado";
+            $this->load->view('login_layout', $data);
+            return; //andate de esta funcion  
+        }$this->load->model('user_model');
+        $this->form_validation->set_rules('oldPassword', 'Old Password', 'trim|required');
+        $this->form_validation->set_rules('password', 'password', 'trim|required|matches[passconf]|min_length[5]|max_length[12]');
+        $this->form_validation->set_rules('passconf', 'password Confirmation', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $data["error"] = 1;
+            $data["error_message"] = "Verifique los campos ingresados.";
+            $this->load->view('change_password_layout', $data);
+        } else {
+            $newPassword = do_hash($this->input->post('password'), 'md5');
+            $oldPassword = do_hash($this->input->post('oldPassword'), 'md5');
+//inserta y redirige a algun lado todavia no sabemos
+            if ($this->user_model->changePassword($this->session->userdata('userId'), $newPassword, $oldPassword)) {
+//muestra alguna pagina todavia no sabemos cual
+                //estaria bueno mostrar un mensaje indicando que se csmbio el password correctamente, y mandar el mail 
+                redirect('/', 'refresh');
+                return;
+            }
+            $data["error"] = 1;
+            $data["error_message"] = "Debes intentar con tu contraseña real.";
+            $this->load->view('change_password_layout', $data);
         }
     }
 
