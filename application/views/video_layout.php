@@ -28,20 +28,22 @@ $this->load->helper('url');
                     }
                 });
                 function loadComments() {
-                    commentPage ++;
+                    commentPage++;
                     $.post("<?php echo base_url(); ?>comment/getCommentsAX", {page: commentPage, vidId: "<?php echo $video->id; ?>"},
                     function (data) {
                         if (data.result === 'true') { //si el resultado es verdadero lo agrego
                             $("#comments").append(data.html);
                         } else {
                             commentsEnded = true;
+                            if ($(".videoComment").length === 0)
+                                $("#comments").hide();
                             $("#loadMoreCommentsHolder").remove();
                         }
                     }, "json");
                 }
 <?php if ($log) { ?>
                     $("#submitComment").submit(function (e) {
-                        e.preventDefault();
+                        e.preventDefault();$("#comments").show();
                         var comment = $("#commentArea").val(); //chequear lenght >0 y menor a 150
                         $.post("<?php echo base_url(); ?>comment/saveCommentAX", {vidId: "<?php echo $video->id; ?>", commentText: comment}, function (data) {
                             if (data.result) {
@@ -70,7 +72,7 @@ $this->load->helper('url');
 <?php } ?>
             });
         </script>
-        <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+<?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="col-lg-12">
 
@@ -105,10 +107,10 @@ $this->load->helper('url');
                                                 font-size: 12px;
                                                 line-height: 22px;
                                                 color: grey;"><?php echo $video->channelName; ?></h3></a>
-                                                <?php if (!$isMyVideo && !$follower) { ?>
+<?php if (!$isMyVideo && !$follower) { ?>
                                     <a href="#" id="followHisAss" class="btn btn-primary btn-xs" style="
                                        font-size: 10px;">Seguir</a>
-                                   <?php } ?>
+<?php } ?>
                             </div>
 
                             <div class="col-lg-12" id="commentHolder" style="margin-top: 20px;
@@ -126,9 +128,9 @@ $this->load->helper('url');
 
                         <div id="comments" class="well well-turq" style="padding: 2px 0px;  margin-bottom: 0;padding-bottom: 0;">
                             <!-- videos comments -->
-
                         </div>
-                        <div id="loadMoreCommentsHolder" style="  background-color: rgb(77, 191, 217);text-align: center;border-bottom: 2px solid rgb(65, 166, 189);margin-bottom: 20px;">
+                        <div id="loadMoreCommentsHolder" style="   margin: 0 5px;
+                             border: 1px solid rgb(152, 74, 100); background-color: rgb(77, 191, 217);text-align: center;border-bottom: 2px solid rgb(65, 166, 189);margin-bottom: 20px;">
                             <a style="margin: 0 auto;text-align: center;
                                color: white;"href="#" id="loadMoreComments">Cargar más</a>
                         </div>
@@ -137,7 +139,11 @@ $this->load->helper('url');
                     </div>
 
                     <div class="col-lg-4" style="  height: 100%;padding-right:0; ">
-                        <div id="videoDataContainer" class="well well-blue">
+                        <div id="videoDataContainer" style="  overflow: hidden;"class="well well-blue">
+                            <div style="  text-align: center;
+                                 font-size: 20px;">
+                                <p><?php echo $video->views ?> vista/s</p>
+                            </div>
                             <?php
                             if ($video->rate <= 0) {
                                 $video->rate = 1;
@@ -151,9 +157,21 @@ $this->load->helper('url');
                                 <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
                                 <input type="hidden" step="1" value="<?php echo $video->rate; ?>" class="rating"/>
                             </div>
+                            <div style="  text-align: center;
+                                 font-size: 20px;">
+                                 <?php
+                                 if ($video->tags !== null && $video->tags->list !== null) {
+                                     foreach ($video->tags->list as $t) {
+                                         ?>
+                                        <div style="  margin: 0 5px;  border: 1px solid rgb(152, 74, 100);  width: 30%;float: left;font-size: 15px;background-color: rgb(188, 86, 121);color: white;padding: 5px;"> <?php echo $t->name; ?></div>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </div>
                         </div>
                         <div class="well  well-violet" id="featured_playlist" style="">
-                            PLAYLIST DATA GOES HERE
+                            more videos DATA GOES HERE
                             <div id="ejemplo" style="
                                  padding: 10px;
                                  border: 1px solid rgb(229, 229, 229);
@@ -178,6 +196,6 @@ $this->load->helper('url');
             </div>
 
             <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
-            <?php $this->load->view('footer'); ?>
+<?php $this->load->view('footer'); ?>
     </body>
 </html>

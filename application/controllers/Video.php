@@ -31,6 +31,7 @@ class Video extends MY_Controller {
         $this->load->view('upload_video_layout', $data);
         return; //andate de esta funcion
     }
+
     /**
      * 
      * Hace la subida de video
@@ -118,13 +119,17 @@ class Video extends MY_Controller {
         if ($id != FALSE) {
             $video = $this->video_model->selectById($id);
             if ($video != FALSE) {
+                $userId = $this->session->userdata('userId');
+                //agrego al historial de vistas
+                if ($this->isAuthorized())
+                    $this->video_model->addView($id, $userId, date('Y-m-d H:i:s'));
 
                 if ($video->userthumb === "") {
                     $video->userthumb = base_url() . ALT_PROFILE_PIC;
                 } else {
                     $video->userthumb = base_url() . USER_THUMB_IMAGE_UPLOAD . $video->userthumb;
                 }
-                $userId = $this->session->userdata('userId');
+
                 $data["follower"] = $this->user_model->isfollowingChannel($userId, $video->idChannel);
                 $data["video"] = $video;
 
@@ -133,6 +138,7 @@ class Video extends MY_Controller {
                 $this->load->view('video_layout', $data);
                 return;
             } else {
+                //404 es mejor
                 $data["error"] = 1;
                 $data["error_message"] = "Pagina no encontrada";
             }
@@ -192,4 +198,5 @@ class Video extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => ''));
         return;
     }
+
 }

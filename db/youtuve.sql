@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2015 a las 06:54:21
+-- Tiempo de generación: 01-06-2015 a las 00:16:26
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -54,7 +54,16 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `idVideo` int(11) NOT NULL,
   `comment` varchar(150) NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `comment`
+--
+
+INSERT INTO `comment` (`id`, `idUser`, `idVideo`, `comment`, `date`) VALUES
+(1, 11, 15, 'Que buen videoo locoo', '2015-05-28 06:58:20'),
+(2, 8, 15, 'Que es esta mierda?\n', '2015-05-28 06:58:52'),
+(3, 11, 3, 'a', '2015-05-30 23:39:59');
 
 -- --------------------------------------------------------
 
@@ -89,8 +98,15 @@ CREATE TABLE IF NOT EXISTS `playlist` (
   `name` varchar(30) NOT NULL,
   `idUser` int(11) NOT NULL,
   `created_date` date NOT NULL,
-  `isWatchLater` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `isWatchLater` tinyint(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `playlist`
+--
+
+INSERT INTO `playlist` (`id`, `name`, `idUser`, `created_date`, `isWatchLater`) VALUES
+(1, 'My Playlist 1', 11, '2015-05-06', 0);
 
 -- --------------------------------------------------------
 
@@ -211,6 +227,14 @@ CREATE TABLE IF NOT EXISTS `videoplaylist` (
   `idPlaylist` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `videoplaylist`
+--
+
+INSERT INTO `videoplaylist` (`idVideo`, `idPlaylist`) VALUES
+(14, 1),
+(15, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -240,8 +264,16 @@ INSERT INTO `videotag` (`idVideo`, `idTag`) VALUES
 CREATE TABLE IF NOT EXISTS `viewhistory` (
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
-  `date` date NOT NULL
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `viewhistory`
+--
+
+INSERT INTO `viewhistory` (`idUser`, `idVideo`, `date`) VALUES
+(11, 3, '2015-06-01 00:00:00'),
+(11, 3, '2015-06-01 00:15:55');
 
 --
 -- Índices para tablas volcadas
@@ -317,7 +349,7 @@ ALTER TABLE `videotag`
 -- Indices de la tabla `viewhistory`
 --
 ALTER TABLE `viewhistory`
-  ADD PRIMARY KEY (`idUser`,`idVideo`);
+  ADD PRIMARY KEY (`idUser`,`idVideo`,`date`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -332,12 +364,12 @@ ALTER TABLE `channel`
 -- AUTO_INCREMENT de la tabla `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `tag`
 --

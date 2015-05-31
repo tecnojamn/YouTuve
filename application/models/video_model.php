@@ -90,8 +90,9 @@ class Video_model extends MY_Model {
             // "No existe user con ese id";
             return false;
         }
-        //$conditionsView["idVideo"]=$idVideo;
-        //$this->db->where($conditionsView);
+        //view del video
+        $conditionsView["idVideo"] = $video->id;
+        $this->db->where($conditionsView);
         $video->views = $this->db->count_all_results("viewhistory");
 
         $this->db->flush_cache();
@@ -295,6 +296,37 @@ class Video_model extends MY_Model {
             $videos->addVideo($video);
         }
         return $videos;
+    }
+
+    /**
+     * agrega una vista al historial de vistas de video
+     * Solo va a insertar si pasaron mas de x minutos de la ultima vista
+     */
+    public function addView($idVideo, $idUser, $date) {
+        //consigo la ultima vista si existe de este video con x minutos de offset
+        $currentDate = strtotime(date("Y-m-d H:i:s"));
+        $offsetDate = $currentDate - (60 * VIDEO_VIEWS_OFFSET_MINUTES);
+        $formatDate = date("Y-m-d H:i:s", $offsetDate);
+        $this->db->select('count(*) as count');
+        $this->db->from('viewhistory')->where('date >=', $formatDate)->where('idVideo', $idVideo)->where('idUser', $idUser);
+        $result = $this->db->get()->result();
+        if ($result && $result[0]->count == 0) {
+            $this->db->flush_cache();
+            $data["idVideo"] = $idVideo;
+            $data["idUser"] = $idUser;
+            $data["date"] = $date;
+            return $this->save($data, "viewhistory");
+        }
+        return false;
+    }
+
+    /**
+     * Devuelve (int) el total de vistas de un video dado
+     */
+    public function getTotalViewsForVideo($idVideo) {
+        $cond["idVideo"] = $idVideo;
+        $this->db->where($data);
+        return $this->db->count_all_results('viewtable');
     }
 
 }
