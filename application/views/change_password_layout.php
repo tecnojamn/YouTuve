@@ -31,23 +31,23 @@ $this->load->helper('url');
                         <fieldset>
                             <center><legend>Cambio de contraseña</legend></center>
                             <div class="form-group">
-                                <label for="oldPassword" class="col-lg-2 control-label" style="text-align: left">Old Password</label>
+                                <label for="oldPassword" class="col-lg-2 control-label" style="text-align: left">Contraseña</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="password" placeholder="Old Password" name="oldPassword" id="oldPassword"/>
+                                    <input class="form-control" type="password" placeholder="Contraseña" name="oldPassword" id="oldPassword"/>
                                     <?php echo form_error('oldPassword', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="col-lg-2 control-label" style="text-align: left">New Password</label>
+                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Nueva Contraseña</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="password" placeholder="New Password" name="password" id="password"/>
+                                    <input class="form-control" type="password" placeholder="Nueva Contraseña" name="password" id="password"/>
                                     <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="passconf" class="col-lg-2 control-label" style="text-align: left">Repeat New Password</label>
+                                <label for="passconf" class="col-lg-2 control-label" style="text-align: left">Confirme Contraseña</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="password" placeholder="New Password Confirmation" name="passconf" id="passconf"/>
+                                    <input class="form-control" type="password" placeholder="Confirmación de nueva contraseña" name="passconf" id="passconf"/>
                                     <?php echo form_error('passconf', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>

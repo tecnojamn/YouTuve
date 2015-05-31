@@ -40,27 +40,32 @@ class Playlist_model extends MY_Model {
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
         $conditions["playlist.id"] = $idPlaylist;
-        
+
         $result = $this->search($conditions, "videoplaylist");
-        $PlayList = new PlaylistDTO();
-        $videoList = new VideoListDto();
-        
-        foreach ($result as $row) {
-            $video = new VideoDTO();
-            $video->id = $row->idVideo;
-            $video->idChannel = $row->idChannel;
-            $video->name = $row->name;
-            $video->link = $row->link;
-            $video->date = $row->date;
-            $video->duration = $row->durationInSeconds;
-            $video->active = $row->active;
-            $videoList->addVideo($video);
+
+
+        if ($result) {
+            $PlayList = new PlaylistDTO();
+            $videoList = new VideoListDto();
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->id = $row->idVideo;
+                $video->idChannel = $row->idChannel;
+                $video->name = $row->name;
+                $video->link = $row->link;
+                $video->date = $row->date;
+                $video->duration = $row->durationInSeconds;
+                $video->active = $row->active;
+                $videoList->addVideo($video);
+            }
+
+            $PlayList->videos = $videoList;
+            $PlayList->id = $idPlaylist;
+            $PlayList->isWatchLater = $result[0]->isWatchLater;
+            $PlayList->name = $result[0]->pname;
+            return $PlayList;
         }
-        $PlayList->videos = $videoList;
-        $PlayList->id = $idPlaylist;
-        $PlayList->isWatchLater = $result[0]->isWatchLater;
-        $PlayList->name = $result[0]->pname; 
-        return $PlayList;
+        return false;
     }
 
     public function selectByName($name) {
@@ -73,10 +78,10 @@ class Playlist_model extends MY_Model {
         $videoList = new VideoListDto();
         $PlayList->isWatchLater = $result[0]->isWatchLater;
         $PlayList->id = $result[0]->pid;
-        $PlayList->name = $name; 
+        $PlayList->name = $name;
         foreach ($result as $row) {
             $video = new VideoDTO();
-            $video->id = $row->video.id;
+            $video->id = $row->video . id;
             $video->idChannel = $row->idChannel;
             $video->name = $row->name;
             $video->link = $row->link;
@@ -103,9 +108,18 @@ class Playlist_model extends MY_Model {
         return ($result > 0) ? true : false;
     }
 
-    public function selectPlaylistsByUser($idUser) {
+    /**
+     * 
+     * @param type $idUser
+     * @param type $limit
+     * @param type $offset
+     * @param type $videoData si esta en true carga los videos de cada playlist
+     * @return \PlaylistListDTO
+     */
+    public function selectPlaylistsByUser($idUser, $limit, $offset, $videoData = false) {
         $cond["idUser"] = $idUser;
-        $this->db->select("id, name, isWatchLater");
+        $this->db->select("id, name, isWatchLater, created_date");
+        $this->db->limit($limit, $offset);
         $result = $this->search($cond);
         $PlaylistList = new PlaylistListDTO();
 
@@ -114,8 +128,11 @@ class Playlist_model extends MY_Model {
             $Playlist->id = $row->id;
             $Playlist->name = $row->name;
             $Playlist->isWatchLater = $row->isWatchLater;
-            $resultV = $this->selectById($Playlist->id);
-            $Playlist->videos = $resultV->videos;
+            $Playlist->created_date = $row->created_date;
+            if ($videoData) {
+                $resultV = $this->selectById($Playlist->id);
+                $Playlist->videos = $resultV->videos;
+            }
             $PlaylistList->addPlayList($Playlist);
         }
         return $PlaylistList;

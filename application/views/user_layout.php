@@ -17,7 +17,27 @@ $this->load->helper('url');
 
         <?php if ($profile === "me") { ?>
             <script>
+                var plPage = 0;
+                var plFirstLoad = 0;
+                var plEnd = 0;
                 $(document).ready(function () {
+                    $("#listLoaderTrigger").click(function () {
+
+                        if (plFirstLoad === 0) {
+
+                            plFirstLoad = 1;
+                            $.get("<?php echo base_url(); ?>playlist/getFromUserAX", function (data) {
+
+                                if (data.result === 'true') {
+                                    $("#my_lists .progress").delay(1000).hide();
+                                    $("#listHolder").append(data.html);
+                                }
+
+                            }, "json");
+                        }
+
+                    });
+
                     //LOAD EDIT MODAL
                     $("#editBtn").click(function () {
                         $("#editModal").modal("show");
@@ -147,7 +167,7 @@ $this->load->helper('url');
                     <ul style=" width: 400px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
                         <li aria-expanded="true" data-toggle="tab"  href="#about_me" class="selected active" style="display: inline;"><a aria-expanded="true" data-toggle="tab"  href="#about_me">Sobre Mi</a></li>
                         <li aria-expanded="false" data-toggle="tab"  href="#my_channel" style="display: inline;"><a aria-expanded="false" data-toggle="tab"  href="#my_channel">Mi Canal</a></li>
-                        <li aria-expanded="false" data-toggle="tab"  href="#my_lists" style="display: inline;"><a aria-expanded="false" data-toggle="tab"  href="#my_lists">Mis Listas</a></li>
+                        <li id="listLoaderTrigger" aria-expanded="false" data-toggle="tab"  href="#my_lists" style="display: inline;"><a aria-expanded="false" data-toggle="tab"   href="#my_lists">Mis Listas</a></li>
 
                     </ul>   
 
@@ -167,7 +187,8 @@ $this->load->helper('url');
                         <p>Fecha de nacimiento: <?php echo $user_data->birthday; ?></p>
                         <p>Sexo: <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></p>
                         <?php if ($profile === "me") { ?>
-                            <a data-toggle="editModal" id="editBtn" href="#" style="font-size:15px">Editar</a>
+                            <a data-toggle="editModal" id="editBtn" href="#" style="font-size:15px">Editar</a><br>
+                            <a style=" display:block;font-size:15px;line-height: 15px;" href="<?php echo base_url(); ?>user/changePassForm" style="font-size:15px">Editar Contraseña</a>
                         <?php } ?>
                     </div>
                     <div class="tab-pane fade" id="my_channel">
@@ -178,6 +199,9 @@ $this->load->helper('url');
                     <div class="tab-pane fade" id="my_lists">
                         <div class="progress progress-striped active">
                             <div class="progress-bar" style="width: 45%"></div>
+                        </div>
+                        <div id="listHolder">
+
                         </div>
                     </div>
                 </div>

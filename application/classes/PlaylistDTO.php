@@ -18,6 +18,7 @@ class PlaylistDTO {
     public $name;
     public $idUser;
     public $videos;
+    public $created_date;
     public $isWatchLater;
 
     function __construct() {
