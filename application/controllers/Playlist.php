@@ -22,6 +22,25 @@ class Playlist extends MY_Controller {
         return;
     }
 
+    //devuelve una playlist y sus videos de acuerdo a un id, se accede por playlist/get/[ID_PLAYLIST]
+    public function get() {
+        if ($this->isAuthorized())
+            $data["log"] = 1;
+        $this->load->model('playlist_model');
+        $id = $this->uri->segment(3, 0);
+        if ($id !== null) {
+            $playlist = $this->playlist_model->selectById($id);
+            if ($playlist) {
+                $data["playlist_image"] = base_url() . ALT_PLAYLIST_PIC;
+                $data["playlist"] = $playlist;
+                $this->load->view('playlist_layout', $data);
+                return;
+            }
+        }
+        show_404();
+        return;
+    }
+
     /**
      * 
      * params : 

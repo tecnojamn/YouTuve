@@ -36,14 +36,12 @@ class Playlist_model extends MY_Model {
     }
 
     public function selectById($idPlaylist) {
-        $this->db->select("idVideo, playlist.isWatchLater, idChannel, video.name, link, date, durationInSeconds, active, playlist.name as pname");
+        $this->db->select("idVideo, playlist.isWatchLater,playlist.created_date, idChannel, video.name, link, date, durationInSeconds, active, playlist.name as pname");
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
         $conditions["playlist.id"] = $idPlaylist;
 
         $result = $this->search($conditions, "videoplaylist");
-
-
         if ($result) {
             $PlayList = new PlaylistDTO();
             $videoList = new VideoListDto();
@@ -60,6 +58,7 @@ class Playlist_model extends MY_Model {
             }
 
             $PlayList->videos = $videoList;
+            $PlayList->created_date = $result[0]->created_date;
             $PlayList->id = $idPlaylist;
             $PlayList->isWatchLater = $result[0]->isWatchLater;
             $PlayList->name = $result[0]->pname;

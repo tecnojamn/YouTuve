@@ -11,11 +11,11 @@ if ($playlists !== NULL && $playlists->list !== NULL) {
              border-left: 5px solid rgb(207, 93, 93);">
             <div style="  padding: 10px;"class="col-lg-10">
                 <p style="  font-size: 16px;
-                   font-weight: bold;"><a href="#"><?php echo $p->name ?></a></p>
+                   font-weight: bold;"><a href="<?php echo base_url(); ?>playlist/get/<?php echo $p->id ?>"><?php echo $p->name ?></a></p>
                 <p><?php echo timespan(strtotime($p->created_date), time()); ?></p>
             </div>
             <div class="col-lg-2">
-                <a href="#"><img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo $playlist_image ?>"/></a>
+                <a  href="<?php echo base_url(); ?>playlist/get/<?php echo $p->id ?>"><img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo $playlist_image ?>"/></a>
             </div>
         </div>
 
