@@ -221,7 +221,7 @@ class User extends MY_Controller {
             $valCode = valCode();
             if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
             $to=$email;
-            $mailContent=validationMail($name, $valCode);
+            $mailContent=validationMail($name, $valCode, $email);
             $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
@@ -255,10 +255,7 @@ class User extends MY_Controller {
         if ($this->user_model->followChannel($userId, $channelId)) {
             
             //Envio de Email al dueño del canal
-            $followerChan = $this->channel_model->selectByIdUser($userId);
-            $userChan = $this->channel_model->selectByIdChannel($channelId);
-            $mailContent = newFollowMail($followerChan->name, $followerChan->id);
-            $this->email->sendMail($userChan->email, $mailContent->message, $mailContent->subject);
+            newFollowMail($userId, $channelId);
             
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
