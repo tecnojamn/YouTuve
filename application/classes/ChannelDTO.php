@@ -1,6 +1,5 @@
 <?php
 
-include APPPATH . 'classes/TagDTO.php';
 
 /**
  * Description of User
@@ -10,10 +9,13 @@ include APPPATH . 'classes/TagDTO.php';
 class ChannelDTO {
 
     public $id;
-    public $idUser;
     public $name;
     public $description;
     public $frontImgUrl;
+    public $videos;
+    
+    public $idUser;
+    public $username;
 
     function __construct() {
         
