@@ -41,4 +41,31 @@ class Channel extends MY_Controller {
         show_404();
         return;
     }
+    
+    public function getFromUserAX() {
+        if (!$this->isAuthorized()) {
+            $arr = array('result' => 'false', 'html' => 'silence is gold');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $this->load->model('channel_model');
+        $userId = $this->session->userdata('userId');
+        $page = ($this->input->get("page") !== NULL) ? $this->input->get("page") : 1;
+        $page = ($page > 0) ? $page : 1;
+
+        $channels = $this->channel_model->selectChannelsByUser($userId, PLAYLIST_PROFILE_LIMIT, ($page - 1) * PLAYLIST_PROFILE_LIMIT);
+        if ($channels) {
+            $data["channels"] = $channels;
+            //por ahora mostramos esto
+            //$data["playlist_image"] = base_url() . ALT_PLAYLIST_PIC;
+            $view = $this->load->view('axviews/ax_load_channels', $data, true);
+            $arr = array('result' => 'true', 'html' => $view);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+
+        $arr = array('result' => 'false', 'html' => '');
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
+    }
 }
