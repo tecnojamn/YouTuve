@@ -45,6 +45,7 @@ class ViewsHistory_model extends MY_Model {
         $this->db->join("video", "video.id = viewhistory.idVideo");
         $this->db->join("channel", "channel.id = video.idChannel");
         $this->db->join("user", "user.id = channel.idUser ");
+        $this->db->order_by("vhdate", "desc");         
         $result = $this->search($cond);
         $ViewHistoryList = new ViewHistoryListDTO();
         foreach ($result as $row) {
