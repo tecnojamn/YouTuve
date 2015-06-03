@@ -199,4 +199,25 @@ class Video extends MY_Controller {
         return;
     }
 
+    public function getVideosAx() {
+        $this->load->model("video_model");
+        $fromChannel = $this->input->post("channelVideos");
+        if (isset($fromChannel)) {
+            $userId = $this->session->userdata('id');
+            $videos = $this->video_model->getVideosSusChan(8);
+        } else {
+            $orderBy = $this->input->post("orderBy");
+            $videos = $this->video_model->getVideos($orderBy, 0, 5);
+        }
+        if ($videos) {
+                $data["videos"] = $videos;
+                $formString = $this->load->view('axviews/ax_home_videos', $data, true);
+                $arr = array('result' => 'true', 'html' => $formString);
+                echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+                return;
+            }
+            echo json_encode(array('result' => 'false', 'html' => ''));
+            return;
+    }
+
 }
