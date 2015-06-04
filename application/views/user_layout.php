@@ -177,7 +177,7 @@ $this->load->helper('url');
                 <div id="profile-nav" style="height: 40px;
                      background: rgb(255, 255, 255);
                      padding: 0px 15px;">
-                    <ul style=" width: 400px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
+                    <ul style=" width: 500px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
                         <li aria-expanded="true" data-toggle="tab"  href="#about_me" class="selected active" style="display: inline;"><a aria-expanded="true" data-toggle="tab"  href="#about_me">Sobre Mi</a></li>
                         <li id="channelLoaderTrigger" aria-expanded="false" data-toggle="tab"  href="#my_channel" style="display: inline;"><a aria-expanded="false" data-toggle="tab"  href="#my_channel">Suscripciones</a></li>
                         <li id="listLoaderTrigger" aria-expanded="false" data-toggle="tab"  href="#my_lists" style="display: inline;"><a aria-expanded="false" data-toggle="tab"   href="#my_lists">Mis Listas</a></li>
