@@ -7,6 +7,7 @@ include_once APPPATH . 'classes/VideoListDto.php';
 include_once APPPATH . 'classes/TagListDTO.php';
 include_once APPPATH . 'classes/TagDTO.php';
 include_once APPPATH . 'classes/ChannelDTO.php';
+include_once APPPATH . 'classes/ChannelListDTO.php';
 
 class Channel_model extends MY_Model {
 
@@ -89,7 +90,7 @@ class Channel_model extends MY_Model {
         $this->delete($data, "suggestion");
         //return
     }
-    
+
     public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
         $conditions["idChannel"] = $idChannel;
         $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, "
@@ -153,6 +154,29 @@ class Channel_model extends MY_Model {
         $channel->username = $videoList->list[0]->usernick;
         $channel->videos = $videoList;
         return $channel;
+    }
+
+    public function getChannelByNameLike($query, $limit, $offset) {
+        $this->db->select("channel.*, user.id as userId, user.name as userName");
+        $this->db->like("channel.name", $query);
+        $this->db->join("user", "channel.idUser=user.id");
+        $this->db->limit($limit, $offset);
+        $result = $this->search();
+        if (count($result) < 1) {
+            return false;
+        }
+        $channelList = new ChannelListDTO();
+        foreach ($result as $row) {
+            $channel = new ChannelDTO();
+            $channel->id = $row->id;
+            $channel->name = $row->name;
+            $channel->description = $row->description;
+            $channel->frontImgUrl = $row->frontImgUrl;
+            $channel->idUser = $row->idUser;
+            $channel->username = $row->userName;
+            $channelList->addChannel($channel);
+        }
+        return $channelList;
     }
 
 }
