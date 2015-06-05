@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
@@ -13,6 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author maxi
  */
 class Channel extends MY_Controller {
+
     //put your code here
     function __construct() {
         parent::__construct();
@@ -24,7 +26,7 @@ class Channel extends MY_Controller {
         show_404();
         return;
     }
-    
+
     public function view() {
         if ($this->isAuthorized())
             $data["log"] = 1;
@@ -41,7 +43,7 @@ class Channel extends MY_Controller {
         show_404();
         return;
     }
-    
+
     public function getFromUserAX() {
         if (!$this->isAuthorized()) {
             $arr = array('result' => 'false', 'html' => 'silence is gold');
@@ -55,8 +57,14 @@ class Channel extends MY_Controller {
 
         $channels = $this->channel_model->selectChannelsByUser($userId, PLAYLIST_PROFILE_LIMIT, ($page - 1) * PLAYLIST_PROFILE_LIMIT);
         if ($channels) {
-            $data["channels"] = $channels;
+
             //por ahora mostramos esto
+            foreach ($channels->list as $ch) {
+                if ($ch->frontImgUrl === "") {
+                    $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
+                }
+            }
+            $data["channels"] = $channels;
             //$data["playlist_image"] = base_url() . ALT_PLAYLIST_PIC;
             $view = $this->load->view('axviews/ax_load_channels', $data, true);
             $arr = array('result' => 'true', 'html' => $view);
@@ -68,4 +76,5 @@ class Channel extends MY_Controller {
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }
+
 }

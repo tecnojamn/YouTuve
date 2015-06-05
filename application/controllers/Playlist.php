@@ -49,7 +49,7 @@ class Playlist extends MY_Controller {
      */
     public function getFromUserAX() {
         if (!$this->isAuthorized()) {
-            $arr = array('result' => 'false', 'html' => 'silence is gold');
+            $arr = array('result' => 'false', 'html' => 'No hay playlists');
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
@@ -70,6 +70,81 @@ class Playlist extends MY_Controller {
         }
 
         $arr = array('result' => 'false', 'html' => '');
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
+    }
+
+    public function addAx() {
+        if (!$this->isAuthorized()) {
+            $arr = array('result' => 'false', 'html' => '');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $name = $this->input->get("pl_name");
+        if ($name === null || $name === "") {
+            $arr = array('result' => 'false', 'html' => 'Error');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $userId = $this->session->userdata('userId');
+        $this->load->model('playlist_model');
+        $ins = $this->playlist_model->push($userId, $name, false);
+        if ($ins) {
+            $arr = array('result' => 'true', 'html' => '');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        } else {
+            $arr = array('result' => 'false', 'html' => '');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+    }
+
+    public function addVideoAx() {
+        if (!$this->isAuthorized()) {
+            $arr = array('result' => 'false', 'html' => 'No hay playlists');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $vidId = $this->input->get("vid");
+        $plId = $this->input->get("plid");
+        if ($vidId === null || $plId === null) {
+            $arr = array('result' => 'false', 'html' => 'Error');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $this->load->model('playlist_model');
+        $ins = $this->playlist_model->addVideoToPlaylist($plId, $vidId);
+        if ($ins) {
+            $arr = array('result' => 'true', 'html' => '');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        } else {
+            $arr = array('result' => 'false', 'html' => '');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+    }
+
+    public function getFromUserMinAX() {
+        if (!$this->isAuthorized()) {
+            $arr = array('result' => 'false', 'html' => 'No hay playlists');
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $this->load->model('playlist_model');
+        $userId = $this->session->userdata('userId');
+        $page = ($this->input->get("page") !== NULL) ? $this->input->get("page") : 1;
+        $page = ($page > 0) ? $page : 1;
+        $playlists = $this->playlist_model->selectPlaylistsByUser($userId, PLAYLIST_PROFILE_LIMIT, ($page - 1) * PLAYLIST_PROFILE_LIMIT);
+        if ($playlists) {
+            $data["playlists"] = $playlists;
+            $view = $this->load->view('axviews/ax_load_playlists_names', $data, true);
+            $arr = array('result' => 'true', 'html' => $view);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $arr = array('result' => 'false', 'html' => ' ');
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }

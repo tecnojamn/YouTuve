@@ -45,7 +45,7 @@ $this->load->helper('url');
                             chFirstLoad = 1;
                             $.get("<?php echo base_url(); ?>Channel/getFromUserAX", function (data) {
                                 if (data.result === 'true') {
-                                    $("#my_channels.progress").delay(1000).hide();
+                                    $("#my_channel .progress").delay(1000).hide();
                                     $("#channelHolder").append(data.html);
                                 }
                             }, "json");

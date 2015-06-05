@@ -14,7 +14,8 @@ if ($channels !== NULL && $channels->list !== NULL) {
                 <p><?php echo $c->description ?></p>
             </div>
             <div class="col-lg-2">
-                <a  href="<?php echo base_url(); ?>channel/view/<?php echo $c->id ?>"><img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php //echo $c->frontImgUrl?>"/></a>
+                <a  href="<?php echo base_url(); ?>channel/view/<?php echo $c->id ?>">
+                    <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo $c->frontImgUrl?>"/></a>
             </div>
         </div>
 

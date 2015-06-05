@@ -19,13 +19,16 @@ $this->load->helper('url');
             ?>
             <div class="col-lg-12">
                 <div style="  background-image: url(<?php echo base_url() . ALT_CHANNEL_BACKGROUND_PIC; ?>);color: #f8f8f8;width: 100%;height: auto;overflow: hidden;padding: 15px 5px;">
-                    <div class="col-lg-1"> <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo base_url(). ALT_PLAYLIST_PIC//$channel->frontImgUrl ?>"/></div>
+                    <div class="col-lg-1"> <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo base_url() . ALT_PLAYLIST_PIC//$channel->frontImgUrl      ?>"/></div>
                     <div class="col-lg-11">
                         <p style="  font-size: 20px;line-height: 55px;font-weight: bold;color: white;"><?php echo $channel->name ?></p>
                     </div>
                 </div>
                 <div style="background-color: white;width: 100%;height: auto;overflow: hidden; border-top: 1px solid rgb(242, 242, 242); padding: 15px">
                     <p><?php echo $channel->description ?></p>
+                </div>
+                <div style="  font-size: 20px;background-color:white; "class="col-lg-12">
+                    <p>Videos:</p>
                 </div>
             </div>
 
