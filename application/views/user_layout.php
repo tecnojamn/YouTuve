@@ -20,13 +20,14 @@ $this->load->helper('url');
                 var plPage = 0;
                 var plFirstLoad = 0;
                 var plEnd = 0;
+                var chFirstLoad = 0;
                 $(document).ready(function () {
                     $("#listLoaderTrigger").click(function () {
 
                         if (plFirstLoad === 0) {
 
                             plFirstLoad = 1;
-                            $.get("<?php echo base_url(); ?>playlist/getFromUserAX", function (data) {
+                            $.get("<?php echo base_url(); ?>Playlist/getFromUserAX", function (data) {
 
                                 if (data.result === 'true') {
                                     $("#my_lists .progress").delay(1000).hide();
@@ -37,7 +38,20 @@ $this->load->helper('url');
                         }
 
                     });
+                    $("#channelLoaderTrigger").click(function () {
 
+                        if (chFirstLoad === 0) {
+
+                            chFirstLoad = 1;
+                            $.get("<?php echo base_url(); ?>Channel/getFromUserAX", function (data) {
+                                if (data.result === 'true') {
+                                    $("#my_channels.progress").delay(1000).hide();
+                                    $("#channelHolder").append(data.html);
+                                }
+                            }, "json");
+                        }
+
+                    });
                     //LOAD EDIT MODAL
                     $("#editBtn").click(function () {
                         $("#editModal").modal("show");
@@ -83,7 +97,6 @@ $this->load->helper('url');
                             complete: function (data) {
                                 console.log(data);
                                 var data = data.responseJSON;
-
                                 if (data.error === false) {
                                     $("#editThumbModal").modal("hide");
                                     $("mainMsgDisplay").show().removeClass("alert-danger").addClass("alert-success").prepend("Image Uploaded");
@@ -164,9 +177,9 @@ $this->load->helper('url');
                 <div id="profile-nav" style="height: 40px;
                      background: rgb(255, 255, 255);
                      padding: 0px 15px;">
-                    <ul style=" width: 400px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
+                    <ul style=" width: 500px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
                         <li aria-expanded="true" data-toggle="tab"  href="#about_me" class="selected active" style="display: inline;"><a aria-expanded="true" data-toggle="tab"  href="#about_me">Sobre Mi</a></li>
-                        <li aria-expanded="false" data-toggle="tab"  href="#my_channel" style="display: inline;"><a aria-expanded="false" data-toggle="tab"  href="#my_channel">Mi Canal</a></li>
+                        <li id="channelLoaderTrigger" aria-expanded="false" data-toggle="tab"  href="#my_channel" style="display: inline;"><a aria-expanded="false" data-toggle="tab"  href="#my_channel">Suscripciones</a></li>
                         <li id="listLoaderTrigger" aria-expanded="false" data-toggle="tab"  href="#my_lists" style="display: inline;"><a aria-expanded="false" data-toggle="tab"   href="#my_lists">Mis Listas</a></li>
 
                     </ul>   
@@ -194,6 +207,9 @@ $this->load->helper('url');
                     <div class="tab-pane fade" id="my_channel">
                         <div class="progress progress-striped active">
                             <div class="progress-bar" style="width: 45%"></div>
+                        </div>
+                        <div id="channelHolder">
+
                         </div>
                     </div>
                     <div class="tab-pane fade" id="my_lists">
