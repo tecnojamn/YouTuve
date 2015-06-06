@@ -37,7 +37,7 @@ class Channel_model extends MY_Model {
 
     public function selectById($id) {
         $conditions["id"] = $id;
-        $result = $this->search($conditions, $this->table, 1, 0);
+        $result = $this->search($conditions);
         if (count($result) > 0) {
             $channel = new ChannelDTO;
             $channel->idUser = $result[0]->idUser;

@@ -2,8 +2,6 @@
 
 defined('BASEPATH') && defined('APPPATH') OR exit('No direct script access allowed');
 
-include APPPATH . 'classes/UserDTO.php';
-
 class User_model extends MY_Model {
 
     public function __construct() {
@@ -46,7 +44,19 @@ class User_model extends MY_Model {
     public function selectById($id) {
         $condition["id"] = $id;
         $result = $this->search($condition);
-        return $result;
+        if(count($result > 0)){
+            $user = new UserDTO();
+            $user->id = $result[0]->id;
+            $user->email = $result[0]->email;
+            $user->nick = $result[0]->nick;
+            $user->name = $result[0]->name;
+            $user->lastname = $result[0]->lastname;
+            $user->birthday = $result[0]->birthday;
+            $user->gender = $result[0]->gender;
+            $user->utlThumb = $result[0]->thumbUrl;
+            return $user;
+        }
+        return FALSE;
     }
 
     public function selectByNick($nick) {

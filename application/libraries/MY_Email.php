@@ -729,8 +729,8 @@ class MY_Email extends CI_Email {
     }
 
     public function sendMail($to, $message, $subject) {
-        $this->from('youtuve.notificaciones@gmail.com');
-        $this->to($message);
+        $this->from('directmarket.notificaciones@gmail.com');
+        $this->to($to);
         $this->subject($subject);
         $this->message($message);
         $result = $this->send();
