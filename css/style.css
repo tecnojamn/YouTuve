@@ -206,3 +206,14 @@ body{
         url('webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
         url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
+
+.video-list-item{
+    list-style-type: none;
+    width: 180px;
+    height: 200px;
+    margin-right: 10px;
+    float: left;
+}
+.video-img a img{
+    width: 100%;
+}

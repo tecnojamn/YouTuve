@@ -287,6 +287,7 @@ class Video_model extends MY_Model {
             $video->name = $row->name;
             $video->link = $row->link;
             $video->channelName = $row->channelName;
+            $video->date = $row->date;
 
             $video->idChannel = $row->idChan;
             if ($orderBy == "rate") {
@@ -303,7 +304,7 @@ class Video_model extends MY_Model {
      * @param type $idUser
      */
     public function getVideosSusChan($idUser) {
-        $this->db->select("video.*");
+        $this->db->select("video.*, channel.id as chanId, channel.name as chanName");
         $this->db->where("follower.idUser", $idUser);
         $this->db->where("video.active", 1);
         $this->db->join("channel", "channel.id=video.idChannel");
@@ -318,6 +319,8 @@ class Video_model extends MY_Model {
                 $video->name = $row->name;
                 $video->link = $row->link;
                 $video->date = $row->date;
+                $video->idChannel = $row->chanId;
+                $video->channelName = $row->chanName;
                 $video->duration = $row->durationInSeconds;
                 $videoList->addVideo($video);
             }

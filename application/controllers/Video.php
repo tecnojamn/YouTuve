@@ -177,7 +177,13 @@ class Video extends MY_Controller {
 
         return;
     }
-
+    
+    public function showList() {
+        $orderBy = $this->input->get("orderBy");
+        if ($orderBy == "top"){
+            
+        }
+    }
     /**
      * Funcion que devuelve un json con mas videos en la busqueda
      * @return type
@@ -203,8 +209,8 @@ class Video extends MY_Controller {
         $this->load->model("video_model");
         $fromChannel = $this->input->post("channelVideos");
         if (isset($fromChannel)) {
-            $userId = $this->session->userdata('id');
-            $videos = $this->video_model->getVideosSusChan(8);
+            $userId = $this->session->userdata('userId');
+            $videos = $this->video_model->getVideosSusChan($userId);
         } else {
             $orderBy = $this->input->post("orderBy");
             $videos = $this->video_model->getVideos($orderBy, 0, 5);

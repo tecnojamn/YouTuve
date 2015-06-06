@@ -290,5 +290,4 @@ class User extends MY_Controller {
             $this->load->view('change_password_layout', $data);
         }
     }
-
 }

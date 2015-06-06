@@ -8,6 +8,7 @@ $this->load->helper('url');
         <title><?php $title ?></title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/bootstrap.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/bootswatch.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script>
@@ -47,15 +48,15 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div id="lastVideos" style="width: 100%;float: left;">
-            Last Videos
-            <a href="#" style="float: right">Ver mas</a>
+            Ultimos Videos
+            <a href="<?php echo base_url();?>video/showList?orderBy=top" style="float: right">Ver mas</a>
         </div>
         <div id="topVideos" style="width: 100%;float: left;">
             Top Videos
             <a href="#" style="float: right">Ver mas</a>
         </div>
         <div id="channelVideos" style="width: 100%;float: left;">
-            Videos from followed channels
+            Videos de canales que sigues 
 
         </div>
 
