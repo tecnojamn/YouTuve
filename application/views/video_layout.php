@@ -21,7 +21,6 @@ $this->load->helper('url');
             var commentsEnded = false;
             $(document).ready(function () {
                 loadComments();
-
                 $("#loadMoreComments").click(function (e) {
                     e.preventDefault();
                     if (!commentsEnded) {
@@ -55,7 +54,20 @@ $this->load->helper('url');
                             }
                         }, "json");
                     });
-<?php } ?>
+<?php } ?> $("#addToPlToggler").click(function (e) {
+                    e.preventDefault();
+                    $("#addToPlHolder").toggle();
+                    if ($("#addToPlHolder").css("display") === "block") {
+                        loadPls();
+                    }
+                });
+                function loadPls() {
+                    $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
+                        if (data.result === "true") {
+                            $("#addPlList").append(data.html);
+                        }
+                    }, "json");
+                }
 <?php if (!$isMyVideo) { ?>
 
                     $("#followHisAss").click(function (e) {
@@ -88,10 +100,11 @@ $this->load->helper('url');
 
                         }, "json");
                     });
-        <?php } ?>
-            });
+<?php } ?>
+            }
+            );
         </script>
-<?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="col-lg-12">
 
@@ -128,16 +141,18 @@ $this->load->helper('url');
                                         line-height: 22px;
                                         color: grey;"><?php echo $video->channelName; ?></h3></a>
 
-<?php if (!$isMyVideo && !$follower && $log == 1) {
-    ?>
+                                <?php if (!$isMyVideo && !$follower && $log == 1) {
+                                    ?>
                                     <a href="#" id="followHisAss" class="btn btn-primary btn-xs" style="
-                                       font-size: 10px;">Seguir</a>
-                                   <?php } else if (!$isMyVideo && $follower && $log == 1) { ?>
+                                       font-size: 10px;">
+                                        Seguir
+                                    </a>
+                                <?php } else if (!$isMyVideo && $follower && $log == 1) { ?>
                                     <a href="#" id="unfollowHisAss" class="btn btn-primary btn-xs" style="
                                        font-size: 10px;">Dejar de seguir</a>
-                            <?php } ?>
+                                   <?php } ?>
                             </div>
-<?php if ($log == 1) { ?>
+                            <?php if ($log == 1) { ?>
                                 <div class="col-lg-12" id="commentHolder" style="margin-top: 20px;
                                      border-top: 5px solid rgb(63, 134, 255);
                                      background-color: rgb(118, 167, 250);
@@ -177,12 +192,12 @@ $this->load->helper('url');
                                 <p style="  font-size: 15px;color: rgb(218, 189, 43);">Valoración general: </p>
                                 <input type="hidden" readonly="readonly" value="<?php echo $video->rate; ?>" class="rating"/>
                             </div>
-<?php if ($log == 1) { ?>
+                            <?php if ($log == 1) { ?>
                                 <div class="starHolder sratHolder-alternativeColor">
                                     <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
                                     <input type="hidden" step="1" value="<?php echo $video->rate; ?>" class="rating"/>
                                 </div>
-                                 <?php } ?>
+                            <?php } ?>
                             <div style="  text-align: center;
                                  font-size: 20px;">
                                  <?php
@@ -194,6 +209,16 @@ $this->load->helper('url');
                                     }
                                 }
                                 ?>
+                            </div>
+                        </div>
+                        <div class="well well-red">
+                            <a id="addToPlToggler" href="#">Agregar a playlist</a>
+                            <div style="display:none" id="addToPlHolder">
+                                <input id="addPlNewName" type="text" data-name="plname" name="Artigas"/>
+                                <a href="#" id="addNewPl">Agregar nueva</a>
+                                <ul id="addPlList">
+
+                                </ul>
                             </div>
                         </div>
                         <div class="well  well-violet" id="featured_playlist" style="">
@@ -221,7 +246,7 @@ $this->load->helper('url');
                 </div>
             </div>
 
-<?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
-<?php $this->load->view('footer'); ?>
+            <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
+            <?php $this->load->view('footer'); ?>
     </body>
 </html>
