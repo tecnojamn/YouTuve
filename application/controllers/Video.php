@@ -180,8 +180,16 @@ class Video extends MY_Controller {
     
     public function showList() {
         $orderBy = $this->input->get("orderBy");
-        if ($orderBy == "top"){
-            
+        $this->load->model("video_model");
+        if ($orderBy != "rate" && $orderBy != "date"){
+            $this->load->view("home_layout");
+            return;
+        }else{
+            $videos = $this->video_model->getVideos($orderBy);
+            $data["searched_videos"] = $videos;
+            $data["orderby"] = $orderBy;
+            $this->load->view("video_list_layout",$data);
+            return;
         }
     }
     /**

@@ -49,11 +49,11 @@ $this->load->helper('url');
 
         <div id="lastVideos" style="width: 100%;float: left;">
             Ultimos Videos
-            <a href="<?php echo base_url();?>video/showList?orderBy=top" style="float: right">Ver mas</a>
+            <a href="<?php echo base_url();?>video/showList?orderBy=date" style="float: right">Ver mas</a>
         </div>
         <div id="topVideos" style="width: 100%;float: left;">
             Top Videos
-            <a href="#" style="float: right">Ver mas</a>
+            <a href="<?php echo base_url();?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
         </div>
         <div id="channelVideos" style="width: 100%;float: left;">
             Videos de canales que sigues 
