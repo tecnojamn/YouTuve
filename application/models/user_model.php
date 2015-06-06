@@ -132,15 +132,23 @@ class User_model extends MY_Model {
         return ($result > 0) ? true : false;
     }
 
-    public function changePassword($idUser, $newPassword, $oldPassword){
+    public function unfollowChannel($idUser, $idChannel) {
+        $this->db->where('idChannel', $idChannel);
+        $this->db->where('idUser', $idUser);
+        $r = $this->db->delete('follower');
+        return $r;
+    }
+
+    public function changePassword($idUser, $newPassword, $oldPassword) {
         $this->db->select("password");
         $cond["id"] = $idUser;
         $result = $this->search($cond);
-        if(($oldPassword === $result[0]->password) && ($newPassword !== "")){
+        if (($oldPassword === $result[0]->password) && ($newPassword !== "")) {
             $data["password"] = $newPassword;
             $this->update($data, $cond);
             return ($result > 0) ? true : false;
-        }        
+        }
         return false;
     }
+
 }

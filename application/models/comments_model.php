@@ -57,7 +57,11 @@ class Comments_model extends MY_Model {
         $this->db->order_by("date", "desc");
         $this->db->where($conditions);
         //$result = $this->search($conditions);
+
+        
+
         $result = $this->db->get($this->table)->result();
+       // echo $this->db->last_query();
         if (count($result) > 0) {
             $commentList = new CommentListDTO();
             foreach ($result as $row) {

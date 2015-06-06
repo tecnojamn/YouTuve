@@ -17,10 +17,11 @@ $this->load->helper('url');
 
     <body>
         <script>
+            var commentPage = 0;
+            var commentsEnded = false;
             $(document).ready(function () {
                 loadComments();
-                var commentPage = 1;
-                var commentsEnded = false;
+
                 $("#loadMoreComments").click(function (e) {
                     e.preventDefault();
                     if (!commentsEnded) {
@@ -43,7 +44,8 @@ $this->load->helper('url');
                 }
 <?php if ($log) { ?>
                     $("#submitComment").submit(function (e) {
-                        e.preventDefault();$("#comments").show();
+                        e.preventDefault();
+                        $("#comments").show();
                         var comment = $("#commentArea").val(); //chequear lenght >0 y menor a 150
                         $.post("<?php echo base_url(); ?>comment/saveCommentAX", {vidId: "<?php echo $video->id; ?>", commentText: comment}, function (data) {
                             if (data.result) {
@@ -62,14 +64,31 @@ $this->load->helper('url');
                         $.post("<?php echo base_url(); ?>user/followChannelAX", {channel: "<?php echo $video->idChannel; ?>", userId: "<?php echo $userID; ?>"}, function (data) {
                             //loader OFF
                             $("#followHisAss").empty();
+                            $("#followHisAss").attr("disabled", true);
                             if (data.result === 'true') {
                                 $("#followHisAss").append(data.html).delay(2000).fadeOut(500);
                             } else {
                                 $("#followHisAss").append(data.html).delay(2000).fadeOut(500);
                             }
+
                         }, "json");
                     });
-<?php } ?>
+                    $("#unfollowHisAss").click(function (e) {
+                        e.preventDefault();
+                        //loader ON
+                        $.post("<?php echo base_url(); ?>user/unfollowChannelAX", {channel: "<?php echo $video->idChannel; ?>", userId: "<?php echo $userID; ?>"}, function (data) {
+                            //loader OFF
+                            $("#unfollowHisAss").empty();
+                            if (data.result === 'true') {
+                                $("#unfollowHisAss").attr("disabled", true);
+                                $("#unfollowHisAss").append(data.html).delay(2000).fadeOut(500);
+                            } else {
+                                $("#unfollowHisAss").append(data.html).delay(2000).fadeOut(500);
+                            }
+
+                        }, "json");
+                    });
+        <?php } ?>
             });
         </script>
 <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
@@ -103,34 +122,39 @@ $this->load->helper('url');
                             </div>
                             <div class="col-lg-10" style>
                                 <h3 style="  margin: 0px 5px;"><?php echo $video->name; ?></h3>
-                                <a href="#"><h3 style="  margin: 0px 5px;
-                                                font-size: 12px;
-                                                line-height: 22px;
-                                                color: grey;"><?php echo $video->channelName; ?></h3></a>
-<?php if (!$isMyVideo && !$follower) { ?>
+                                <a href="<?php echo base_url() ?>channel/view/<?php echo $video->idChannel; ?>">
+                                    <h3 style="  margin: 0px 5px;
+                                        font-size: 12px;
+                                        line-height: 22px;
+                                        color: grey;"><?php echo $video->channelName; ?></h3></a>
+
+<?php if (!$isMyVideo && !$follower && $log == 1) {
+    ?>
                                     <a href="#" id="followHisAss" class="btn btn-primary btn-xs" style="
                                        font-size: 10px;">Seguir</a>
-<?php } ?>
+                                   <?php } else if (!$isMyVideo && $follower && $log == 1) { ?>
+                                    <a href="#" id="unfollowHisAss" class="btn btn-primary btn-xs" style="
+                                       font-size: 10px;">Dejar de seguir</a>
+                            <?php } ?>
                             </div>
-
-                            <div class="col-lg-12" id="commentHolder" style="margin-top: 20px;
-                                 border-top: 5px solid rgb(63, 134, 255);
-                                 background-color: rgb(118, 167, 250);
-                                 padding: 20px;">
-                                <form id="submitComment">
-                                    <div class="form-group">
-                                        <textarea style=""  placeholder="Ingrese un comentario" type="text" class="form-control" id="commentArea"></textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-default">Comentar</button>
-                                </form>
-                            </div>
+<?php if ($log == 1) { ?>
+                                <div class="col-lg-12" id="commentHolder" style="margin-top: 20px;
+                                     border-top: 5px solid rgb(63, 134, 255);
+                                     background-color: rgb(118, 167, 250);
+                                     padding: 20px;">
+                                    <form id="submitComment">
+                                        <div class="form-group">
+                                            <textarea style=""  placeholder="Ingrese un comentario" type="text" class="form-control" id="commentArea"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-default">Comentar</button>
+                                    </form>
+                                </div> <?php } ?>
                         </div>
 
                         <div id="comments" class="well well-turq" style="padding: 2px 0px;  margin-bottom: 0;padding-bottom: 0;">
                             <!-- videos comments -->
                         </div>
-                        <div id="loadMoreCommentsHolder" style="   margin: 0 5px;
-                             border: 1px solid rgb(152, 74, 100); background-color: rgb(77, 191, 217);text-align: center;border-bottom: 2px solid rgb(65, 166, 189);margin-bottom: 20px;">
+                        <div id="loadMoreCommentsHolder" style="background-color: rgb(77, 191, 217);text-align: center;border-bottom: 2px solid rgb(65, 166, 189);margin-bottom: 20px;">
                             <a style="margin: 0 auto;text-align: center;
                                color: white;"href="#" id="loadMoreComments">Cargar más</a>
                         </div>
@@ -153,10 +177,12 @@ $this->load->helper('url');
                                 <p style="  font-size: 15px;color: rgb(218, 189, 43);">Valoración general: </p>
                                 <input type="hidden" readonly="readonly" value="<?php echo $video->rate; ?>" class="rating"/>
                             </div>
-                            <div class="starHolder sratHolder-alternativeColor">
-                                <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
-                                <input type="hidden" step="1" value="<?php echo $video->rate; ?>" class="rating"/>
-                            </div>
+<?php if ($log == 1) { ?>
+                                <div class="starHolder sratHolder-alternativeColor">
+                                    <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
+                                    <input type="hidden" step="1" value="<?php echo $video->rate; ?>" class="rating"/>
+                                </div>
+                                 <?php } ?>
                             <div style="  text-align: center;
                                  font-size: 20px;">
                                  <?php
@@ -195,7 +221,7 @@ $this->load->helper('url');
                 </div>
             </div>
 
-            <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
+<?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
 <?php $this->load->view('footer'); ?>
     </body>
 </html>

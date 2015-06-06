@@ -64,7 +64,7 @@ if (!function_exists('newFollowMail')) {
                 . "<a href='" . base_url() . "Channel/" . $userChannel->id . "'>aqui </a>"
                 . "<p>para visitar su canal</p>";
         $subject = "Tienes un nuevo seguidor";
-        $channel = $$CI->channel_model->selectByIdChannel($channelId);
+        $channel = $CI->channel_model->selectByIdChannel($channelId);
         $ret = $CI->email->sendMail($channel->email, $message, $subject);
         return $ret;
     }

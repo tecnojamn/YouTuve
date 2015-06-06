@@ -37,7 +37,7 @@ class Comment extends MY_Controller {
         $commentText = $this->input->post("commentText");
         $idVideo = $this->input->post("vidId");
         if ($idVideo === "" || $idVideo === null || $commentText === null || $commentText === "" || count($commentText) > 150 || !$this->isAuthorized()) {
-            echo json_encode(array('result' => 'false', 'html' => ''));
+            echo json_encode(array('result' => 'false', 'html' => 'Error al intentar comentar el video.'));
             return;
         }
         $date = date('Y-m-d H:i:s');
@@ -56,7 +56,7 @@ class Comment extends MY_Controller {
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
-        echo json_encode(array('result' => 'false', 'html' => ''));
+        echo json_encode(array('result' => 'false', 'html' => 'Error al intentar comentar el video.'));
         return;
     }
 
@@ -68,7 +68,7 @@ class Comment extends MY_Controller {
         $this->load->model("comments_model");
         $idVideo = $this->input->post("vidId");
         if ($idVideo === "" || $idVideo === null) {
-            echo json_encode(array('result' => 'false', 'html' => ''));
+            echo json_encode(array('result' => 'false', 'html' => 'Video is null'));
             return;
         }
         $page = ($this->input->post("page") !== NULL) ? $this->input->post("page") : 1;
@@ -88,7 +88,7 @@ class Comment extends MY_Controller {
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
-        echo json_encode(array('result' => 'false', 'html' => ''));
+        echo json_encode(array('result' => 'false', 'html' => 'DB Error'));
         return;
     }
 

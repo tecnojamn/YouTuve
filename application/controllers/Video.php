@@ -113,6 +113,7 @@ class Video extends MY_Controller {
      */
     public function view() {
         $data = array();
+        $data["log"] = 0;
         if ($this->isAuthorized()) {
             $data["log"] = 1;
         }

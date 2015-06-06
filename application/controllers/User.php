@@ -228,9 +228,9 @@ class User extends MY_Controller {
 //inserta y redirige a algun lado todavia no sabemos
             $valCode = valCode();
             if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
-            $to=$email;
-            $mailContent=validationMail($name, $valCode, $email);
-            $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
+                $to = $email;
+                $mailContent = validationMail($name, $valCode, $email);
+                $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
                 redirect('/', 'refresh');
@@ -253,7 +253,7 @@ class User extends MY_Controller {
             $data["error_message"] = "No tienes autorización";
             $this->load->view('home_layout', $data);
             exit; //andate de esta funcion
-        } 
+        }
         $this->load->model('user_model');
         $data["log"] = 1;
         $channelId = $this->input->post('channel');
@@ -261,10 +261,9 @@ class User extends MY_Controller {
         $userId = $this->session->userdata('userId');
 
         if ($this->user_model->followChannel($userId, $channelId)) {
-            
-            //Envio de Email al dueño del canal
-            newFollowMail($userId, $channelId);
-            
+            //Envio de Email al dueño del canal NO ANDA
+            //Falta el mail
+           // newFollowMail($userId, $channelId);
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {
@@ -272,7 +271,30 @@ class User extends MY_Controller {
             return;
         }
     }
-    
+
+    public function unfollowChannelAX() {
+        $this->load->model("channel_model");
+        $this->load->model("user_model");
+        if (!$this->isAuthorized()) {
+            $data["error"] = 1;
+            $data["error_message"] = "No tienes autorización";
+            $this->load->view('home_layout', $data);
+            exit; //andate de esta funcion
+        }
+        $this->load->model('user_model');
+        $data["log"] = 1;
+        $channelId = $this->input->post('channel');
+
+        $userId = $this->session->userdata('userId');
+
+        if ($this->user_model->unfollowChannel($userId, $channelId)) {
+            echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
+            return;
+        } else {
+            echo json_encode(array('result' => 'false', 'html' => '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>'));
+            return;
+        }
+    }
 
     public function changePassword() {
         if (!$this->isAuthorized()) {
