@@ -43,10 +43,10 @@ class User_model extends MY_Model {
 
     public function selectById($id) {
         $condition["id"] = $id;
-<<<<<<< HEAD
+
         $this->search($condition);
         //return
-=======
+
         $result = $this->search($condition);
         if(count($result > 0)){
             $user = new UserDTO();
@@ -61,7 +61,7 @@ class User_model extends MY_Model {
             return $user;
         }
         return FALSE;
->>>>>>> origin/mail-branch
+
     }
 
     public function selectByNick($nick) {

@@ -43,10 +43,10 @@ class Channel_model extends MY_Model {
 
     public function selectById($id) {
         $conditions["id"] = $id;
-<<<<<<< HEAD
+
         $this->search($conditions, $this->table, 1, 0);
         //return data
-=======
+
         $result = $this->search($conditions);
         if (count($result) > 0) {
             $channel = new ChannelDTO;
@@ -59,7 +59,7 @@ class Channel_model extends MY_Model {
         } else {
             return false;
         }
->>>>>>> origin/mail-branch
+
     }
 
     /**
