@@ -21,7 +21,7 @@ $this->load->helper('url');
             function loadMore() {
                 curr_page = curr_page + 1;
                 can_load_more = false;
-                $.post("<?php echo base_url(); ?>video/getMoreVideosAX", {searchPage: curr_page, orderBy: '<?php echo $orderBy ?>'},
+                $.post("<?php echo base_url(); ?>video/getMoreVideosAX", {searchPage: curr_page, orderBy: '<?php echo $orderby ?>'},
                 function (data) {
                     if (data.result === 'true') { //si el resultado es verdadero lo agrego
                         $("#videos").append(data.html);

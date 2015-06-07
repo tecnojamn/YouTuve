@@ -185,7 +185,7 @@ class Video extends MY_Controller {
             $this->load->view("home_layout");
             return;
         }else{
-            $videos = $this->video_model->getVideos($orderBy);
+            $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT);
             $data["searched_videos"] = $videos;
             $data["orderby"] = $orderBy;
             $this->load->view("video_list_layout",$data);
@@ -232,6 +232,23 @@ class Video extends MY_Controller {
             }
             echo json_encode(array('result' => 'false', 'html' => ''));
             return;
+    }
+    
+    public function getMoreVideosAX() {
+        $this->load->model("video_model");
+        $orderBy = $this->input->post("orderBy");
+        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
+        $searchPage = ($searchPage > 0) ? $searchPage : 1;
+        $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if ($videos) {
+            $data["videos"] = $videos;
+            $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
+            $arr = array('result' => 'true', 'html' => $formString);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
     }
 
 }
