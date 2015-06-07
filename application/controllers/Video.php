@@ -182,7 +182,21 @@ class Video extends MY_Controller {
 
         return;
     }
-
+    
+    public function showList() {
+        $orderBy = $this->input->get("orderBy");
+        $this->load->model("video_model");
+        if ($orderBy != "rate" && $orderBy != "date"){
+            $this->load->view("home_layout");
+            return;
+        }else{
+            $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT);
+            $data["searched_videos"] = $videos;
+            $data["orderby"] = $orderBy;
+            $this->load->view("video_list_layout",$data);
+            return;
+        }
+    }
     /**
      * Funcion que devuelve un json con mas videos en la busqueda
      * @return type
@@ -193,6 +207,44 @@ class Video extends MY_Controller {
         $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
         $searchPage = ($searchPage > 0) ? $searchPage : 1;
         $videos = $this->video_model->getVideosByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if ($videos) {
+            $data["videos"] = $videos;
+            $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
+            $arr = array('result' => 'true', 'html' => $formString);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
+    }
+
+    public function getVideosAx() {
+        $this->load->model("video_model");
+        $fromChannel = $this->input->post("channelVideos");
+        if (isset($fromChannel)) {
+            $userId = $this->session->userdata('userId');
+            $videos = $this->video_model->getVideosSusChan($userId);
+        } else {
+            $orderBy = $this->input->post("orderBy");
+            $videos = $this->video_model->getVideos($orderBy, 0, 5);
+        }
+        if ($videos) {
+                $data["videos"] = $videos;
+                $formString = $this->load->view('axviews/ax_home_videos', $data, true);
+                $arr = array('result' => 'true', 'html' => $formString);
+                echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+                return;
+            }
+            echo json_encode(array('result' => 'false', 'html' => ''));
+            return;
+    }
+    
+    public function getMoreVideosAX() {
+        $this->load->model("video_model");
+        $orderBy = $this->input->post("orderBy");
+        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
+        $searchPage = ($searchPage > 0) ? $searchPage : 1;
+        $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
         if ($videos) {
             $data["videos"] = $videos;
             $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);

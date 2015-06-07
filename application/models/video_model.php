@@ -243,18 +243,17 @@ class Video_model extends MY_Model {
     }
 
     /**
-     * devuelve videos
-     * si orderbyrate == false  devuelve por fecha, si no por rate
-     * @param type $orderByRate
+     * 
+     * @param type $orderBy
      * @param type $channel
      * @param type $limit
      * @param type $offset
      * @return \VideoListDto
      */
-    public function getVideos($orderByRate = false, $channelId = 0, $limit = 0, $offset = 0) {
+    public function getVideos($orderBy = "date", $channelId = 0, $limit = 0, $offset = 0) {
 
         //selecciona videos con sus respectivo rate ( avg(rate) de la tabla rate )
-        if ($orderByRate) {
+        if ($orderBy == "rate") {
             $this->db->select("idVideo");
             $this->db->select_avg("rate");
             $this->db->from("rate");
@@ -273,6 +272,7 @@ class Video_model extends MY_Model {
         }
         if ($limit != 0)
             $this->db->limit($limit, $offset);
+
         if ($channelId !== 0)
             $this->db->where("channel.id", $channelId);
 
@@ -287,15 +287,46 @@ class Video_model extends MY_Model {
             $video->name = $row->name;
             $video->link = $row->link;
             $video->channelName = $row->channelName;
+            $video->date = $row->date;
 
             $video->idChannel = $row->idChan;
-            if ($orderByRate) {
+            if ($orderBy == "rate") {
                 $video->rate = $row->rate;
             }
             $video->duration = $row->durationInSeconds;
             $videos->addVideo($video);
         }
         return $videos;
+    }
+
+    /**
+     * Devuelve solo videos de canales que siga el usuario
+     * @param type $idUser
+     */
+    public function getVideosSusChan($idUser) {
+        $this->db->select("video.*, channel.id as chanId, channel.name as chanName");
+        $this->db->where("follower.idUser", $idUser);
+        $this->db->where("video.active", 1);
+        $this->db->join("channel", "channel.id=video.idChannel");
+        $this->db->join("follower", "follower.idChannel=channel.id");
+        $this->db->order_by("date", "desc");
+        $result = $this->search();
+        if ($result) {
+            $videoList = new VideoListDto();
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->id = $row->id;
+                $video->name = $row->name;
+                $video->link = $row->link;
+                $video->date = $row->date;
+                $video->idChannel = $row->chanId;
+                $video->channelName = $row->chanName;
+                $video->duration = $row->durationInSeconds;
+                $videoList->addVideo($video);
+            }
+            return $videoList;
+        }
+        return FALSE;
     }
 
     /**
