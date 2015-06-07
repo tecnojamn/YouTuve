@@ -45,11 +45,25 @@ class rate_model extends MY_Model {
 
     //calificar video en modelo de video previamente realizado, despues verificar si dejarlo aquí 
     public function rate($idVideo, $idUser, $rating) {
+
         $data["idVideo"] = $idVideo;
         $data["idUser"] = $idUser;
         $data["rate"] = $rating;
+
         $result = $this->save($data, "rate");
         return ($result > 0) ? true : false;
+    }
+
+    //Devuelve si ya ranqueo el video
+    public function hasRated($idVideo, $idUser) {
+        $data["idVideo"] = $idVideo;
+        $data["idUser"] = $idUser;
+        $res = $this->search($data, "rate");
+
+        if ($res) {
+            return $res[0]->rate;
+        }
+        return false;
     }
 
     //al solicitar un video en el modelo de video, se calcula la calificacion total, por ende no deberia de ir en este modelo, verificar de todos modos

@@ -21,6 +21,16 @@ $this->load->helper('url');
             var commentsEnded = false;
             $(document).ready(function () {
                 loadComments();
+                //executes when user votes video
+                $('#rater').on('change', function () {
+                    var rate = $(this).val();
+                    $.post("<?php echo base_url(); ?>video/rateAX", {rate: rate, vidId: "<?php echo $video->id; ?>"},
+                    function (data) {
+                        if (data.result === 'true') { //si el resultado es verdadero lo agrego
+                            $("#rateHolder").css("font-size", "12px").html(data.html).hide().fadeIn();
+                        }
+                    }, "json");
+                });
                 $("#loadMoreComments").click(function (e) {
                     e.preventDefault();
                     if (!commentsEnded) {
@@ -193,9 +203,15 @@ $this->load->helper('url');
                                 <input type="hidden" readonly="readonly" value="<?php echo $video->rate; ?>" class="rating"/>
                             </div>
                             <?php if ($log == 1) { ?>
-                                <div class="starHolder sratHolder-alternativeColor">
+                                <div id="rateHolder" class="starHolder sratHolder-alternativeColor">
                                     <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
-                                    <input type="hidden" step="1" value="<?php echo $video->rate; ?>" class="rating"/>
+                                    <input id="rater" type="hidden" step="1" value="<?php echo $userRate; ?>" 
+                                    <?php
+                                    if ($userRate > 0) {
+                                        echo 'disabled="disabled"';
+                                    }
+                                    ?>
+                                           class = "rating"/>
                                 </div>
                             <?php } ?>
                             <div style="  text-align: center;

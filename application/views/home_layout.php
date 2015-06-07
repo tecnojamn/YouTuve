@@ -73,17 +73,18 @@ $this->load->helper('url');
                     top: -40px;
                     left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
             </div></div>
-        <div class="row"style="
-             padding: 0 30px;
-             "> <div id="channelVideos" class="well well-yellow" style="width: 100%;float: left;  background-color: #f8f8f8;">
-                <p style="  margin: 15px 40px;
-                   padding-bottom: 5px;
-                   border-bottom: 1px solid #eeeeee;
-                   font-size: 18px;
-                   position: relative;">Videos de Canales que Sigues</p>
+        <?php if (isset($log) && $log) { ?>
+            <div class="row"style="
+                 padding: 0 30px;
+                 "> <div id="channelVideos" class="well well-yellow" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                    <p style="  margin: 15px 40px;
+                       padding-bottom: 5px;
+                       border-bottom: 1px solid #eeeeee;
+                       font-size: 18px;
+                       position: relative;">Videos de Canales que Sigues</p>
 
-            </div></div>
-
+                </div></div>
+        <?php } ?>
         <?php $this->load->view('footer'); ?>
 
     </body>

@@ -118,6 +118,7 @@ class Video extends MY_Controller {
             $data["log"] = 1;
         }
         $this->load->model('video_model');
+        $this->load->model('rate_model');
         $this->load->model('user_model');
         $id = $this->uri->segment(3, 0);
 
@@ -137,6 +138,10 @@ class Video extends MY_Controller {
 
                 $data["follower"] = $this->user_model->isfollowingChannel($userId, $video->idChannel);
                 $data["video"] = $video;
+
+                $userRate = $this->rate_model->hasRated($id, $userId);
+                $data["userRate"] = ($this->isAuthorized() && $userRate) ? $userRate : 0;
+
 
                 $data["userID"] = $userId;
                 $data["isMyVideo"] = $video->idUser === $userId ? true : false;
@@ -257,6 +262,30 @@ class Video extends MY_Controller {
             return;
         }
         echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
+    }
+
+    public function rateAx() {
+        $this->load->model("rate_model");
+        $vidId = $this->input->post("vidId");
+        $rte = $this->input->post("rate");
+        $userId = $this->session->userdata('userId');
+        if ($vidId === NULL || $vidId === "") {
+            echo json_encode(array('result' => 'false', 'html' => 'Error: faltan parametros'));
+            return;
+        }
+        $res = $this->rate_model->hasRated($vidId, $userId);
+        if ($res) {
+            $arr = array('result' => 'false', 'html' => "Ya votaste este video!");
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        } else {
+            $res = $this->rate_model->rate($vidId, $userId, $rte);
+            $arr = array('result' => 'true', 'html' => "Video votado correctamente!");
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => 'Error: Inesperado'));
         return;
     }
 
