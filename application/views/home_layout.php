@@ -29,36 +29,60 @@ $this->load->helper('url');
                         $("#topVideos").append(data.html);
                     }
                 }, "json");
-                
-                    <?php if (isset($log) && $log) { ?>
-                        //carga videos del canal del usuario
-                        $.post("<?php echo base_url(); ?>video/getVideosAx  ",
-                                {channelVideos: 'true'},
-                        function (data) {
-                            if (data.result === 'true') {
-                                $("#channelVideos").append(data.html);
-                            }
-                        }, "json");
-                    <?php } ?>
+
+<?php if (isset($log) && $log) { ?>
+                    //carga videos del canal del usuario
+                    $.post("<?php echo base_url(); ?>video/getVideosAx  ",
+                            {channelVideos: 'true'},
+                    function (data) {
+
+                        $("#channelVideos").append(data.html);
+
+                    }, "json");
+<?php } ?>
             });
         </script>
     </head>
 
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        <div class="row" style="
+             padding: 0 30px;
+             ">
+            <div id="lastVideos" class="well well-blue" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                <p style="  margin: 15px 40px;
+                   padding-bottom: 5px;
+                   border-bottom: 1px solid #eeeeee;
+                   font-size: 18px;
+                   position: relative;">Ultimos Videos</p>
+                <a style="  float: right;
+                   position: relative;
+                   top: -40px;
+                   left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=date" style="float: right">Ver mas</a>
+            </div></div>
+        <div class="row"style="
+             padding: 0 30px;
+             "> <div id="topVideos"  class="well well-green" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                <p style="  margin: 15px 40px;
+                   padding-bottom: 5px;
+                   border-bottom: 1px solid #eeeeee;
+                   font-size: 18px;
+                   position: relative;">Top Videos</p>
+                <a  style="  float: right;
+                    position: relative;
+                    top: -40px;
+                    left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
+            </div></div>
+        <div class="row"style="
+             padding: 0 30px;
+             "> <div id="channelVideos" class="well well-yellow" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                <p style="  margin: 15px 40px;
+                   padding-bottom: 5px;
+                   border-bottom: 1px solid #eeeeee;
+                   font-size: 18px;
+                   position: relative;">Videos de Canales que Sigues</p>
 
-        <div id="lastVideos" style="width: 100%;float: left;">
-            Ultimos Videos
-            <a href="<?php echo base_url();?>video/showList?orderBy=date" style="float: right">Ver mas</a>
-        </div>
-        <div id="topVideos" style="width: 100%;float: left;">
-            Top Videos
-            <a href="<?php echo base_url();?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
-        </div>
-        <div id="channelVideos" style="width: 100%;float: left;">
-            Videos de canales que sigues 
-
-        </div>
+            </div></div>
 
         <?php $this->load->view('footer'); ?>
 

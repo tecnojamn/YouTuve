@@ -280,6 +280,7 @@ class Video_model extends MY_Model {
         $this->db->join("channel", "video.idChannel=channel.id");
 
         $result = $this->db->get()->result();
+
         $videos = new VideoListDto();
         foreach ($result as $row) {
             $video = new VideoDTO();

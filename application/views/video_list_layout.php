@@ -40,25 +40,28 @@ $this->load->helper('url');
             $(window).scroll(bindScroll);
         </script>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
-        <div class="row">
-            <div class="col-lg-8" id="videos">
+        <div class="row" style="padding: 0 15px;">
+            <div class="col-lg-12" id="videos">
                 <?php
-                if ($searched_videos) {
+                if ($searched_videos !== NULL && count($searched_videos->list) > 0) {
                     foreach ($searched_videos->list as $video) {
                         ?>
-                        <div class="col-lg-12" style="border: 1px solid rgb(216, 216, 216);background-color: white;padding: 12px;margin-bottom: 12px;">
-                            <a href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
-                                <img src="http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                            </a>
-                            <label ><?php echo $video->name ?></label> <br>
-                            <a href="#" ><?php echo $video->channelName ?></a> <br>
-                            <label >Publicado el <?php echo $video->date ?></label>
+                        <div class="col-lg-12 well well-blue" style="overflow: hidden;">
+                            <div class="col-lg-3">
+                                <a href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
+                                    <img src="http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style="width: 238px;height: 238px;float: left;">
+                                </a></div>
+                            <div class="col-lg-9"><label ><?php echo $video->name ?></label> <br>
+                                <a href="#" ><?php echo $video->channelName ?></a> <br>
+                                <label >Publicado el <?php echo $video->date ?></label></div>
                         </div>
                         <?php
                     }
                 } else {
-                    echo "No hat videos para mostrar";
-                }
+                    ?>
+                    <div class="alert alert-dismissible alert-warning">
+                        No videos to display</div>
+                <?php }
                 ?>
             </div>  </div>
         <?php $this->load->view('footer'); ?>
