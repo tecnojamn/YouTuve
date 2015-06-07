@@ -1,7 +1,7 @@
 <?php
 
 defined('BASEPATH') && defined('APPPATH') OR exit('No direct script access allowed');
-
+include_once APPPATH . 'classes/UserDTO.php';
 class User_model extends MY_Model {
 
     public function __construct() {
