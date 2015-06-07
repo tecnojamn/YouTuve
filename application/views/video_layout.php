@@ -59,7 +59,7 @@ $this->load->helper('url');
                         $.post("<?php echo base_url(); ?>comment/saveCommentAX", {vidId: "<?php echo $video->id; ?>", commentText: comment}, function (data) {
                             if (data.result) {
                                 $("#commentHolder").fadeOut(2000).remove();
-                                $("#comments").prepend(data.html);
+                                $("#comments").hide().fadeIn(1500).prepend(data.html);
                             } else {
                             }
                         }, "json");

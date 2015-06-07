@@ -18,7 +18,7 @@ $this->load->helper('url');
                         {orderBy: 'date'},
                 function (data) {
                     if (data.result === 'true') {
-                        $("#lastVideos").append(data.html);
+                        $("#lastVideos").hide().fadeIn(1000).append(data.html);
                     }
                 }, "json");
                 //carga videos mas votados
@@ -26,7 +26,7 @@ $this->load->helper('url');
                         {orderBy: 'rate'},
                 function (data) {
                     if (data.result === 'true') {
-                        $("#topVideos").append(data.html);
+                        $("#topVideos").hide().fadeIn(2200).append(data.html);
                     }
                 }, "json");
 
@@ -36,7 +36,7 @@ $this->load->helper('url');
                             {channelVideos: 'true'},
                     function (data) {
 
-                        $("#channelVideos").append(data.html);
+                        $("#channelVideos").hide().fadeIn(3500).append(data.html);
 
                     }, "json");
 <?php } ?>
