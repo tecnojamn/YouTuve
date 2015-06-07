@@ -17,6 +17,18 @@ $this->load->helper('url');
         <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
 
         <script type="text/javascript">
+            function animateForm() {
+                $("#regFormHolder").css("top", "-1000px").animate({
+                    top: "0",
+                }, 2000);
+
+                $(".alert").hide().fadeIn(2000);
+            }
+            $(document).ready(function () {
+                animateForm();
+
+            });
+
             $(function () {
                 $("#birthday").datepicker({
                     changeMonth: true,
@@ -47,7 +59,7 @@ $this->load->helper('url');
                 }
                 ?>
                 <form autocomplete="off" action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
-                    <div class="well col-lg-12">
+                    <div id="regFormHolder" class="well well-blue col-lg-12">
                         <fieldset>
                             <center><legend>Registro</legend></center>
                             <div class="form-group">
@@ -116,9 +128,9 @@ $this->load->helper('url');
 
                     </div>
                 </form>
-     
-        </div>
 
-        <?php $this->load->view('footer'); ?>
+            </div>
+
+            <?php $this->load->view('footer'); ?>
     </body>
 </html>

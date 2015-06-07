@@ -10,9 +10,10 @@ class User_model extends MY_Model {
         $this->table = "user";
     }
 
-    public function push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl = "") {
+    public function push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl = "", $confirm_token) {
         $data["email"] = $email;
         $data["nick"] = $nick;
+        $data["confirm_token"] = $confirm_token;
         $data["name"] = $name;
         $data["password"] = $password;
         $data["lastname"] = $lastname;
@@ -22,6 +23,18 @@ class User_model extends MY_Model {
         $data["thumbUrl"] = $thumbUrl;
         $result = $this->save($data);
         return ($result > 0) ? true : false;
+    }
+
+    /**
+     * muy poco seguro pero safa lindo
+     * 
+     * @param type $code
+     */
+    public function validate($code) {
+        $upd["active"] = 1;
+        $conditions["confirm_token"] = $code;
+        $r = $this->update($upd, $conditions);
+        return ($r > 0) ? true : false;
     }
 
     public function edit($id, $name, $lastname, $birthday, $gender, $thumbUrl) {
@@ -92,6 +105,7 @@ class User_model extends MY_Model {
     public function authorize($email, $password) {
         $condition["email"] = $email;
         $condition["password"] = $password;
+        $condition["active"] = 1;
 
         $result = $this->search($condition, "user", 1, 0);
 

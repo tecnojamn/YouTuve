@@ -11,7 +11,7 @@ if (!function_exists('validationMail')) {
     function validationMail($name, $valCode, $email) {
         $CI = get_instance();
         $CI->load->library("email");
-        $message = "<h2>Se a creado una cuenta de YouTuve</h2><br>"
+        $message = "<h2>Se ha creado una nueva cuenta de YouTuve</h2><br>"
                 . "<p>" . $name . " para confirmar tu cuenta debe hacer click en el link que se encuentra debajo</p><br>"
                 . "<a href='" . base_url() . "User/validate/" . $valCode . "'>Click aqui para activar cuenta</a>";
         $subject = "Correo de confirmacion YouTuve";
@@ -43,7 +43,7 @@ if (!function_exists('newChannelVideoMail')) {
             $subject = $channel->name . " se ha subido un nuevo video";
             $ret = $CI->email->sendMail($to, $message, $subject);
             return $ret;
-        }else{
+        } else {
             return FALSE;
         }
     }

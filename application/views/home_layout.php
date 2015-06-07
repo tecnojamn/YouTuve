@@ -46,6 +46,27 @@ $this->load->helper('url');
 
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        <?php if (isset($validated) && !$validated) { ?>
+            <div class="row" style=" padding: 0 30px;
+                 ">
+                <div class="alert alert-danger">
+                    Codigo incorrecto.
+                </div></div>
+        <?php } ?>
+        <?php if (isset($mailSent) && $mailSent) { ?>
+            <div class="row" style=" padding: 0 30px;
+                 ">
+                <div class="alert alert-success">
+                    Se ha enviado un mail a su casilla de correo para verificar la cuenta
+                </div></div>
+        <?php } ?>
+        <?php if (isset($validated) && $validated) { ?>
+            <div class="row" style=" padding: 0 30px;
+                 ">
+                <div class="alert alert-success">
+                    Tu cuenta ha sido activada, puedes hacer login.
+                </div></div>
+        <?php } ?>
         <div class="row" style="
              padding: 0 30px;
              ">
@@ -58,7 +79,7 @@ $this->load->helper('url');
                 <a style="  float: right;
                    position: relative;
                    top: -40px;
-                   left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=date" style="float: right">Ver mas</a>
+                   left: -50px;" data-href="<?php echo base_url(); ?>video/showList?orderBy=date" href="#" style="float: right">Ver mas</a>
             </div></div>
         <div class="row"style="
              padding: 0 30px;

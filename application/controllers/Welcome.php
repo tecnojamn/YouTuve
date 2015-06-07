@@ -26,6 +26,10 @@ class Welcome extends MY_Controller {
         if ($this->isAuthorized()) {
             $data["log"] = 1;
         }
+        /* Agarro los comandos por get */
+        $data["mailSent"] = $this->input->get("ms") && $this->input->get("ms") == 1;
+        $data["validated"] = ($this->input->get("vd")) ? $this->input->get("vd") : NULL;
+        /*                             */
         $this->load->view('home_layout', $data);
     }
 

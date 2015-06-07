@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-06-2015 a las 00:16:26
+-- Tiempo de generación: 08-06-2015 a las 00:39:56
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -32,15 +32,7 @@ CREATE TABLE IF NOT EXISTS `channel` (
   `name` varchar(30) NOT NULL,
   `description` varchar(500) NOT NULL,
   `frontImgUrl` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `channel`
---
-
-INSERT INTO `channel` (`id`, `idUser`, `name`, `description`, `frontImgUrl`) VALUES
-(8, 11, 'El canal de anonymus', '', ''),
-(9, 12, 'El canal de Azaraza', '', '');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -54,16 +46,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `idVideo` int(11) NOT NULL,
   `comment` varchar(150) NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `comment`
---
-
-INSERT INTO `comment` (`id`, `idUser`, `idVideo`, `comment`, `date`) VALUES
-(1, 11, 15, 'Que buen videoo locoo', '2015-05-28 06:58:20'),
-(2, 8, 15, 'Que es esta mierda?\n', '2015-05-28 06:58:52'),
-(3, 11, 3, 'a', '2015-05-30 23:39:59');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -79,14 +62,6 @@ CREATE TABLE IF NOT EXISTS `follower` (
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `follower`
---
-
-INSERT INTO `follower` (`idUser`, `IdChannel`, `seen`, `confirmed`, `date`) VALUES
-(11, 9, 0, 0, '2015-05-28 06:12:42'),
-(12, 8, 0, 0, '2015-05-27 06:46:59');
-
 -- --------------------------------------------------------
 
 --
@@ -99,14 +74,7 @@ CREATE TABLE IF NOT EXISTS `playlist` (
   `idUser` int(11) NOT NULL,
   `created_date` date NOT NULL,
   `isWatchLater` tinyint(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `playlist`
---
-
-INSERT INTO `playlist` (`id`, `name`, `idUser`, `created_date`, `isWatchLater`) VALUES
-(1, 'My Playlist 1', 11, '2015-05-06', 0);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -177,18 +145,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `lastname` varchar(30) NOT NULL,
   `birthday` date NOT NULL,
   `gender` char(1) NOT NULL,
-  `thumbUrl` varchar(100) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `user`
---
-
-INSERT INTO `user` (`id`, `email`, `password`, `nick`, `name`, `lastname`, `birthday`, `gender`, `thumbUrl`) VALUES
-(8, 'armandito@gmail.com', '365d5b8a9bb4ccd7fe8e986626b6afc5', 'asdasdasd', 'asdasd', 'asdasd', '0000-00-00', '1', ''),
-(9, 'aaaaaa', '0b4e7a0e5fe84ad35fb5f95b9ceeac79', 'aaaaaa', 'aaaaaa', 'aaaaaa', '0000-00-00', '1', ''),
-(11, 'nicocarnebia@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'anonymus', 'Junior', 'Bahiano', '1970-01-01', '0', 'anonymus/thumb.png'),
-(12, 'arlequin1234@GeeMail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Azaraza', '123456esMyPass', 'SoyUnRaulito.com', '2015-05-07', '1', 'Azaraza/thumb.png');
+  `thumbUrl` varchar(100) NOT NULL,
+  `confirm_token` varchar(255) NOT NULL,
+  `active` tinyint(2) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -204,17 +164,7 @@ CREATE TABLE IF NOT EXISTS `video` (
   `date` date NOT NULL,
   `durationInSeconds` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `video`
---
-
-INSERT INTO `video` (`id`, `idChannel`, `name`, `link`, `date`, `durationInSeconds`, `active`) VALUES
-(3, 8, 'Unjustice for jason', '6kqTcLwUYj8', '2015-05-24', 2000, 1),
-(5, 8, 'Cliff em all', 'dmvFZpROrJQ', '2015-05-24', 123123, 1),
-(14, 8, 'videos en peligro', 'n75iVg5meAA', '2015-05-24', 123, 1),
-(15, 9, 'Who is Jhon NAsh', 'cFjy0e7_D8Y', '2015-05-27', 123, 1);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -227,14 +177,6 @@ CREATE TABLE IF NOT EXISTS `videoplaylist` (
   `idPlaylist` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `videoplaylist`
---
-
-INSERT INTO `videoplaylist` (`idVideo`, `idPlaylist`) VALUES
-(14, 1),
-(15, 1);
-
 -- --------------------------------------------------------
 
 --
@@ -245,15 +187,6 @@ CREATE TABLE IF NOT EXISTS `videotag` (
   `idVideo` int(11) NOT NULL,
   `idTag` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `videotag`
---
-
-INSERT INTO `videotag` (`idVideo`, `idTag`) VALUES
-(14, 1),
-(14, 2),
-(15, 11);
 
 -- --------------------------------------------------------
 
@@ -266,14 +199,6 @@ CREATE TABLE IF NOT EXISTS `viewhistory` (
   `idVideo` int(11) NOT NULL,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `viewhistory`
---
-
-INSERT INTO `viewhistory` (`idUser`, `idVideo`, `date`) VALUES
-(11, 3, '2015-06-01 00:00:00'),
-(11, 3, '2015-06-01 00:15:55');
 
 --
 -- Índices para tablas volcadas
@@ -359,17 +284,17 @@ ALTER TABLE `viewhistory`
 -- AUTO_INCREMENT de la tabla `channel`
 --
 ALTER TABLE `channel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `tag`
 --
@@ -379,12 +304,12 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `video`
 --
 ALTER TABLE `video`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
