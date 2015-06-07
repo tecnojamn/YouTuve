@@ -43,8 +43,23 @@ class Channel_model extends MY_Model {
 
     public function selectById($id) {
         $conditions["id"] = $id;
+<<<<<<< HEAD
         $this->search($conditions, $this->table, 1, 0);
         //return data
+=======
+        $result = $this->search($conditions);
+        if (count($result) > 0) {
+            $channel = new ChannelDTO;
+            $channel->idUser = $result[0]->idUser;
+            $channel->description = $result[0]->description;
+            $channel->name = $result[0]->name;
+            $channel->id = $id;
+            $channel->frontImgUrl = $result[0]->frontImgUrl;
+            return $channel;
+        } else {
+            return false;
+        }
+>>>>>>> origin/mail-branch
     }
 
     /**
