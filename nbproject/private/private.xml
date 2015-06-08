@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/classes/ViewHistoryDTO.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/axviews/ax_load_channels.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/ViewHistory.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/playlist_layout.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/user_layout.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/history_layout.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/models/viewshistory_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Welcome.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/views/login_layout.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/css/style.css</file>
         </group>
     </open-files>
 </project-private>

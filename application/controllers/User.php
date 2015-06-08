@@ -188,6 +188,46 @@ class User extends MY_Controller {
         }
     }
 
+    public function mailForgotPassword() {
+        $this->load->helper("email_content");
+        $this->load->library("email");
+        $this->load->model('user_model');
+        $mail = $this->input->post("email");
+        if (isset($mail) && $mail !== "") {
+            $mailExists = $this->user_model->emailExists($mail);
+            $data["error"] = 1;
+            $data["error_message"] = "Email enviado correctamente";
+
+            if ($mailExists) {
+                $valCode = valCode();
+                $to = $email;
+                $mailContent = forgotPasswordMail($valCode, $email);
+                //FALTA INGRESARLE EL CODIGO AL USER
+                //y hacer la validacion
+                $this->load->view('forgot_layout', $data);
+                return;
+            }
+        }
+        show_404();
+    }
+
+    public function forgotPassword() {
+        $this->load->view('forgot_layout');
+    }
+
+    public function validate($code) {
+        if ($code !== NULL && $code !== "") {
+            $this->load->model('user_model');
+            $res = $this->user_model->validate($code);
+            if ($res) {
+                redirect('/?vd=1', 'refresh');
+                return;
+            }
+            show_404();
+            return;
+        }
+    }
+
     /**
      * Persiste un user en la BD 
      */
@@ -227,11 +267,15 @@ class User extends MY_Controller {
             $thumbUrl = "";
 //inserta y redirige a algun lado todavia no sabemos
             $valCode = valCode();
-            if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl)) {
+            if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
                 $to = $email;
                 $mailContent = validationMail($name, $valCode, $email);
-                $this->email->sendMail($to, $mailContent->message, $mailContent->subject);
-//muestra alguna pagina todavia no sabemos cual
+                //NO ES NECESARIO$this->email->sendMail($to, $mailContent->message, $mailContent->subject);
+                if ($mailContent) {
+                    $data["error"] = 0;
+                    redirect('/?ms=1', 'refresh');
+                    return;
+                }
                 $data["error"] = 0;
                 redirect('/', 'refresh');
                 return;
@@ -263,7 +307,7 @@ class User extends MY_Controller {
         if ($this->user_model->followChannel($userId, $channelId)) {
             //Envio de Email al dueño del canal NO ANDA
             //Falta el mail
-           // newFollowMail($userId, $channelId);
+            // newFollowMail($userId, $channelId);
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {
@@ -325,4 +369,5 @@ class User extends MY_Controller {
             $this->load->view('change_password_layout', $data);
         }
     }
+
 }
