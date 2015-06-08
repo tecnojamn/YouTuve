@@ -21,6 +21,19 @@ $this->load->helper('url');
                         $("#lastVideos").hide().fadeIn(1000).append(data.html);
                     }
                 }, "json");
+
+                $("#seeMorelastVideos").click(function (e) {
+                    e.preventDefault();
+                    $("#lastVideos").animate({
+                        left: "-=1500"
+                    }, 1000, function () {
+                        var href = $("#seeMorelastVideos").attr("data-href");
+                        window.location = href;
+                    });
+
+                });
+                seeMorelastVideos
+
                 //carga videos mas votados
                 $.post("<?php echo base_url(); ?>video/getVideosAx",
                         {orderBy: 'rate'},
@@ -79,7 +92,7 @@ $this->load->helper('url');
                 <a style="  float: right;
                    position: relative;
                    top: -40px;
-                   left: -50px;" data-href="<?php echo base_url(); ?>video/showList?orderBy=date" href="#" style="float: right">Ver mas</a>
+                   left: -50px;" id="seeMorelastVideos" data-href="<?php echo base_url(); ?>video/showList?orderBy=date" href="#" style="float: right">Ver mas</a>
             </div></div>
         <div class="row"style="
              padding: 0 30px;

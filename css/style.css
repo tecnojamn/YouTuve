@@ -141,7 +141,9 @@ body{
 
 }
 
-
+.well{
+    position: relative;
+}
 .well-blue{
     border-top: 1px solid #76a7fa;
     -webkit-box-shadow: inset 0 2px 0 #76a7fa;
