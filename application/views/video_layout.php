@@ -17,8 +17,10 @@ $this->load->helper('url');
 
     <body>
         <script>
+            var videoId = <?php echo $video->id ?>;
             var commentPage = 0;
             var commentsEnded = false;
+            var isLoadPlis = false;
             $(document).ready(function () {
                 loadComments();
                 $("#loadMoreComments").click(function (e) {
@@ -58,16 +60,41 @@ $this->load->helper('url');
                     e.preventDefault();
                     $("#addToPlHolder").toggle();
                     if ($("#addToPlHolder").css("display") === "block") {
-                        loadPls();
+                        if (!isLoadPlis) {
+                            loadPls();
+                            isLoadPlis = true;
+                        }
                     }
                 });
                 function loadPls() {
+                    $("#addPlList li").each(function () {
+                        $(this).remove();
+                    });
                     $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
                         if (data.result === "true") {
                             $("#addPlList").append(data.html);
                         }
                     }, "json");
                 }
+                $("#addNewPl").click(function (e) {
+                    e.preventDefault();
+                    var playlistName = $("#addPlNewName").val();
+                    $.get("<?php echo base_url(); ?>Playlist/addAx", {pl_name: playlistName}, function (data) {
+                        if (data.result) {
+                            $.get("<?php echo base_url() ?>Playlist/addVideoAx", {vid: videoId, plname: playlistName}, function (data) {
+                                if (data.result) {
+                                    $("#addPlNewName").val('');
+                                    loadPls();
+                                    $("body").append(data.html);
+                                    $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
+                                    setTimeout(function () {
+                                        $('#messageBox').remove();
+                                    }, 2001);
+                                }
+                            }, "json");
+                        }
+                    }, "json");
+                });
 <?php if (!$isMyVideo) { ?>
 
                     $("#followHisAss").click(function (e) {

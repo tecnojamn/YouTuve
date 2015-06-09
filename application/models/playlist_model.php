@@ -68,34 +68,42 @@ class Playlist_model extends MY_Model {
     }
 
     public function selectByName($name) {
-        $this->db->select("isWatchLater, video.id, idChannel, video.name, link, date, durationInSeconds, active, playlist.id as pid");
-        $this->db->join("video", "video.id = videoplaylist.idVideo");
-        $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
-        $conditions["playlist.name"] = $name;
-        $this->search($conditions, "videoplaylist");
-        $PlayList = new PlaylistListDTO();
-        $videoList = new VideoListDto();
-        $PlayList->isWatchLater = $result[0]->isWatchLater;
-        $PlayList->id = $result[0]->pid;
-        $PlayList->name = $name;
-        foreach ($result as $row) {
-            $video = new VideoDTO();
-            $video->id = $row->video . id;
-            $video->idChannel = $row->idChannel;
-            $video->name = $row->name;
-            $video->link = $row->link;
-            $video->date = $row->date;
-            $video->duration = $row->durationInSeconds;
-            $video->active = $row->active;
-            $videoList->addVideo($video);
+        $condition["Name"] = $name;
+        $result = $this->search($condition);
+        if (count($result) > 0) {
+            $PlayList = new PlaylistDTO();
+            $PlayList->isWatchLater = $result[0]->isWatchLater;
+            $PlayList->id = $result[0]->id;
+            $PlayList->name = $name;
+
+            $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, active");
+            $this->db->join("video", "video.id = videoplaylist.idVideo");
+            $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
+            $conditions["playlist.id"] = $PlayList->id;
+            $result = $this->search($conditions, "videoplaylist");
+            if (count($result) > 0) {
+                $videoList = new VideoListDto();
+                foreach ($result as $row) {
+                    $video = new VideoDTO();
+                    $video->id = $row->id;
+                    $video->idChannel = $row->idChannel;
+                    $video->name = $row->name;
+                    $video->link = $row->link;
+                    $video->date = $row->date;
+                    $video->duration = $row->durationInSeconds;
+                    $video->active = $row->active;
+                    $videoList->addVideo($video);
+                }
+                $PlayList->videos = $videoList;
+            }
+            return $PlayList;
         }
-        $PlayList->videos = $videoList;
-        return $PlayList;
+        return FALSE;
     }
 
     public function addVideoToPlaylist($idPlaylist, $idVideo) {
         $data["idPlaylist"] = $idPlaylist;
-        $data["idVideo"] = $idUser;
+        $data["idVideo"] = $idVideo;
         $result = $this->insert($data, "videoplaylist");
         return ($result > 0) ? true : false;
     }
@@ -135,6 +143,20 @@ class Playlist_model extends MY_Model {
             $PlaylistList->addPlayList($Playlist);
         }
         return $PlaylistList;
+    }
+
+    //chequea si existe el video en la playlist
+    public function checkIfExist($videoId, $playlistName) {
+        $condition['video.id'] = $videoId;
+        $condition['playlist.name'] = $videoId;
+        $this->db->join("videoplaylist", "playlist.id = videoplaylist.idPlaylist");
+        $this->db->join("video", "video.id = videoplaylist.idVideo");
+        $result = $this->search($condition);
+        if (count($result) > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
 }
