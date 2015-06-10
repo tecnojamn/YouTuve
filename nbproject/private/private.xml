@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Welcome.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/login_layout.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/css/style.css</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/models/user_model.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/helpers/email_content_helper.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/models/channel_model.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
         </group>
     </open-files>
 </project-private>
