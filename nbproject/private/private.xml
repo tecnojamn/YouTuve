@@ -7,6 +7,7 @@
             <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/User.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/helpers/email_content_helper.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/models/channel_model.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/register_layout.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
         </group>
     </open-files>
