@@ -59,7 +59,6 @@ class Channel_model extends MY_Model {
         } else {
             return false;
         }
-
     }
 
     /**
@@ -172,28 +171,52 @@ class Channel_model extends MY_Model {
     }
 
     public function selectChannelsByUser($idUser, $limit, $offset, $videoData = false) {
-            $cond["follower.idUser"] = $idUser;
-            $this->db->select("channel.id as id, channel.name as name, channel.description as description, channel.frontImgUrl as frontImgUrl, user.nick as nick"); 
-            $this->db->join("channel", "follower.IdChannel = channel.id");
-            $this->db->join("user","follower.idUser = user.id");
-            $this->db->limit($limit, $offset);
-            $result = $this->search($cond, "follower");
-            $channelList = new ChannelListDTO();
-            
-            foreach ($result as $row) {
-                $channel = new ChannelDTO();
-                $channel->id = $row->id;
-                $channel->name = $row->name;
-                $channel->description = $row->description;
-                $channel->frontImgUrl = $row->frontImgUrl;
-                $channel->username = $row->nick;
-                if ($videoData) {
-                    $resultV = $this->selectByIdChannel($channel->id);
-                    $channel->videos = $resultV->videos;
-                }
-                $channelList->addChannel($channel);
+        $cond["follower.idUser"] = $idUser;
+        $this->db->select("channel.id as id, channel.name as name, channel.description as description, channel.frontImgUrl as frontImgUrl, user.nick as nick");
+        $this->db->join("channel", "follower.IdChannel = channel.id");
+        $this->db->join("user", "follower.idUser = user.id");
+        $this->db->limit($limit, $offset);
+        $result = $this->search($cond, "follower");
+        $channelList = new ChannelListDTO();
+
+        foreach ($result as $row) {
+            $channel = new ChannelDTO();
+            $channel->id = $row->id;
+            $channel->name = $row->name;
+            $channel->description = $row->description;
+            $channel->frontImgUrl = $row->frontImgUrl;
+            $channel->username = $row->nick;
+            if ($videoData) {
+                $resultV = $this->selectByIdChannel($channel->id);
+                $channel->videos = $resultV->videos;
             }
-            return $channelList;
+            $channelList->addChannel($channel);
         }
+        return $channelList;
     }
-    
+
+    //Devuelve todos los seguidores de un canal
+    public function getFollower($idChannel) {
+        $condition["idChannel"] = $idChannel;
+        $this->db->join("user", "user.id=follower.idUser");
+        $res = $this->search($condition, "follower");
+        $count = 0;
+        if ($res == NULL) {
+            return FALSE;
+        }
+        foreach ($res as $row) {
+            $user = new UserDTO();
+            $user->id = $row->id;
+            $user->name = $row->name;
+            $user->nick = $row->nick;
+            $user->email = $row->email;
+            $user->gender = $row->gender;
+            $user->lastname = $row->lastname;
+            $user->birthday = $row->birthday;
+            $userList[$count] = $user;
+            $count++;
+        }
+        return $userList;
+    }
+
+}

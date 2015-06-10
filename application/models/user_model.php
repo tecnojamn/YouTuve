@@ -98,8 +98,12 @@ class User_model extends MY_Model {
 
     public function emailExists($mail) {
         $condition["email"] = $mail;
-        return $this->search($condition);
-        //return
+        $result = $this->search($condition);
+        if(count($result) > 0){
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function authorize($email, $password) {
