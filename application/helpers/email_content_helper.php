@@ -27,7 +27,7 @@ if (!function_exists('forgotPasswordMail')) {
         $CI->load->library("email");
         $message = "<h2>Este mail tiene el motivo de cambiar tu contraseña.</h2><br>"
                 . "<p>Para confirmar tu cuenta debe hacer click en el link que se encuentra debajo</p><br>"
-                . "<a href='" . base_url() . "User/validateNewPassword/" . $valCode . "'>Click aqui para activar cuenta</a>";
+                . "<a href='" . base_url() . "User/changeForgottenPassword/" . $valCode . "'>Click aqui para activar cuenta</a>";
         $subject = "Correo de confirmacion YouTuve";
         $ret = $CI->email->sendMail($email, $message, $subject);
         return $ret;

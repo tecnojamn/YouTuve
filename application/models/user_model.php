@@ -25,6 +25,13 @@ class User_model extends MY_Model {
         return ($result > 0) ? true : false;
     }
 
+    public function updateValidationCode($mail, $code) {
+        $upd["confirm_token"] = $code;
+        $conditions["email"] = $mail;
+        $r = $this->update($upd, $conditions);
+        return ($r > 0) ? true : false;
+    }
+
     /**
      * muy poco seguro pero safa lindo
      * 
@@ -32,6 +39,21 @@ class User_model extends MY_Model {
      */
     public function validate($code) {
         $upd["active"] = 1;
+        $upd["confirm_token"] = "";
+        $conditions["confirm_token"] = $code;
+        $r = $this->update($upd, $conditions);
+        return ($r > 0) ? true : false;
+    }
+
+    /**
+     * muy poco seguro pero safa lindo
+     * 
+     * 
+     */
+    public function changePasswordByCode($code, $newPass) {
+        $upd["active"] = 1;
+        $upd["password"] = $newPass;
+        $upd["confirm_token"] = "";
         $conditions["confirm_token"] = $code;
         $r = $this->update($upd, $conditions);
         return ($r > 0) ? true : false;
@@ -72,6 +94,30 @@ class User_model extends MY_Model {
             $user->birthday = $result[0]->birthday;
             $user->gender = $result[0]->gender;
             $user->utlThumb = $result[0]->thumbUrl;
+            $user->confirmToken = $result[0]->confirm_token;
+            return $user;
+        }
+        return FALSE;
+    }
+
+    public function selectByEmail($email) {
+        $condition["email"] = $email;
+
+        $this->search($condition);
+        //return
+
+        $result = $this->search($condition);
+        if (count($result > 0)) {
+            $user = new UserDTO();
+            $user->id = $result[0]->id;
+            $user->email = $result[0]->email;
+            $user->nick = $result[0]->nick;
+            $user->name = $result[0]->name;
+            $user->lastname = $result[0]->lastname;
+            $user->birthday = $result[0]->birthday;
+            $user->gender = $result[0]->gender;
+            $user->utlThumb = $result[0]->thumbUrl;
+            $user->confirmToken = $result[0]->confirm_token;
             return $user;
         }
         return FALSE;

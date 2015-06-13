@@ -16,6 +16,7 @@ class UserDTO {
     public $birthday;
     public $gender;
     public $utlThumb;
+    public $confirmToken;
 
     function __construct() {
         
