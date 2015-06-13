@@ -171,6 +171,7 @@ class Channel_model extends MY_Model {
         return $channel;
     }
 
+<<<<<<< HEAD
     public function selectChannelsByUser($idUser, $limit, $offset, $videoData = false) {
             $cond["follower.idUser"] = $idUser;
             $this->db->select("channel.id as id, channel.name as name, channel.description as description, channel.frontImgUrl as frontImgUrl, user.nick as nick"); 
@@ -197,3 +198,29 @@ class Channel_model extends MY_Model {
         }
     }
     
+=======
+    public function getChannelByNameLike($query, $limit, $offset) {
+        $this->db->select("channel.*, user.id as userId, user.name as userName");
+        $this->db->like("channel.name", $query);
+        $this->db->join("user", "channel.idUser=user.id");
+        $this->db->limit($limit, $offset);
+        $result = $this->search();
+        if (count($result) < 1) {
+            return false;
+        }
+        $channelList = new ChannelListDTO();
+        foreach ($result as $row) {
+            $channel = new ChannelDTO();
+            $channel->id = $row->id;
+            $channel->name = $row->name;
+            $channel->description = $row->description;
+            $channel->frontImgUrl = $row->frontImgUrl;
+            $channel->idUser = $row->idUser;
+            $channel->username = $row->userName;
+            $channelList->addChannel($channel);
+        }
+        return $channelList;
+    }
+
+}
+>>>>>>> origin/search-channel

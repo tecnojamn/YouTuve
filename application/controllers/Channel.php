@@ -43,6 +43,7 @@ class Channel extends MY_Controller {
         show_404();
         return;
     }
+<<<<<<< HEAD
 
     public function getFromUserAX() {
         if (!$this->isAuthorized()) {
@@ -77,4 +78,22 @@ class Channel extends MY_Controller {
         return;
     }
 
+=======
+    public function searchMoreChannelAX() {
+        $this->load->model("video_model");
+        $searchText = $this->input->post("searchText");
+        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
+        $searchPage = ($searchPage > 0) ? $searchPage : 1;
+        $videos = $this->video_model->getVideosByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if ($videos) {
+            $data["videos"] = $videos;
+            $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
+            $arr = array('result' => 'true', 'html' => $formString);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
+    }
+>>>>>>> origin/search-channel
 }
