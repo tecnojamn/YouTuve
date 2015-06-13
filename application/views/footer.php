@@ -1,10 +1,9 @@
 <footer>
-    <div class="row">
-        <div class="col-lg-12">
-            This is the footer
+    <div class="row" style="padding: 0 30px;">
+        <div class="col-lg-12 well well-blue" style="margin:0">
 
-            <p>Code released under the <a href="https://github.com/thomaspark/bootswatch/blob/gh-pages/LICENSE">MIT License</a>.</p>
-            <p>Based on <a href="http://getbootstrap.com" rel="nofollow">Bootstrap</a>. Icons from <a href="http://fortawesome.github.io/Font-Awesome/" rel="nofollow">Font Awesome</a>. Web fonts from <a href="http://www.google.com/webfonts" rel="nofollow">Google</a>.</p>
+            <p>Hecho por Nicolás Carnebia, Julio Grajales,Maxi Sosa y Andres Peña </p>
+            <p>CopyRight 2015, todos los derechos los afanamos.</p>
 
         </div>
     </div>
