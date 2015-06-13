@@ -181,6 +181,14 @@ class Video extends MY_Controller {
         $this->load->model("channel_model");
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
+
+        if ($channels != null) {
+            foreach ($channels->list as $ch) {
+                if ($ch->frontImgUrl === "") {
+                    $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
+                }
+            }
+        }
         $data["searched_query"] = $search;
         $data["searched_videos"] = $videos;
         $data["searched_channels"] = $channels;

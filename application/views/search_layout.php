@@ -41,7 +41,7 @@ $this->load->helper('url');
             function loadMoreChannels() {
                 curr_page_channel = curr_page_channel + 1;
                 can_load_more_channel = false;
-                $.post("<?php echo base_url(); ?>video/searchMoreChannelAX", {searchPage: curr_page_video, searchText: '<?php echo $searched_query ?>'},
+                $.post("<?php echo base_url(); ?>channel/searchMoreChannelAX", {searchPage: curr_page_video, searchText: '<?php echo $searched_query ?>'},
                 function (data) {
                     if (data.result === 'true') { //si el resultado es verdadero lo agrego
                         $("#channels").append(data.html);
@@ -84,74 +84,103 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="row" style="padding: 0 15px;">
-            <div class="col-lg-12" id="videos">
 
-        <div class="col-lg-12">
-            <div id="profile-nav" style="height: 40px;
-                 background: rgb(255, 255, 255);
-                 padding: 0px 15px;">
-                <ul style=" width: 400px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
-                    <li  data-toggle="tab"   class="active" style="display: inline;" id="videoBtn"><a data-toggle="tab"  href="#" >Videos</a></li>
-                    <li  data-toggle="tab"   style="display: inline;" id="channelBtn"><a  data-toggle="tab"   href="#" >Canales</a></li>
 
-                </ul>   
+            <div class="col-lg-12" style="margin-bottom: 10px;">
+                <div id="profile-nav" style="height: 40px;
+                     background: rgb(255, 255, 255);
+                     padding: 0px 15px;">
+                    <ul style=" width: 250px;list-style-type: none;margin: 0;padding: 0;margin:0 auto; list-style: none;">
+                        <li  data-toggle="tab"   class="active" style="display: inline;" id="videoBtn"><a data-toggle="tab"  href="#" >Videos</a></li>
+                        <li  data-toggle="tab"   style="display: inline;" id="channelBtn"><a  data-toggle="tab"   href="#" >Canales</a></li>
 
+                    </ul>   
+
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8" id="videos">
+            <div class="row">
+                <div class="col-lg-8" style="padding:0 15px;"id="videos">
 
-                <?php
-                if ($searched_videos) {
-                    foreach ($searched_videos->list as $video) {
+                    <?php if ($searched_videos) { ?>
+                        <div class = "col-lg-12 well" style = "overflow: hidden;
+                             background-color: transparent;
+                             border: none;
+                             min-height: 800px;">
+
+                            <?php
+                            foreach ($searched_videos->list as $video) {
+                                ?>
+
+                                <div class = "col-lg-12 well well-red" style = "overflow: hidden;">
+                                    <div class = "col-lg-3">
+                                        <a href = "<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
+                                            <img src = "http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style = "width:100%">
+                                        </a></div>
+                                    <div class = "col-lg-9"><label ><?php echo $video->name
+                                ?></label> <br>
+                                        <a href="#" ><?php echo $video->channelName ?></a> <br>
+                                        <label >Publicado el <?php echo $video->date ?></label></div>
+                                </div>
+                                <?php
+                            }
+                            ?></div><?php
+                    } else {
                         ?>
 
-                        <div class="col-lg-12 well well-red" style="overflow: hidden;">
-                            <div class="col-lg-3">
-                                <a href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
-                                    <img src="http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style="width: 238px;height: 238px;float: left;">
-                                </a></div>
-                            <div class="col-lg-9"><label ><?php echo $video->name ?></label> <br>
-                                <a href="#" ><?php echo $video->channelName ?></a> <br>
-                                <label >Publicado el <?php echo $video->date ?></label></div>
-
-                        <div class="col-lg-12" style="border: 1px solid rgb(216, 216, 216);background-color: white;padding: 12px;margin-bottom: 12px;">
-                            <a href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
-                                <img src="http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                            </a>
-                            <label ><?php echo $video->name ?></label> <br>
-                            <a href="#" ><?php echo $video->channelName ?></a> <br>
-                            <label >Publicado el <?php echo $video->date ?></label>
-
+                        <div class = "col-lg-12 well" style = "overflow: hidden;
+                             background-color: transparent;
+                             border: none;
+                             min-height: 800px;">
+                            <div class = "col-lg-12 well well-yellow" style = "overflow: hidden;">
+                                La busqueda concluyo sin videos
+                            </div>
                         </div>
-                        <?php
-                    }
-                } else {
-                    echo "No hat videos para mostrar";
-                }
-                ?>
-            </div>
-            <div class="col-lg-8" id="channels">
-                <?php
-                if ($searched_channels) {
-                    foreach ($searched_channels->list as $channel) {
+                    <?php }
+                    ?>
+                </div>
+                <div class="col-lg-8" style="padding:0 15px;" id="channels">
+
+                    <?php
+                    if ($searched_channels != null && $searched_channels->list != null) {
+                        ?> <div class = "col-lg-12 well" style = "overflow: hidden;
+                             background-color: transparent;
+                             border: none;
+                             min-height: 800px;">
+
+                            <?php foreach ($searched_channels->list as $c) {
+                                ?>
+                                <div class="col-lg-12 well well-green" style="  height: auto;
+                                     overflow: hidden;
+                                     padding: 20px;
+                                     margin-bottom: 20px;">
+                                    <div style="  padding: 10px;"class="col-lg-10">
+                                        <p style="  font-size: 16px;
+                                           font-weight: bold;"><a href="<?php echo base_url(); ?>Channel/view/<?php echo $c->id ?>"><?php echo $c->name ?></a></p>
+                                        <p><?php echo $c->description ?></p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <a  href="<?php echo base_url(); ?>channel/view/<?php echo $c->id ?>">
+                                            <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo $c->frontImgUrl ?>"/></a>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?></div><?php
+                    } else {
                         ?>
-                        <div class="col-lg-12" style="border: 1px solid rgb(216, 216, 216);background-color: white;padding: 12px;margin-bottom: 12px;">
-                            <a href="<?php echo base_url(); ?>channel/view/<?php echo $channel->id ?>">
-                                <img src="<?php echo $channel->frontImgUrl ?>" style="width: 100px;height: 100px;float: left;" alt="<?php echo $channel->name ?>">
-                            </a>
-                            <label ><?php echo $video->name ?></label> <br>
-                            <a href="#" ><?php echo $video->channelName ?></a> <br>
-                            <label >Publicado el <?php echo $video->date ?></label>
+
+                        <div class = "col-lg-12 well" style = "overflow: hidden;
+                             background-color: transparent;
+                             border: none;
+                             min-height: 800px;">
+                            <div class = "col-lg-12 well well-red" style = "overflow: hidden;">
+                                La busqueda concluyo sin canales
+                            </div>
                         </div>
-                        <?php
-                    }
-                } else {
-                    echo "No hay canales para mostrar";
-                }
-                ?>
+                    <?php }
+                    ?>
+                </div>
             </div>
-        </div>
-        <?php $this->load->view('footer'); ?>
+            <?php $this->load->view('footer'); ?>
     </body>
 </html>

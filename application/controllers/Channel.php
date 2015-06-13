@@ -84,6 +84,11 @@ class Channel extends MY_Controller {
         $searchPage = ($searchPage > 0) ? $searchPage : 1;
         $videos = $this->video_model->getVideosByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
         if ($videos) {
+            foreach ($channels->list as $ch) {
+                if ($ch->frontImgUrl === "") {
+                    $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
+                }
+            }
             $data["videos"] = $videos;
             $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
             $arr = array('result' => 'true', 'html' => $formString);
