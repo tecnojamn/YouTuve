@@ -129,20 +129,21 @@ class Playlist_model extends MY_Model {
         $this->db->limit($limit, $offset);
         $result = $this->search($cond);
         $PlaylistList = new PlaylistListDTO();
-
-        foreach ($result as $row) {
-            $Playlist = new PlaylistDTO;
-            $Playlist->id = $row->id;
-            $Playlist->name = $row->name;
-            $Playlist->isWatchLater = $row->isWatchLater;
-            $Playlist->created_date = $row->created_date;
-            if ($videoData) {
-                $resultV = $this->selectById($Playlist->id);
-                $Playlist->videos = $resultV->videos;
+        if ($result) {
+            foreach ($result as $row) {
+                $Playlist = new PlaylistDTO;
+                $Playlist->id = $row->id;
+                $Playlist->name = $row->name;
+                $Playlist->isWatchLater = $row->isWatchLater;
+                $Playlist->created_date = $row->created_date;
+                if ($videoData) {
+                    $resultV = $this->selectById($Playlist->id);
+                    $Playlist->videos = $resultV->videos;
+                }
+                $PlaylistList->addPlayList($Playlist);
             }
-            $PlaylistList->addPlayList($Playlist);
-        }
-        return $PlaylistList;
+            return $PlaylistList;
+        }return false;
     }
 
     //chequea si existe el video en la playlist

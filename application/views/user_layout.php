@@ -28,10 +28,13 @@ $this->load->helper('url');
 
                             plFirstLoad = 1;
                             $.get("<?php echo base_url(); ?>Playlist/getFromUserAX", function (data) {
-
                                 if (data.result === 'true') {
                                     $("#my_lists .progress").delay(1000).hide();
                                     $("#listHolder").append(data.html);
+                                } else {
+
+                                    $("#my_lists .progress").delay(1000).hide();
+                                    $("#listHolder").append("No hay listas para mostrar");
                                 }
 
                             }, "json");
@@ -47,6 +50,9 @@ $this->load->helper('url');
                                 if (data.result === 'true') {
                                     $("#my_channel .progress").delay(1000).hide();
                                     $("#channelHolder").append(data.html);
+                                } else {
+                                    $("#my_channel .progress").delay(1000).hide();
+                                    $("#channelHolder").append("No hay Canales para mostrar");
                                 }
                             }, "json");
                         }

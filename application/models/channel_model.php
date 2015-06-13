@@ -177,22 +177,25 @@ class Channel_model extends MY_Model {
         $this->db->join("user", "follower.idUser = user.id");
         $this->db->limit($limit, $offset);
         $result = $this->search($cond, "follower");
-        $channelList = new ChannelListDTO();
+        if ($result) {
+            $channelList = new ChannelListDTO();
 
-        foreach ($result as $row) {
-            $channel = new ChannelDTO();
-            $channel->id = $row->id;
-            $channel->name = $row->name;
-            $channel->description = $row->description;
-            $channel->frontImgUrl = $row->frontImgUrl;
-            $channel->username = $row->nick;
-            if ($videoData) {
-                $resultV = $this->selectByIdChannel($channel->id);
-                $channel->videos = $resultV->videos;
+            foreach ($result as $row) {
+                $channel = new ChannelDTO();
+                $channel->id = $row->id;
+                $channel->name = $row->name;
+                $channel->description = $row->description;
+                $channel->frontImgUrl = $row->frontImgUrl;
+                $channel->username = $row->nick;
+                if ($videoData) {
+                    $resultV = $this->selectByIdChannel($channel->id);
+                    $channel->videos = $resultV->videos;
+                }
+                $channelList->addChannel($channel);
             }
-            $channelList->addChannel($channel);
+            return $channelList;
         }
-        return $channelList;
+        return false;
     }
 
     public function getChannelByNameLike($query, $limit, $offset) {

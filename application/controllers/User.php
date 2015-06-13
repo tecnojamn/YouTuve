@@ -232,6 +232,12 @@ class User extends MY_Controller {
                 $data["error_message"] = "Contraseña cambiada con exito, ya puedes iniciar sesión.";
                 $this->load->view('change_password_forgot_layout', $data);
                 return;
+            } else {
+                $data["error"] = 1;
+                $data["token"] = 'No-token';
+                $data["error_message"] = "No existe el token.";
+                $this->load->view('change_password_forgot_layout', $data);
+                return;
             }
         } else {
             $data["error"] = 1;
