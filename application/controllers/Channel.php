@@ -15,7 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Channel extends MY_Controller {
 
-    //put your code here
+//put your code here
     function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'url'));
@@ -43,7 +43,6 @@ class Channel extends MY_Controller {
         show_404();
         return;
     }
-<<<<<<< HEAD
 
     public function getFromUserAX() {
         if (!$this->isAuthorized()) {
@@ -59,14 +58,14 @@ class Channel extends MY_Controller {
         $channels = $this->channel_model->selectChannelsByUser($userId, PLAYLIST_PROFILE_LIMIT, ($page - 1) * PLAYLIST_PROFILE_LIMIT);
         if ($channels) {
 
-            //por ahora mostramos esto
+//por ahora mostramos esto
             foreach ($channels->list as $ch) {
                 if ($ch->frontImgUrl === "") {
                     $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
                 }
             }
             $data["channels"] = $channels;
-            //$data["playlist_image"] = base_url() . ALT_PLAYLIST_PIC;
+//$data["playlist_image"] = base_url() . ALT_PLAYLIST_PIC;
             $view = $this->load->view('axviews/ax_load_channels', $data, true);
             $arr = array('result' => 'true', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -78,7 +77,6 @@ class Channel extends MY_Controller {
         return;
     }
 
-=======
     public function searchMoreChannelAX() {
         $this->load->model("video_model");
         $searchText = $this->input->post("searchText");
@@ -95,5 +93,5 @@ class Channel extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => ''));
         return;
     }
->>>>>>> origin/search-channel
+
 }

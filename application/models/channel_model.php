@@ -45,7 +45,7 @@ class Channel_model extends MY_Model {
         $conditions["id"] = $id;
 
         $this->search($conditions, $this->table, 1, 0);
-        //return data
+//return data
 
         $result = $this->search($conditions);
         if (count($result) > 0) {
@@ -59,7 +59,6 @@ class Channel_model extends MY_Model {
         } else {
             return false;
         }
-
     }
 
     /**
@@ -82,28 +81,28 @@ class Channel_model extends MY_Model {
         }
     }
 
-    //devuelve true si pertenece a usuario
+//devuelve true si pertenece a usuario
     public function belongsToUser($idChannel, $idUser) {
         $conditions["idUser"] = $idUser;
         $conditions["id"] = $idChannel;
         $this->search($conditions, $this->table, 1, 0);
-        //return
+//return
     }
 
-    //devuelve true se pudo suscribir
+//devuelve true se pudo suscribir
     public function suscribeUser($idChannel, $idUser) {
         $data["idUser"] = $idUser;
         $data["id"] = $idChannel;
         $this->insert($data, "suggestion");
-        //return
+//return
     }
 
-    //devuelve true se pudo desuscribir
+//devuelve true se pudo desuscribir
     public function unsuscribeUser($idChannel, $idUser) {
         $data["idUser"] = $idUser;
         $data["id"] = $idChannel;
         $this->delete($data, "suggestion");
-        //return
+//return
     }
 
     public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
@@ -171,34 +170,31 @@ class Channel_model extends MY_Model {
         return $channel;
     }
 
-<<<<<<< HEAD
     public function selectChannelsByUser($idUser, $limit, $offset, $videoData = false) {
-            $cond["follower.idUser"] = $idUser;
-            $this->db->select("channel.id as id, channel.name as name, channel.description as description, channel.frontImgUrl as frontImgUrl, user.nick as nick"); 
-            $this->db->join("channel", "follower.IdChannel = channel.id");
-            $this->db->join("user","follower.idUser = user.id");
-            $this->db->limit($limit, $offset);
-            $result = $this->search($cond, "follower");
-            $channelList = new ChannelListDTO();
-            
-            foreach ($result as $row) {
-                $channel = new ChannelDTO();
-                $channel->id = $row->id;
-                $channel->name = $row->name;
-                $channel->description = $row->description;
-                $channel->frontImgUrl = $row->frontImgUrl;
-                $channel->username = $row->nick;
-                if ($videoData) {
-                    $resultV = $this->selectByIdChannel($channel->id);
-                    $channel->videos = $resultV->videos;
-                }
-                $channelList->addChannel($channel);
+        $cond["follower.idUser"] = $idUser;
+        $this->db->select("channel.id as id, channel.name as name, channel.description as description, channel.frontImgUrl as frontImgUrl, user.nick as nick");
+        $this->db->join("channel", "follower.IdChannel = channel.id");
+        $this->db->join("user", "follower.idUser = user.id");
+        $this->db->limit($limit, $offset);
+        $result = $this->search($cond, "follower");
+        $channelList = new ChannelListDTO();
+
+        foreach ($result as $row) {
+            $channel = new ChannelDTO();
+            $channel->id = $row->id;
+            $channel->name = $row->name;
+            $channel->description = $row->description;
+            $channel->frontImgUrl = $row->frontImgUrl;
+            $channel->username = $row->nick;
+            if ($videoData) {
+                $resultV = $this->selectByIdChannel($channel->id);
+                $channel->videos = $resultV->videos;
             }
-            return $channelList;
+            $channelList->addChannel($channel);
         }
+        return $channelList;
     }
-    
-=======
+
     public function getChannelByNameLike($query, $limit, $offset) {
         $this->db->select("channel.*, user.id as userId, user.name as userName");
         $this->db->like("channel.name", $query);
@@ -223,4 +219,3 @@ class Channel_model extends MY_Model {
     }
 
 }
->>>>>>> origin/search-channel

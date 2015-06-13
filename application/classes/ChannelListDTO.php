@@ -7,51 +7,39 @@
  */
 
 /**
-<<<<<<< HEAD
+  <<<<<<< HEAD
  * Description of ChannelListDTO
  *
  * @author maxi
  */
 class ChannelListDTO {
-    
-=======
- * Description of ChannelListDto
- *
- * @author Julito
- */
-class ChannelListDto {
 
->>>>>>> origin/search-channel
     public $list; //array
 
     function __construct() {
         
     }
 
-<<<<<<< HEAD
     function addChannel($channel) {
         if ($this->list == null) {
             $this->list[0] = $channel;
         } else {
             array_push($this->list, $channel);
         }
-=======
-    function addChannel($channelDto) {
+
+        function addChannel($channelDto) {
 //array_push no funciona sobre array vacios  
-        if ($this->list==null) {
-            $this->list[0] = $channelDto;
-        } else
-        array_push($this->list, $channelDto);
->>>>>>> origin/search-channel
+            if ($this->list == null) {
+                $this->list[0] = $channelDto;
+            } else
+                array_push($this->list, $channelDto);
+        }
+
+        function removeChannel($index) {
+            array_splice($this->list, $index, 1);
+        }
+
+        //put your code here
     }
 
-    function removeChannel($index) {
-        array_splice($this->list, $index, 1);
-    }
-<<<<<<< HEAD
-    //put your code here
 }
-=======
-
-}
->>>>>>> origin/search-channel
