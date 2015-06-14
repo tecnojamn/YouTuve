@@ -107,22 +107,40 @@ class Playlist extends MY_Controller {
             return;
         }
         $vidId = $this->input->get("vid");
-        $plId = $this->input->get("plid");
-        if ($vidId === null || $plId === null) {
+        $plname = $this->input->get("plname");
+        if ($vidId === null || $plname === null) {
             $arr = array('result' => 'false', 'html' => 'Error');
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
         $this->load->model('playlist_model');
-        $ins = $this->playlist_model->addVideoToPlaylist($plId, $vidId);
+        $playlist = $this->playlist_model->selectByName($plname);
+        if ($playlist == FALSE) {
+            $data["type"] = "error";
+            $data["messageText"] = "Playlist no existe";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'false', 'html' => $view);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        if ($this->playlist_model->checkIfExist($vidId, $plname)) {
+            $data["type"] = "error";
+            $data["messageText"] = "El video ya existe en playlist";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'false', 'html' => $view);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        $ins = $this->playlist_model->addVideoToPlaylist($playlist->id, $vidId);
         if ($ins) {
-            $arr = array('result' => 'true', 'html' => '');
+            $data["type"] = "message";
+            $data["messageText"] = "Se ha agregado correctamente";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'true', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         } else {
-            $arr = array('result' => 'false', 'html' => '');
-            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
-            return;
+            
         }
     }
 
@@ -139,7 +157,7 @@ class Playlist extends MY_Controller {
         $playlists = $this->playlist_model->selectPlaylistsByUser($userId, PLAYLIST_PROFILE_LIMIT, ($page - 1) * PLAYLIST_PROFILE_LIMIT);
         if ($playlists) {
             $data["playlists"] = $playlists;
-            $view = $this->load->view('axviews/ax_load_playlists_names', $data, true);
+            $view = $this->load->view('axviews/ax_load_playlists_addlist', $data, true);
             $arr = array('result' => 'true', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
@@ -150,4 +168,3 @@ class Playlist extends MY_Controller {
     }
 
 }
-
