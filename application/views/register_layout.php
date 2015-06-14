@@ -84,13 +84,6 @@ $this->load->helper('url');
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="passwordConf" class="col-lg-2 control-label" style="text-align: left">Confirmar password </label>
-                                <div class="col-lg-10">
-                                    <input class="form-control" type="password" placeholder="Confirmar password" name="passwordConf" id="passwordConf"/>
-                                    <?php echo form_error('passwordConf', '<div class="error">', '</div>'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label for="name" class="col-lg-2 control-label" style="text-align: left">Name </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Name" name="name" id="name"/>

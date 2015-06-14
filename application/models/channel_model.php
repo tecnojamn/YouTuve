@@ -108,7 +108,7 @@ class Channel_model extends MY_Model {
     public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
         $conditions["idChannel"] = $idChannel;
         $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, "
-                . "video.active, idUser, nick, thumbUrl");
+                . "active, idUser, nick, thumbUrl");
         $this->db->join("channel", "channel.id = video.idChannel");
         $this->db->join("user", "channel.idUser = user.id");
 

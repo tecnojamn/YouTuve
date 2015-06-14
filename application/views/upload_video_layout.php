@@ -50,22 +50,12 @@ $this->load->helper('url');
                     resetTagResults();
                     var val = $.trim(this.value);
                     var totalRes = 0;
-                    var checkTag = true;
                     if (val !== lastTagSearchVal && val.length > 0) {
                         lastTagSearchVal = val;
                         jQuery.each(tags.list, function (i, Obj) {
                             if (Obj.name.toLowerCase().indexOf(val.toLocaleLowerCase()) >= 0) {
-                                $(".littleTag").each(function () {
-                                    if ($(this).justText() === Obj.name) {
-                                        checkTag = false;
-                                    }
-                                });
-                                if (checkTag) {
-                                    totalRes++;
-                                    addToTagResults(Obj.id, Obj.name);
-                                } else {
-                                    checkTag = true;
-                                }
+                                totalRes++;
+                                addToTagResults(Obj.id, Obj.name);
                             }
                         });
                         if (totalRes > 0) {
@@ -81,15 +71,6 @@ $this->load->helper('url');
                     $("#tagResults").empty().hide();
                     var lastTagSearchVal = "";
                 }
-                //devuelve el texto del elemento sin el de sus hijos
-                jQuery.fn.justText = function () {
-                    return $(this).clone()
-                            .children()
-                            .remove()
-                            .end()
-                            .text();
-
-                };
             });
 
         </script>

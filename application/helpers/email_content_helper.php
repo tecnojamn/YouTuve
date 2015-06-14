@@ -74,14 +74,15 @@ if (!function_exists('newFollowMail')) {
         $CI->load->model('user_model');
         $CI->load->library('email');
         $userChannel = $CI->channel_model->selectByIdUser($userId);
-        $userFollower = $CI->user_model->selectById($userId);
-        $message = "<h2>El usuario " . $userFollower->nick . " ahora sigue tu canal</h2><br>"
+        $message = "<h2>El usuario " . $userChannel->name . " ahora sigue tu canal</h2><br>"
                 . "<p>Click </p>"
-                . "<a href='" . base_url() . "Channel/view/" . $userChannel->id . "'>aqui </a>"
+                . "<a href='" . base_url() . "Channel/" . $userChannel->id . "'>aqui </a>"
                 . "<p>para visitar su canal</p>";
         $subject = "Tienes un nuevo seguidor";
-        
         $channel = $CI->channel_model->selectByIdChannel($channelId);
+        $ret = $CI->email->sendMail($channel->email, $message, $subject);
+
+        $channel = $CI->channel_model->selectById($channelId);
         $user = $CI->user_model->selectById($channel->idUser);
         $ret = $CI->email->sendMail($user->email, $message, $subject);
 
