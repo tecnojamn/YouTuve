@@ -247,7 +247,8 @@ class User extends MY_Controller {
         $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
         $this->form_validation->set_rules('name', 'name', 'trim|required|min_length[4]|max_length[30]|alpha');
         $this->form_validation->set_rules('nick', 'nick', 'trim|required|min_length[4]|max_length[20]');
-        $this->form_validation->set_rules('password', 'password', 'trim|required|min_length[4]|max_length[60]');
+        $this->form_validation->set_rules('password', 'password', 'trim|required|min_length[4]|max_length[60]|matches[passwordConf]');
+        $this->form_validation->set_rules('passwordConf', 'passwordConf', 'trim|required|min_length[4]|max_length[60]');
         $this->form_validation->set_rules('lastname', 'lastname', 'trim|required|min_length[4]|max_length[30]|alpha');
         $this->form_validation->set_rules('birthday', 'birthday', 'trim|required');
         $this->form_validation->set_rules('gender', 'gender', 'trim|required');
@@ -313,7 +314,7 @@ class User extends MY_Controller {
         if ($this->user_model->followChannel($userId, $channelId)) {
             //Envio de Email al dueño del canal NO ANDA
             //Falta el mail
-            // newFollowMail($userId, $channelId);
+             newFollowMail($userId, $channelId);
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {

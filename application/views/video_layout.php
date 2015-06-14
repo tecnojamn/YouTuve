@@ -237,26 +237,6 @@ $this->load->helper('url');
                                 </ul>
                             </div>
                         </div>
-                        <div class="well  well-violet" id="featured_playlist" style="">
-                            more videos DATA GOES HERE
-                            <div id="ejemplo" style="
-                                 padding: 10px;
-                                 border: 1px solid rgb(229, 229, 229);
-                                 background: white;
-                                 height: 72px;
-                                 ">
-                                <div class="col-lg-12" style="">
-                                    <div class="col-lg-2" style="padding-left: 0;">
-                                        <img style="width:50px" src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/c0.0.160.160/p160x160/11009192_818517381568817_4645766960803896127_n.jpg?oh=76456d90d26ef050646244f30e606847&amp;oe=55C5D0C6&amp;__gda__=1443308820_eb0829a1b3510729d754bd28251cc1b0"> 
-                                    </div>
-                                    <div class="col-lg-10" style="padding-left: 0;">
-                                        <div style="padding: 0 20px;">
-                                            Video Nombre
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
