@@ -17,23 +17,28 @@ $this->load->helper('url');
         <script>
             var curr_page = 1;
             var paginator_ended = false;//fix para que no viaje
-            var can_load_more = true;//fix para que no viaje
+            //var can_load_more = true;//fix para que no viaje
             function loadMore() {
                 curr_page = curr_page + 1;
-                can_load_more = false;
-                $.post("<?php echo base_url(); ?>video/getMoreVideosAX", {searchPage: curr_page, orderBy: '<?php echo $orderby ?>'},
-                function (data) {
-                    if (data.result === 'true') { //si el resultado es verdadero lo agrego
-                        $("#videos").append(data.html);
-                    } else {
-                        paginator_ended = true;
-                        can_load_more = true;
-                    }
-                }, "json");
+                //can_load_more = false;
+                $.ajax({
+                    type: 'POST',
+                    url: "<?php echo base_url(); ?>video/getMoreVideosAX",
+                    data: {searchPage: curr_page, orderBy: '<?php echo $orderby ?>'},
+                    success: function (data) {
+                        if (data.result === 'true') { //si el resultado es verdadero lo agrego
+                            $("#videos").append(data.html);
+                        } else {
+                            paginator_ended = true;
+                        }
+                    },
+                    dataType: "json",
+                    async: false
+                });
             }
             function bindScroll() {
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-                    if (!paginator_ended && can_load_more)
+                    if (!paginator_ended)
                         loadMore();
                 }
             }

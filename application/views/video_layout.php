@@ -66,45 +66,46 @@ $this->load->helper('url');
                             }
                         }, "json");
                     });
-<?php } ?> $("#addToPlToggler").click(function (e) {
-                    e.preventDefault();
-                    $("#addToPlHolder").toggle();
-                    if ($("#addToPlHolder").css("display") === "block") {
-                        if (!isLoadPlis) {
-                            loadPls();
-                            isLoadPlis = true;
+                    $("#addToPlToggler").click(function (e) {
+                        e.preventDefault();
+                        $("#addToPlHolder").toggle();
+                        if ($("#addToPlHolder").css("display") === "block") {
+                            if (!isLoadPlis) {
+                                loadPls();
+                                isLoadPlis = true;
+                            }
                         }
-                    }
-                });
-                $("#addNewPl").click(function (e) {
-                    e.preventDefault();
-                    var playlistName = $("#addPlNewName").val();
-                    $.get("<?php echo base_url(); ?>Playlist/addAx", {pl_name: playlistName}, function (data) {
-                        if (data.result) {
-                            $.get("<?php echo base_url() ?>Playlist/addVideoAx", {vid: videoId, plname: playlistName}, function (data) {
-                                if (data.result) {
-                                    $("#addPlNewName").val('');
-                                    loadPls();
-                                    $("body").append(data.html);
-                                    $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
-                                    setTimeout(function () {
-                                        $('#messageBox').remove();
-                                    }, 2001);
-                                }
-                            }, "json");
-                        }
-                    }, "json");
-                });
-                function loadPls() {
-                    $("#addPlList li").each(function () {
-                        $(this).remove();
                     });
-                    $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
-                        if (data.result === "true") {
-                            $("#addPlList").append(data.html);
-                        }
-                    }, "json");
-                }
+                    $("#addNewPl").click(function (e) {
+                        e.preventDefault();
+                        var playlistName = $("#addPlNewName").val();
+                        $.get("<?php echo base_url(); ?>Playlist/addAx", {pl_name: playlistName}, function (data) {
+                            if (data.result) {
+                                $.get("<?php echo base_url() ?>Playlist/addVideoAx", {vid: videoId, plname: playlistName}, function (data) {
+                                    if (data.result) {
+                                        $("#addPlNewName").val('');
+                                        loadPls();
+                                        $("body").append(data.html);
+                                        $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
+                                        setTimeout(function () {
+                                            $('#messageBox').remove();
+                                        }, 2001);
+                                    }
+                                }, "json");
+                            }
+                        }, "json");
+                    });
+                    function loadPls() {
+                        $("#addPlList li").each(function () {
+                            $(this).remove();
+                        });
+                        $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
+                            if (data.result === "true") {
+                                $("#addPlList").append(data.html);
+                            }
+                        }, "json");
+                    }
+<?php } ?>
 <?php if (!$isMyVideo) { ?>
 
                     $("#followHisAss").click(function (e) {
@@ -254,16 +255,18 @@ $this->load->helper('url');
                                 ?>
                             </div>
                         </div>
-                        <div class="well well-red">
-                            <a id="addToPlToggler" href="#">Agregar a playlist</a>
-                            <div style="display:none" id="addToPlHolder">
-                                <input id="addPlNewName" type="text" data-name="plname" name="Artigas"/>
-                                <a href="#" id="addNewPl">Agregar nueva</a>
-                                <ul id="addPlList">
+                        <?php if ($log) { ?>
+                            <div class="well well-red">
+                                <a id="addToPlToggler" href="#">Agregar a playlist</a>
+                                <div style="display:none" id="addToPlHolder">
+                                    <input id="addPlNewName" type="text" data-name="plname" name="Artigas"/>
+                                    <a href="#" id="addNewPl">Agregar nueva</a>
+                                    <ul id="addPlList">
 
-                                </ul>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                        <?php } ?>
                     </div>
 
                 </div>
