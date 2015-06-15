@@ -10,7 +10,7 @@
             <nav class="navbar navbar-default">
 
                 <div class="navbar-header">                    
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true">
+                    <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -19,7 +19,7 @@
                     <a class="navbar-brand" href="<?php echo base_url(); ?>">YouTuve</a>
                 </div>
 
-                <div class="navbar-collapse  collapse in" id="bs-example-navbar-collapse-1" aria-expanded="true">
+                <div class="navbar-collapse  collapse" id="bs-example-navbar-collapse-1" aria-expanded="true">
                     <div class="col-md-6">
                         <form autocomplete="off" class="navbar-form navbar-left" role="search" action="<?php echo base_url(); ?>video/search" method="GET">
                             <div class="form-group">

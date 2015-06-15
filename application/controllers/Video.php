@@ -178,10 +178,20 @@ class Video extends MY_Controller {
         $page = ($this->input->get("page") !== NULL) ? $this->input->get("page") : 1;
         $page = ($page > 0) ? $page : 1;
         $this->load->model("video_model");
-        //var_dump(SEARCH_VIDEOS_LIMIT);
+        $this->load->model("channel_model");
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
+        $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
+
+        if ($channels != null) {
+            foreach ($channels->list as $ch) {
+                if ($ch->frontImgUrl === "") {
+                    $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
+                }
+            }
+        }
         $data["searched_query"] = $search;
         $data["searched_videos"] = $videos;
+        $data["searched_channels"] = $channels;
         $this->load->view("search_layout", $data);
 
 

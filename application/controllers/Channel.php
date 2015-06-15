@@ -76,5 +76,27 @@ class Channel extends MY_Controller {
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }
+//no funca aun
+    public function searchMoreChannelAX() {
+        $this->load->model("channel_model");
+        $searchText = $this->input->post("searchText");
+        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
+        $searchPage = ($searchPage > 0) ? $searchPage : 1;
+        $channels = $this->channel_model->getChannelsByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if ($channels) {
+            foreach ($channels->list as $ch) {
+                if ($ch->frontImgUrl === "") {
+                    $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
+                }
+            }
+            $data["chanels"] = $channels;
+            $formString = $this->load->view('axviews/ax_load_more_channels', $data, true);
+            $arr = array('result' => 'true', 'html' => $formString);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
+        echo json_encode(array('result' => 'false', 'html' => ''));
+        return;
+    }
 
 }

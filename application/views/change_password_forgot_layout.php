@@ -32,18 +32,25 @@ $this->load->helper('url');
                     <?php
                 }
                 ?>
-                <form autocomplete="off" action="<?php echo base_url(); ?>User/mailForgotPassword" method="post" class="form-horizontal">
+                <form autocomplete="off" action="<?php echo base_url(); ?>User/validateNewPassword" method="post" class="form-horizontal">
                     <div class="well col-lg-12">
                         <fieldset>
-                            <center><legend>Olvido de contraseña</legend></center>
+                            <center><legend>Cambio de contraseña</legend></center>
+                            <input type="hidden" name="forgot_token" value="<?php echo $token ?>"/>
                             <div class="form-group">
-                                <label for="oldPassword" class="col-lg-2 control-label" style="text-align: left">Contraseña</label>
+                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Nueva Contraseña</label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="email" placeholder="email" name="email" id="oldPassword"/>
-                                    <?php echo form_error('email', '<div class="error">', '</div>'); ?>
+                                    <input class="form-control" type="password" placeholder="Nueva Contraseña" name="password" id="password"/>
+                                    <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label for="passconf" class="col-lg-2 control-label" style="text-align: left">Confirme Contraseña</label>
+                                <div class="col-lg-10">
+                                    <input class="form-control" type="password" placeholder="Confirmación de nueva contraseña" name="passconf" id="passconf"/>
+                                    <?php echo form_error('passconf', '<div class="error">', '</div>'); ?>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-2">
                                     <button type="submit" class="btn btn-primary " value="Enter" name="whocares">Submit</button>

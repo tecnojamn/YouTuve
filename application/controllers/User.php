@@ -195,24 +195,58 @@ class User extends MY_Controller {
         $mail = $this->input->post("email");
         if (isset($mail) && $mail !== "") {
             $mailExists = $this->user_model->emailExists($mail);
-            $data["error"] = 1;
-            $data["error_message"] = "Email enviado correctamente";
-
             if ($mailExists) {
                 $valCode = valCode();
-                $to = $email;
-                $mailContent = forgotPasswordMail($valCode, $email);
-                //FALTA INGRESARLE EL CODIGO AL USER
-                //y hacer la validacion
+                $to = $mail;
+                $this->user_model->updateValidationCode($mail, $valCode);
+                $mailContent = forgotPasswordMail($valCode, $mail);
+                $data["error"] = 0;
+                $data["error_message"] = "Email enviado correctamente";
                 $this->load->view('forgot_layout', $data);
                 return;
             }
+            $data["error"] = 1;
+            $data["error_message"] = "Email no encontrado";
+            $this->load->view('forgot_layout', $data);
+            return;
         }
         show_404();
     }
 
     public function forgotPassword() {
         $this->load->view('forgot_layout');
+    }
+
+    public function validateNewPassword() {
+        $this->load->model('user_model');
+        $this->form_validation->set_rules('forgot_token', 'forgot_token', 'required');
+        $this->form_validation->set_rules('password', 'password', 'trim|required|matches[passconf]|min_length[5]|max_length[12]');
+        $this->form_validation->set_rules('passconf', 'password Confirmation', 'trim|required');
+
+        if ($this->form_validation->run() == TRUE) {
+            $newPassword = do_hash($this->input->post('password'), 'md5');
+            $code = $this->input->post('forgot_token');
+            if ($this->user_model->changePasswordByCode($code, $newPassword)) {
+                $data["error"] = 0;
+                $data["token"] = 'No-token';
+                $data["error_message"] = "Contraseña cambiada con exito, ya puedes iniciar sesión.";
+                $this->load->view('change_password_forgot_layout', $data);
+                return;
+            } else {
+                $data["error"] = 1;
+                $data["token"] = 'No-token';
+                $data["error_message"] = "No existe el token.";
+                $this->load->view('change_password_forgot_layout', $data);
+                return;
+            }
+        } else {
+            $data["error"] = 1;
+            $data["token"] = 'No-token';
+            $data["error_message"] = "Posible falta de datos.";
+            $this->load->view('change_password_forgot_layout', $data);
+            return;
+        }
+        show_404();
     }
 
     public function validate($code) {
@@ -274,9 +308,7 @@ class User extends MY_Controller {
                 $this->load->view('register_layout', $data);
             } else {
                 if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
-                    $to = $email;
                     $mailContent = validationMail($name, $valCode, $email);
-                    //NO ES NECESARIO$this->email->sendMail($to, $mailContent->message, $mailContent->subject);
                     if ($mailContent) {
                         $data["error"] = 0;
                         redirect('/?ms=1', 'refresh');
@@ -314,7 +346,7 @@ class User extends MY_Controller {
         if ($this->user_model->followChannel($userId, $channelId)) {
             //Envio de Email al dueño del canal NO ANDA
             //Falta el mail
-             newFollowMail($userId, $channelId);
+            newFollowMail($userId, $channelId);
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {
