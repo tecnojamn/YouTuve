@@ -32,14 +32,24 @@ $this->load->helper('url');
                 </div>
             </div>
 
-            <div class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
+            <div class="col-lg-12" style="background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
                 <?php foreach ($channel->videos->list as $v) { ?>
-                    <div class="col-lg-12" style="background-color: white;
+                    <div class="col-lg-12 well-blue" style="background-color: white;
                          padding: 15px;
                          border-top: 1px solid rgb(242, 242, 242);">
-                        <a href="<?php echo base_url(); ?>video/view/<?php echo $v->id ?>">
-                            <img src="http://img.youtube.com/vi/<?php echo $v->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                        </a>
+                        <div class="col-lg-2" style="width: 130px">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $v->id ?>">
+                                <img src="http://img.youtube.com/vi/<?php echo $v->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
+                            </a>
+                        </div>
+                        <div class="col-lg-10">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $v->id ?>"><?php echo $v->name ?></a><br>
+                            <a href="<?php echo base_url(); ?>channel/view/<?php echo $channel->id ?>"><?php echo $channel->name ?></a><br>
+                            <p>
+                                <?php echo $v->views ?> Visualizaciones
+                            </p>
+
+                        </div>
                     </div>
                 <?php } ?>
             </div>

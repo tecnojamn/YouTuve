@@ -28,11 +28,15 @@ class Channel extends MY_Controller {
     }
 
     public function view() {
-        if ($this->isAuthorized())
+        if ($this->isAuthorized()) {
             $data["log"] = 1;
+        }
         $this->load->model('channel_model');
         $id = $this->uri->segment(3, 0);
         if ($id !== null) {
+            if($id=="me"){
+                $id = $this->session->userdata("userId");
+            }
             $channel_info = $this->channel_model->selectByIdChannel($id);
             if ($channel_info) {
                 $data["channel"] = $channel_info;
@@ -76,13 +80,14 @@ class Channel extends MY_Controller {
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }
+
 //no funca aun
     public function searchMoreChannelAX() {
         $this->load->model("channel_model");
         $searchText = $this->input->post("searchText");
         $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
         $searchPage = ($searchPage > 0) ? $searchPage : 1;
-        $channels = $this->channel_model->getChannelsByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        $channels = $this->channel_model->getChannelByNameLike($searchText, SEARCH_CHANNEL_LIMIT, ($searchPage - 1) * SEARCH_CHANNEL_LIMIT);
         if ($channels) {
             foreach ($channels->list as $ch) {
                 if ($ch->frontImgUrl === "") {

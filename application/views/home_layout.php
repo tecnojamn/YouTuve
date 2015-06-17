@@ -32,7 +32,6 @@ $this->load->helper('url');
                     });
 
                 });
-                seeMorelastVideos
 
                 //carga videos mas votados
                 $.post("<?php echo base_url(); ?>video/getVideosAx",

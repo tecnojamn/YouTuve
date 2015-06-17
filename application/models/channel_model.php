@@ -202,7 +202,7 @@ class Channel_model extends MY_Model {
         $this->db->like("channel.name", $query);
         $this->db->join("user", "channel.idUser=user.id");
         $this->db->limit($limit, $offset);
-        $result = $this->search();
+        $result = $this->db->get($this->table)->result();
         if (count($result) < 1) {
             return false;
         }

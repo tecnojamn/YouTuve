@@ -33,7 +33,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 <?php echo $this->session->userdata('nick'); ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Mi canal</a></li>
+                                <li><a href="<?php echo base_url(); ?>channel/view/me">Mi canal</a></li>
                                 <li><a href="<?php echo base_url(); ?>ViewHistory/showHistory">Ver historial</a></li>
                                 <li><a href="<?php echo base_url(); ?>user/profile/me">Ver Perfil</a></li>
                                 <li><a href="<?php echo base_url(); ?>video/upload">Subir Video</a></li>

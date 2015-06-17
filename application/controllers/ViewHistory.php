@@ -29,6 +29,7 @@ class ViewHistory extends MY_Controller {
             $data["error"] = 1;
             $data["error_message"] = "No puedes acceder a esta seccion sin estar previamente logueado. PD: ¿Que haces por aqui picarón?";
         } else {
+            $data['log'] = 1;
             $this->load->model('viewshistory_model');
             $userId = $this->session->userdata('userId');
             $history = $this->viewshistory_model->selectWatchedVideosByUser($userId,100,0); //definir limit y offset del history

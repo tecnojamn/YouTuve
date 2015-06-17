@@ -180,7 +180,7 @@ class Video extends MY_Controller {
         $this->load->model("video_model");
         $this->load->model("channel_model");
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
-        $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
+        $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_CHANNEL_LIMIT, ($page - 1) * SEARCH_CHANNEL_LIMIT);
 
         if ($channels != null) {
             foreach ($channels->list as $ch) {
@@ -205,6 +205,9 @@ class Video extends MY_Controller {
             $this->load->view("home_layout");
             return;
         } else {
+            if( $this->isAuthorized() ){
+                $data['log'] = 1;
+            }
             $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT);
             $data["searched_videos"] = $videos;
             $data["orderby"] = $orderBy;

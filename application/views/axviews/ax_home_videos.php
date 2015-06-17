@@ -14,7 +14,7 @@
                     </div>
                     <div id="video-info">
                         <label ><?php echo $video->name ?></label> <br>
-                        <a href="#" ><?php echo $video->channelName ?></a> <br>
+                        <a href="<?php echo base_url() ?>channel/view/<?php echo $video->idChannel ?>" ><?php echo $video->channelName ?></a> <br>
                         <label >Publicado el <?php echo $video->date ?></label>
                     </div>
                 </div>
