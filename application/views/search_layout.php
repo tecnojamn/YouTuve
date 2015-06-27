@@ -16,29 +16,46 @@ $this->load->helper('url');
     <body>
         <script>
             var curr_page_video = 1;
+<<<<<<< HEAD
             var paginator_ended_video = false;//fix para que no viaje
             var can_load_more_video = true;//fix para que no viaje
 
             var curr_page_channel = 1;
             var paginator_ended_channel = false;//fix para que no viaje
+=======
+            var can_load_more_video = true;//fix para que no viaje
+
+            var curr_page_channel = 1;
+>>>>>>> origin/julito-branch
             var can_load_more_channel = true;//fix para que no viaje
 
             var active_option = "video";//fix para que no Vieja
             function loadMoreVideos() {
+<<<<<<< HEAD
                 curr_page_video = curr_page_video + 1;
                 can_load_more_video = false;
+=======
+                can_load_more_video = false;
+                curr_page_video = curr_page_video + 1;
+>>>>>>> origin/julito-branch
                 $.post("<?php echo base_url(); ?>video/searchMoreVideosAX", {searchPage: curr_page_video, searchText: '<?php echo $searched_query ?>'},
                 function (data) {
                     if (data.result === 'true') { //si el resultado es verdadero lo agrego
-                        $("#videos").append(data.html);
+                        $("#videosContent").append(data.html);
+                        can_load_more_video = true;
                     } else {
+<<<<<<< HEAD
                         paginator_ended_video = true;
                         can_load_more_video = true;
+=======
+                        can_load_more_video = false;
+>>>>>>> origin/julito-branch
                     }
                 }, "json");
             }
 
             function loadMoreChannels() {
+<<<<<<< HEAD
                 curr_page_channel = curr_page_channel + 1;
                 can_load_more_channel = false;
                 $.post("<?php echo base_url(); ?>channel/searchMoreChannelAX", {searchPage: curr_page_video, searchText: '<?php echo $searched_query ?>'},
@@ -48,17 +65,37 @@ $this->load->helper('url');
                     } else {
                         paginator_ended_channel = true;
                         can_load_more_channel = true;
+=======
+                can_load_more_channel = false;
+                curr_page_channel = curr_page_channel + 1;
+                console.log(curr_page_channel);
+                $.post("<?php echo base_url(); ?>channel/searchMoreChannelAX", {searchPage: curr_page_channel, searchText: '<?php echo $searched_query ?>'},
+                function (data) {
+                    if (data.result === 'true') { //si el resultado es verdadero lo agrego
+                        $("#channelsContent").append(data.html);
+                        can_load_more_channel = true;
+                    } else {
+                        can_load_more_channel = false;
+>>>>>>> origin/julito-branch
                     }
                 }, "json");
             }
             function bindScroll() {
                 if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
                     if (active_option === "video") {
+<<<<<<< HEAD
                         if (!paginator_ended_video && can_load_more_video) {
                             loadMoreVideos();
                         }
                     } else if (active_option === "channel") {
                         if (!paginator_ended_channel && can_load_more_channel) {
+=======
+                        if (can_load_more_video) {
+                            loadMoreVideos();
+                        }
+                    } else if (active_option === "channel") {
+                        if (can_load_more_channel) {
+>>>>>>> origin/julito-branch
                             loadMoreChannels();
                         }
                     }
@@ -99,13 +136,21 @@ $this->load->helper('url');
                 </div>
             </div>
             <div class="row">
+<<<<<<< HEAD
                 <div class="col-lg-8" style="padding:0 15px;"id="videos">
+=======
+                <div class="col-lg-8" style="padding:0 15px;" id="videos">
+>>>>>>> origin/julito-branch
 
                     <?php if ($searched_videos) { ?>
                         <div class = "col-lg-12 well" style = "overflow: hidden;
                              background-color: transparent;
                              border: none;
+<<<<<<< HEAD
                              min-height: 800px;">
+=======
+                             min-height: 800px;" id="videosContent">
+>>>>>>> origin/julito-branch
 
                             <?php
                             foreach ($searched_videos->list as $video) {
@@ -118,8 +163,14 @@ $this->load->helper('url');
                                         </a></div>
                                     <div class = "col-lg-9"><label ><?php echo $video->name
                                 ?></label> <br>
+<<<<<<< HEAD
                                         <a href="#" ><?php echo $video->channelName ?></a> <br>
                                         <label >Publicado el <?php echo $video->date ?></label></div>
+=======
+                                        <a href="<?php echo base_url(); ?>channel/view/<?php echo $video->idChannel ?>"> <?php echo $video->channelName ?> </a> <br>
+                                        <label >Publicado el <?php echo $video->date ?></label> <br>
+                                        <label ><?php echo $video->views ?> Visualizaciones</label></div>
+>>>>>>> origin/julito-branch
                                 </div>
                                 <?php
                             }
@@ -145,7 +196,11 @@ $this->load->helper('url');
                         ?> <div class = "col-lg-12 well" style = "overflow: hidden;
                              background-color: transparent;
                              border: none;
+<<<<<<< HEAD
                              min-height: 800px;">
+=======
+                             min-height: 800px;" id="channelsContent">
+>>>>>>> origin/julito-branch
 
                             <?php foreach ($searched_channels->list as $c) {
                                 ?>

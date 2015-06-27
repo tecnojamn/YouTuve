@@ -177,25 +177,34 @@ class Channel_model extends MY_Model {
         $this->db->join("user", "follower.idUser = user.id");
         $this->db->limit($limit, $offset);
         $result = $this->search($cond, "follower");
+<<<<<<< HEAD
         if ($result) {
             $channelList = new ChannelListDTO();
 
+=======
+        $channelList = new ChannelListDTO();
+        if($result){
+>>>>>>> origin/julito-branch
             foreach ($result as $row) {
-                $channel = new ChannelDTO();
-                $channel->id = $row->id;
-                $channel->name = $row->name;
-                $channel->description = $row->description;
-                $channel->frontImgUrl = $row->frontImgUrl;
-                $channel->username = $row->nick;
-                if ($videoData) {
-                    $resultV = $this->selectByIdChannel($channel->id);
-                    $channel->videos = $resultV->videos;
-                }
-                $channelList->addChannel($channel);
+            $channel = new ChannelDTO();
+            $channel->id = $row->id;
+            $channel->name = $row->name;
+            $channel->description = $row->description;
+            $channel->frontImgUrl = $row->frontImgUrl;
+            $channel->username = $row->nick;
+            if ($videoData) {
+                $resultV = $this->selectByIdChannel($channel->id);
+                $channel->videos = $resultV->videos;
             }
-            return $channelList;
+            $channelList->addChannel($channel);
         }
+        return $channelList;
+        }
+<<<<<<< HEAD
         return false;
+=======
+        return FALSE;
+>>>>>>> origin/julito-branch
     }
 
     public function getChannelByNameLike($query, $limit, $offset) {
@@ -203,7 +212,11 @@ class Channel_model extends MY_Model {
         $this->db->like("channel.name", $query);
         $this->db->join("user", "channel.idUser=user.id");
         $this->db->limit($limit, $offset);
+<<<<<<< HEAD
         $result = $this->search();
+=======
+        $result = $this->db->get($this->table)->result();
+>>>>>>> origin/julito-branch
         if (count($result) < 1) {
             return false;
         }
@@ -221,4 +234,31 @@ class Channel_model extends MY_Model {
         return $channelList;
     }
 
+<<<<<<< HEAD
+=======
+    //Devuelve todos los seguidores de un canal
+    public function getFollower($idChannel) {
+        $condition["idChannel"] = $idChannel;
+        $this->db->join("user", "user.id=follower.idUser");
+        $res = $this->search($condition, "follower");
+        $count = 0;
+        if ($res == NULL) {
+            return FALSE;
+        }
+        foreach ($res as $row) {
+            $user = new UserDTO();
+            $user->id = $row->id;
+            $user->name = $row->name;
+            $user->nick = $row->nick;
+            $user->email = $row->email;
+            $user->gender = $row->gender;
+            $user->lastname = $row->lastname;
+            $user->birthday = $row->birthday;
+            $userList[$count] = $user;
+            $count++;
+        }
+        return $userList;
+    }
+
+>>>>>>> origin/julito-branch
 }

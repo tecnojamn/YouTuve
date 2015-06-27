@@ -18,30 +18,30 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <?php if ($history !== null && $history->list !== null) {
             ?>
-            <div class="col-lg-12">
+        <div class="col-lg-12" style="margin-bottom: 15px;">
                 <div style="  background-color: white;width: 100%;height: auto;overflow: hidden;padding: 15px 5px;">
                     <p style=" margin-bottom: 0px; margin-left: 15px; font-size: 15px;line-height: 10px;font-weight: bold;color: black;">Historial de reproducciones</p>
                 </div>
                 <?php foreach ($history->list as $row) { ?>
-                <div class="col-lg-12" style="background-color: white;
-                     padding: 15px;
-                     border-top: 1px solid rgb(242, 242, 242);">
-                   <div class="col-lg-2" style="width: 130px">
-                    <a href="<?php echo base_url(); ?>video/view/<?php echo $row->idVideo ?>">
-                        <img src="http://img.youtube.com/vi/<?php echo $row->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                    </a>
-                   </div>
-                    <div class="col-lg-10">
-                        <a href="<?php echo base_url(); ?>video/view/<?php echo $row->idVideo ?>"><?php echo $row->videoName ?></a>
-                        <p>De <?php echo $row->channelName ?><br>
-                        <?php echo $row->videoViews ?> Visualizaciones
-                        </p>
-                        
+                    <div class="col-lg-12 well-green" style="background-color: white;
+                         padding: 15px;">
+                        <div class="col-lg-2" style="width: 130px">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->idVideo ?>">
+                                <img src="http://img.youtube.com/vi/<?php echo $row->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
+                            </a>
+                        </div>
+                        <div class="col-lg-10">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->idVideo ?>"><?php echo $row->videoName ?></a><br>
+                            <a href="<?php echo base_url(); ?>channel/view/<?php echo $row->idChannel ?>"><?php echo $row->channelName ?></a><br>
+                            <p>
+                                <?php echo $row->videoViews ?> Visualizaciones
+                            </p>
+
+                        </div>
                     </div>
-                </div>
-            <?php } ?>
+                <?php } ?>
             </div>
-            
+
         <?php } ?>
 
         <?php $this->load->view('footer'); ?>

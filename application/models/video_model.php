@@ -204,7 +204,6 @@ class Video_model extends MY_Model {
         $this->db->join("channel", "channel.id=video.idChannel");
         $this->db->limit($limit, $offset);
         $result = $this->db->get($this->table)->result();
-        // echo "" . count($result) . " " . $offset . " " . $limit . " " . $this->db->last_query();
         if (count($result) < 1) {
             return false;
         }
@@ -218,6 +217,40 @@ class Video_model extends MY_Model {
             $video->idChannel = $row->idChannel;
             $video->channelName = $row->channelName;
             $video->duration = $row->durationInSeconds;
+
+            $this->db->flush_cache();
+            $conditionsRate["idVideo"] = $video->id;
+            $this->db->select("rate");
+            $result = $this->search($conditionsRate, "rate");
+            $totalRate = 0;
+            $count = 0;
+            foreach ($result as $row) {
+                $totalRate += $row->rate;
+                $count++;
+            }
+//Para evitar dividir entre 0 cuando no hay rates
+            if ($count == 0) {
+                $video->rate = 0;
+            } else {
+                $video->rate = $totalRate / $count;
+            }
+            $this->db->flush_cache();
+//view del video
+            $conditionsView["idVideo"] = $video->id;
+            $this->db->where($conditionsView);
+            $video->views = $this->db->count_all_results("viewhistory");
+//tags del video            
+            $this->db->flush_cache();
+            $conditionsTag["idVideo"] = $video->id;
+            $this->db->join("videotag", "videotag.idtag = tag.id");
+            $result = $this->search($conditionsTag, "tag");
+            $tagList = new TagListDTO();
+            foreach ($result as $row) {
+                $tag = new TagDTO();
+                $tag->name = $row->name;
+                $tag->id = $row->id;
+                $tagList->addTag($tag);
+            }
 
             $videos->addVideo($video);
         }
@@ -270,11 +303,13 @@ class Video_model extends MY_Model {
             $this->db->from($this->table);
             $this->db->order_by("date", "desc");
         }
-        if ($limit != 0)
+        if ($limit != 0) {
             $this->db->limit($limit, $offset);
+        }
 
-        if ($channelId !== 0)
+        if ($channelId !== 0) {
             $this->db->where("channel.id", $channelId);
+        }
 
         $this->db->where("video.active", "1");
         $this->db->join("channel", "video.idChannel=channel.id");
@@ -295,6 +330,23 @@ class Video_model extends MY_Model {
                 $video->rate = $row->rate;
             }
             $video->duration = $row->durationInSeconds;
+            
+//view del video
+            $conditionsView["idVideo"] = $video->id;
+            $this->db->where($conditionsView);
+            $video->views = $this->db->count_all_results("viewhistory");
+//tags del video            
+            $this->db->flush_cache();
+            $conditionsTag["idVideo"] = $video->id;
+            $this->db->join("videotag", "videotag.idtag = tag.id");
+            $result = $this->search($conditionsTag, "tag");
+            $tagList = new TagListDTO();
+            foreach ($result as $row) {
+                $tag = new TagDTO();
+                $tag->name = $row->name;
+                $tag->id = $row->id;
+                $tagList->addTag($tag);
+            }
             $videos->addVideo($video);
         }
         return $videos;

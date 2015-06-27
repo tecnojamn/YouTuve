@@ -59,6 +59,22 @@ class User_model extends MY_Model {
         return ($r > 0) ? true : false;
     }
 
+    public function updateValidationCode($mail, $code) {
+        $upd["confirm_token"] = $code;
+        $conditions["email"] = $mail;
+        $r = $this->update($upd, $conditions);
+        return ($r > 0) ? true : false;
+    }
+
+    public function changePasswordByCode($code, $newPass) {
+        $upd["active"] = 1;
+        $upd["password"] = $newPass;
+        $upd["confirm_token"] = "";
+        $conditions["confirm_token"] = $code;
+        $r = $this->update($upd, $conditions);
+        return ($r > 0) ? true : false;
+    }
+
     public function edit($id, $name, $lastname, $birthday, $gender, $thumbUrl) {
         if ($name !== "")
             $data["name"] = $name;
@@ -144,8 +160,12 @@ class User_model extends MY_Model {
 
     public function emailExists($mail) {
         $condition["email"] = $mail;
-        return $this->search($condition);
-        //return
+        $result = $this->search($condition);
+        if (count($result) > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function authorize($email, $password) {

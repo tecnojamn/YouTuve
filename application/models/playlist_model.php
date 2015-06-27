@@ -143,7 +143,12 @@ class Playlist_model extends MY_Model {
                 $PlaylistList->addPlayList($Playlist);
             }
             return $PlaylistList;
+<<<<<<< HEAD
         }return false;
+=======
+        }
+        return FALSE;
+>>>>>>> origin/julito-branch
     }
 
     //chequea si existe el video en la playlist
