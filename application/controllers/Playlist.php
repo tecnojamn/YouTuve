@@ -82,12 +82,23 @@ class Playlist extends MY_Controller {
         }
         $name = $this->input->get("pl_name");
         if ($name === null || $name === "") {
-            $arr = array('result' => 'false', 'html' => 'Error');
+             $data["type"] = "error";
+            $data["messageText"] = "Falta de datos";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'false', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
-        $userId = $this->session->userdata('userId');
         $this->load->model('playlist_model');
+        $userId = $this->session->userdata('userId');
+        if ($this->playlist_model->checkIfNameExists($userId, $name)) {
+            $data["type"] = "error";
+            $data["messageText"] = "Playlist ya existe";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'false', 'html' => $view);
+            echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+            return;
+        }
         $ins = $this->playlist_model->push($userId, $name, false);
         if ($ins) {
             $arr = array('result' => 'true', 'html' => '');
@@ -118,22 +129,12 @@ class Playlist extends MY_Controller {
         if ($playlist == FALSE) {
             $data["type"] = "error";
             $data["messageText"] = "Playlist no existe";
-<<<<<<< HEAD
-            $view = $this->load->view('axviews/ax_message',$data, TRUE);
-=======
             $view = $this->load->view('axviews/ax_message', $data, TRUE);
->>>>>>> origin/julito-branch
             $arr = array('result' => 'false', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
-<<<<<<< HEAD
-        if( $this->playlist_model->checkIfExist($vidId, $plname) ){
-            $data["type"] = "error";
-            $data["messageText"] = "El video ya existe en playlist";
-            $view = $this->load->view('axviews/ax_message',$data, TRUE);
-            $arr = array('result' => 'false', 'html' => $view);
-=======
+
         if ($this->playlist_model->checkIfExist($vidId, $plname)) {
             $data["type"] = "error";
             $data["messageText"] = "El video ya existe en playlist";
@@ -142,28 +143,22 @@ class Playlist extends MY_Controller {
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
+
         $ins = $this->playlist_model->addVideoToPlaylist($playlist->id, $vidId);
         if ($ins) {
             $data["type"] = "message";
             $data["messageText"] = "Se ha agregado correctamente";
             $view = $this->load->view('axviews/ax_message', $data, TRUE);
             $arr = array('result' => 'true', 'html' => $view);
->>>>>>> origin/julito-branch
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         } else {
-            
-        }
-        $ins = $this->playlist_model->addVideoToPlaylist($playlist->id, $vidId);
-        if ($ins) {
-            $data["type"] = "message";
-            $data["messageText"] = "Se ha agregado correctamente";
-            $view = $this->load->view('axviews/ax_message',$data, TRUE);
-            $arr = array('result' => 'true', 'html' => $view);
+            $data["type"] = "error";
+            $data["messageText"] = "Imposible agregar a playlist";
+            $view = $this->load->view('axviews/ax_message', $data, TRUE);
+            $arr = array('result' => 'false', 'html' => $view);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
-        } else {
-            
         }
     }
 

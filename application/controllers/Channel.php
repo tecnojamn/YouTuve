@@ -31,15 +31,25 @@ class Channel extends MY_Controller {
         if ($this->isAuthorized()) {
             $data["log"] = 1;
         }
+        $me = false;
         $this->load->model('channel_model');
         $id = $this->uri->segment(3, 0);
         if ($id !== null) {
-            if($id=="me"){
-                $id = $this->session->userdata("userId");
+            if ($id == "me") {
+                $me = true;
+                $channel = $this->channel_model->selectByIdUser($this->session->userdata("userId"));
+                $id = ($channel) ? $channel->id : 0;
             }
             $channel_info = $this->channel_model->selectByIdChannel($id);
+
             if ($channel_info) {
                 $data["channel"] = $channel_info;
+                $this->load->view('channel_layout', $data);
+                return;
+            } else if ($me) {
+                $data["channel"] = null;
+                $data["error"] = TRUE;
+                $data["error_message"] = "No hay videos en tu canal, Sube videos para crearte un canal. Accede <a href='" . base_url() . "/video/upload'>aquí</a>";
                 $this->load->view('channel_layout', $data);
                 return;
             }
@@ -81,15 +91,6 @@ class Channel extends MY_Controller {
         return;
     }
 
-<<<<<<< HEAD
-    public function searchMoreChannelAX() {
-        $this->load->model("video_model");
-        $searchText = $this->input->post("searchText");
-        $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
-        $searchPage = ($searchPage > 0) ? $searchPage : 1;
-        $videos = $this->video_model->getVideosByNameLike($searchText, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
-        if ($videos) {
-=======
 //no funca aun
     public function searchMoreChannelAX() {
         $this->load->model("channel_model");
@@ -98,19 +99,19 @@ class Channel extends MY_Controller {
         $searchPage = ($searchPage > 0) ? $searchPage : 1;
         $channels = $this->channel_model->getChannelByNameLike($searchText, SEARCH_CHANNEL_LIMIT, ($searchPage - 1) * SEARCH_CHANNEL_LIMIT);
         if ($channels) {
->>>>>>> origin/julito-branch
+
             foreach ($channels->list as $ch) {
                 if ($ch->frontImgUrl === "") {
                     $ch->frontImgUrl = base_url() . ALT_CHANNEL_BACKGROUND_PIC;
                 }
             }
-<<<<<<< HEAD
+
             $data["videos"] = $videos;
             $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);
-=======
+
             $data["chanels"] = $channels;
             $formString = $this->load->view('axviews/ax_load_more_channels', $data, true);
->>>>>>> origin/julito-branch
+
             $arr = array('result' => 'true', 'html' => $formString);
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;

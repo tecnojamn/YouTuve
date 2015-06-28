@@ -180,11 +180,11 @@ class Video extends MY_Controller {
         $this->load->model("video_model");
         $this->load->model("channel_model");
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
-<<<<<<< HEAD
+
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
-=======
+
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_CHANNEL_LIMIT, ($page - 1) * SEARCH_CHANNEL_LIMIT);
->>>>>>> origin/julito-branch
+
 
         if ($channels != null) {
             foreach ($channels->list as $ch) {
@@ -249,7 +249,7 @@ class Video extends MY_Controller {
             $videos = $this->video_model->getVideosSusChan($userId);
         } else {
             $orderBy = $this->input->post("orderBy");
-            $videos = $this->video_model->getVideos($orderBy, 0, 5);
+            $videos = $this->video_model->getVideos($orderBy, 0, 4);
         }
         if ($videos) {
             $data["videos"] = $videos;

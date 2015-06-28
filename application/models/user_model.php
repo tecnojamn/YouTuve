@@ -45,26 +45,7 @@ class User_model extends MY_Model {
         return ($r > 0) ? true : false;
     }
 
-    /**
-     * muy poco seguro pero safa lindo
-     * 
-     * 
-     */
-    public function changePasswordByCode($code, $newPass) {
-        $upd["active"] = 1;
-        $upd["password"] = $newPass;
-        $upd["confirm_token"] = "";
-        $conditions["confirm_token"] = $code;
-        $r = $this->update($upd, $conditions);
-        return ($r > 0) ? true : false;
-    }
 
-    public function updateValidationCode($mail, $code) {
-        $upd["confirm_token"] = $code;
-        $conditions["email"] = $mail;
-        $r = $this->update($upd, $conditions);
-        return ($r > 0) ? true : false;
-    }
 
     public function changePasswordByCode($code, $newPass) {
         $upd["active"] = 1;

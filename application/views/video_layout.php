@@ -17,12 +17,9 @@ $this->load->helper('url');
 
     <body>
         <script>
-<<<<<<< HEAD
             var videoId = <?php echo $video->id ?>;
-=======
             var videoId = <?php echo $video->id; ?>;
             var isLoadPlis = false;
->>>>>>> origin/julito-branch
             var commentPage = 0;
             var commentsEnded = false;
             var isLoadPlis = false;
@@ -71,62 +68,36 @@ $this->load->helper('url');
                             }
                         }, "json");
                     });
-<<<<<<< HEAD
-<?php } ?> $("#addToPlToggler").click(function (e) {
-                    e.preventDefault();
-                    $("#addToPlHolder").toggle();
-                    if ($("#addToPlHolder").css("display") === "block") {
-                        if (!isLoadPlis) {
-                            loadPls();
-                            isLoadPlis = true;
-                        }
-                    }
-                });
-                function loadPls() {
-                    $("#addPlList li").each(function () {
-                        $(this).remove();
-                    });
-                    $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
-                        if (data.result === "true") {
-                            $("#addPlList").append(data.html);
-                        }
-                    }, "json");
-                }
-                $("#addNewPl").click(function (e) {
-                    e.preventDefault();
-                    var playlistName = $("#addPlNewName").val();
-                    $.get("<?php echo base_url(); ?>Playlist/addAx", {pl_name: playlistName}, function (data) {
-                        if (data.result) {
-                            $.get("<?php echo base_url() ?>Playlist/addVideoAx", {vid: videoId, plname: playlistName}, function (data) {
-                                if (data.result) {
-                                    $("#addPlNewName").val('');
-                                    loadPls();
-                                    $("body").append(data.html);
-                                    $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
-                                    setTimeout(function () {
-                                        $('#messageBox').remove();
-                                    }, 2001);
-                                }
-                            }, "json");
-                        }
-                    }, "json");
-                });
-=======
+
                     $("#addToPlToggler").click(function (e) {
                         e.preventDefault();
-                        $("#addToPlHolder").toggle();
-                        if ($("#addToPlHolder").css("display") === "block") {
-                            if (!isLoadPlis) {
-                                loadPls();
-                                isLoadPlis = true;
+                        $("#addToPlHolder").toggle("slow", function () {
+                            if ($("#addToPlHolder").css("display") === "block") {
+                                if (!isLoadPlis) {
+                                    loadPls();
+                                    isLoadPlis = true;
+                                }
                             }
-                        }
-                    });
+                        });
+
+                    return false;});
+                    function loadPls() {
+                        $("#addPlList li").each(function () {
+                            $(this).remove();
+                        });
+                        $.post("<?php echo base_url(); ?>playlist/getFromUserMinAX", function (data) {
+                            if (data.result === "true") {
+                                $("#addPlList").append(data.html);
+                            }
+                        }, "json");
+                    }
+
+
                     $("#addNewPl").click(function (e) {
                         e.preventDefault();
                         var playlistName = $("#addPlNewName").val();
                         $.get("<?php echo base_url(); ?>Playlist/addAx", {pl_name: playlistName}, function (data) {
-                            if (data.result) {
+                            if (data.result === 'true') {
                                 $.get("<?php echo base_url() ?>Playlist/addVideoAx", {vid: videoId, plname: playlistName}, function (data) {
                                     if (data.result) {
                                         $("#addPlNewName").val('');
@@ -138,9 +109,15 @@ $this->load->helper('url');
                                         }, 2001);
                                     }
                                 }, "json");
+                            } else {
+                                $("body").append(data.html);
+                                $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
+                                setTimeout(function () {
+                                    $('#messageBox').remove();
+                                }, 2001);
                             }
                         }, "json");
-                    });
+                    return false;});
                     function loadPls() {
                         $("#addPlList li").each(function () {
                             $(this).remove();
@@ -152,7 +129,6 @@ $this->load->helper('url');
                         }, "json");
                     }
 <?php } ?>
->>>>>>> origin/julito-branch
 <?php if (!$isMyVideo) { ?>
 
                     $("#followHisAss").click(function (e) {
@@ -189,7 +165,7 @@ $this->load->helper('url');
             }
             );
         </script>
-        <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+<?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="col-lg-12">
 
@@ -232,12 +208,12 @@ $this->load->helper('url');
                                        font-size: 10px;">
                                         Seguir
                                     </a>
-                                <?php } else if (!$isMyVideo && $follower && $log == 1) { ?>
+<?php } else if (!$isMyVideo && $follower && $log == 1) { ?>
                                     <a href="#" id="unfollowHisAss" class="btn btn-primary btn-xs" style="
                                        font-size: 10px;">Dejar de seguir</a>
-                                   <?php } ?>
+                            <?php } ?>
                             </div>
-                            <?php if ($log == 1) { ?>
+<?php if ($log == 1) { ?>
                                 <div class="col-lg-12" id="commentHolder" style="margin-top: 20px;
                                      border-top: 5px solid rgb(63, 134, 255);
                                      background-color: rgb(118, 167, 250);
@@ -277,7 +253,7 @@ $this->load->helper('url');
                                 <p style="  font-size: 15px;color: rgb(218, 189, 43);">Valoración general: </p>
                                 <input type="hidden" readonly="readonly" value="<?php echo $video->rate; ?>" class="rating"/>
                             </div>
-                            <?php if ($log == 1) { ?>
+<?php if ($log == 1) { ?>
                                 <div id="rateHolder" class="starHolder sratHolder-alternativeColor">
                                     <p style="font-size: 15px;color: rgb(186, 55, 55)">Tu valoración: </p>
                                     <input id="rater" type="hidden" step="1" value="<?php echo $userRate; ?>" 
@@ -288,7 +264,7 @@ $this->load->helper('url');
                                     ?>
                                            class = "rating"/>
                                 </div>
-                            <?php } ?>
+<?php } ?>
                             <div style="  text-align: center;
                                  font-size: 20px;">
                                  <?php
@@ -302,31 +278,29 @@ $this->load->helper('url');
                                 ?>
                             </div>
                         </div>
-                        <?php if ($log) { ?>
+<?php if ($log) { ?>
                             <div class="well well-red">
                                 <a id="addToPlToggler" href="#">Agregar a playlist</a>
-                                <div style="display:none" id="addToPlHolder">
-                                    <input id="addPlNewName" type="text" data-name="plname" name="Artigas"/>
+                                <div style="display:none;" id="addToPlHolder">
+                                    <input id="addPlNewName" type="text" data-name="plname" class="form-control" name="Artigas"/>
                                     <a href="#" id="addNewPl">Agregar nueva</a>
                                     <ul id="addPlList">
 
-<<<<<<< HEAD
-                                </ul>
-                            </div>
-                        </div>
-
-=======
                                     </ul>
                                 </div>
                             </div>
-                        <?php } ?>
->>>>>>> origin/julito-branch
-                    </div>
 
-                </div>
+                            </ul>
+                        </div>
+                    </div>
+<?php } ?>
+
             </div>
 
-            <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
-            <?php $this->load->view('footer'); ?>
-    </body>
+        </div>
+    </div>
+
+    <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
+<?php $this->load->view('footer'); ?>
+</body>
 </html>

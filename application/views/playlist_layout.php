@@ -30,13 +30,19 @@ $this->load->helper('url');
                 </div>
             </div>
             <div class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
-                <?php foreach ($playlist->videos->list as $v) { ?>
-                    <div class="col-lg-12" style="background-color: white;
-                         padding: 15px;
-                         border-top: 1px solid rgb(242, 242, 242);">
-                        <a href="<?php echo base_url(); ?>video/view/<?php echo $v->id ?>">
-                            <img src="http://img.youtube.com/vi/<?php echo $v->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                        </a>
+               
+                <?php foreach ($playlist->videos->list as $row) { ?>
+                    <div class="col-lg-12 well-violet" style="background-color: white;
+                         padding: 15px;">
+                        <div class="col-lg-2" style="width: 138px">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->id ?>">
+                                <img src="http://img.youtube.com/vi/<?php echo $row->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
+                            </a>
+                        </div>
+                        <div class="col-lg-10">
+                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->id ?>"><?php echo $row->name ?></a><br>
+                         
+                        </div>
                     </div>
                 <?php } ?>
             </div>

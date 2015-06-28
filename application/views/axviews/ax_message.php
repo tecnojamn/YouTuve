@@ -1,20 +1,21 @@
-<?php
-if (isset($type) && isset($messageText)) {
-    if ($type == "error") {
-        ?>
-        <div style="position: fixed; background-color: red;top:10px;" id="messageBox">
-            <?php
-        } else if ($type == "warning") {
+<?php if (isset($type) && isset($messageText)) { ?>
+    <div style="width:100%;height:auto;position: fixed; top:0px;" id="messageBox">
+        <?php if ($type == "error") {
             ?>
-            <div style="position: fixed; background-color: yellow;top:10px;" id="messageBox">
+            <div class="alert alert-dismissible alert-danger" id="messageBox">
                 <?php
-            } else if ($type == "message") {
+            } else if ($type == "warning") {
                 ?>
-                <div style="position: fixed; background-color: green;top:10px;" id="messageBox">
+                <div class="alert alert-dismissible alert-warning" id="messageBox">
                     <?php
-                }
-                ?>
-                <label> <?php echo $messageText ?> </label>
+                } else if ($type == "message") {
+                    ?>
+                    <div class="alert alert-dismissible alert-success" id="messageBox">
+                        <?php
+                    }
+                    ?>
+                    <label> <?php echo $messageText ?> </label>
+                </div>
             </div>
             <?php
         }

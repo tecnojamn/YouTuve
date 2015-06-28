@@ -97,4 +97,5 @@ define('PLAYLIST_PROFILE_LIMIT', 5); // highest automatically-assigned error cod
 define('ALT_PROFILE_PIC',"css/images/default_user.jpg"); // highest automatically-assigned error code
 define('ALT_PLAYLIST_PIC',"css/images/pl_default.png"); // highest automatically-assigned error code
 define('VIDEO_VIEWS_OFFSET_MINUTES',15); 
-define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/portada.jpg");
+//define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/portada.jpg");
+define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/default_cover.jpg");

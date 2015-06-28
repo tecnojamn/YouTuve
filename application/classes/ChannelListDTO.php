@@ -20,12 +20,6 @@ class ChannelListDTO {
         
     }
 
-    function addChannel($channel) {
-        if ($this->list == null) {
-            $this->list[0] = $channel;
-        } else {
-            array_push($this->list, $channel);
-        }
 
         function addChannel($channelDto) {
 //array_push no funciona sobre array vacios  
@@ -40,6 +34,6 @@ class ChannelListDTO {
         }
 
         //put your code here
-    }
+
 
 }

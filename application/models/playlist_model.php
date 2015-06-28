@@ -108,6 +108,16 @@ class Playlist_model extends MY_Model {
         return ($result > 0) ? true : false;
     }
 
+    public function checkIfNameExists($idUser, $name) {
+        $cond["idUser"] = $idUser;
+        $cond["name"] = $name;
+        $this->db->select("count(*) as total");
+        $res = $this->search($cond);
+        if ($res[0]->total > 0)
+            return true;
+        return false;
+    }
+
     public function removeVideoFromPlaylist($idVideo, $idPlaylist) {
         $cond["idVideo"] = $idVideo;
         $cond["idPlaylist"] = $idPlaylist;
@@ -143,21 +153,17 @@ class Playlist_model extends MY_Model {
                 $PlaylistList->addPlayList($Playlist);
             }
             return $PlaylistList;
-<<<<<<< HEAD
         }return false;
-=======
-        }
-        return FALSE;
->>>>>>> origin/julito-branch
     }
 
     //chequea si existe el video en la playlist
     public function checkIfExist($videoId, $playlistName) {
         $condition['video.id'] = $videoId;
-        $condition['playlist.name'] = $videoId;
+        $condition['playlist.name'] = $playlistName;
         $this->db->join("videoplaylist", "playlist.id = videoplaylist.idPlaylist");
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $result = $this->search($condition);
+
         if (count($result) > 0) {
             return TRUE;
         } else {

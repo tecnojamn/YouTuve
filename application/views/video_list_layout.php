@@ -46,7 +46,7 @@ $this->load->helper('url');
         </script>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <div class="row" style="padding: 0 15px;">
-            <div class="col-lg-8" style="padding:0 15px;" id="videos">
+            <div class="col-lg-12" style="padding:0 15px;" id="videos">
                 <div class = "col-lg-12 well" style = "overflow: hidden;
                      background-color: transparent;
                      border: none;

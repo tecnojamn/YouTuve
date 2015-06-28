@@ -13,13 +13,24 @@ $this->load->helper('url');
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url(); ?>js/bootstrap-rating.min.js"></script> 
     </head>
-    <body>
+    <body >
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+
+        <?php
+        if (isset($error) && $error && isset($error_message) && $error_message !== "") {
+            ?> <div class="row" style="min-height:800px;">
+                <div class="col-lg-12">
+                    <div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
+                        <?php echo $error_message; ?>
+                    </div></div></div>
+            <?php
+        }
+        ?>
         <?php if ($channel !== null && $channel->videos !== null) {
             ?>
             <div class="col-lg-12">
                 <div style="  background-image: url(<?php echo base_url() . ALT_CHANNEL_BACKGROUND_PIC; ?>);color: #f8f8f8;width: 100%;height: auto;overflow: hidden;padding: 15px 5px;">
-                    <div class="col-lg-1"> <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo base_url() . ALT_PLAYLIST_PIC//$channel->frontImgUrl      ?>"/></div>
+                    <div class="col-lg-1"> <img style="width:100%;border: 1px solid rgb(213, 213, 213);" src="<?php echo base_url() . ALT_PLAYLIST_PIC//$channel->frontImgUrl          ?>"/></div>
                     <div class="col-lg-11">
                         <p style="  font-size: 20px;line-height: 55px;font-weight: bold;color: white;"><?php echo $channel->name ?></p>
                     </div>
@@ -53,9 +64,9 @@ $this->load->helper('url');
                     </div>
                 <?php } ?>
             </div>
-        <?php } ?>
+        <?php } else { ?>
 
-        <?php $this->load->view('footer'); ?>
+        <?php }$this->load->view('footer'); ?>
     </body>
 </html>
 

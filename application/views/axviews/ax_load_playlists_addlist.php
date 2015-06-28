@@ -23,5 +23,6 @@ if ($playlists !== NULL && $playlists->list !== NULL) {
                 }, 2001);
             }
         }, "json");
+        return false;
     }
 </script>

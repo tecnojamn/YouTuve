@@ -57,7 +57,7 @@ class Video_model extends MY_Model {
         $video = new VideoDTO();
         $conditions["video.id"] = $idVideo;
         $conditions["active"] = 1;
-        $this->db->select("Video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
+        $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
         $this->db->join("channel", "channel.id = video.idChannel");
         $result = $this->search($conditions, $this->table);
         if (sizeof($result) === 1) {
@@ -133,6 +133,7 @@ class Video_model extends MY_Model {
         $this->db->join("user", "channel.idUser = user.id");
 
         $result = $this->search($conditions, "video");
+        
         $videoList = new VideoListDto();
         foreach ($result as $row) {
             $video = new VideoDTO();
@@ -198,7 +199,7 @@ class Video_model extends MY_Model {
 
     public function getVideosByNameLike($query, $limit, $offset) {
 
-        $this->db->select("Video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
+        $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
         $this->db->where("video.active", "1");
         $this->db->like("video.name", $query);
         $this->db->join("channel", "channel.id=video.idChannel");

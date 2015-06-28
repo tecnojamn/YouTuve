@@ -249,7 +249,6 @@ class User extends MY_Controller {
         show_404();
     }
 
-<<<<<<< HEAD
     public function changeForgottenPassword($token) {
         if (isset($token) && $token !== "") {
             $data["token"] = $token;
@@ -258,8 +257,6 @@ class User extends MY_Controller {
         }show_404();
     }
 
-=======
->>>>>>> origin/julito-branch
     public function validate($code) {
         if ($code !== NULL && $code !== "") {
             $this->load->model('user_model');
@@ -313,33 +310,35 @@ class User extends MY_Controller {
             $thumbUrl = "";
 //inserta y redirige a algun lado todavia no sabemos
             $valCode = valCode();
-<<<<<<< HEAD
+
             if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
                 $to = $email;
                 $mailContent = validationMail($name, $valCode, $email);
 //NO ES NECESARIO$this->email->sendMail($to, $mailContent->message, $mailContent->subject);
                 if ($mailContent) {
-=======
-            if ($this->user_model->emailExists($email)) {
-                $data["error"] = 1;
-                $data["error_message"] = "Email en uso.";
-                $this->load->view('register_layout', $data);
-            } else {
-                if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
-                    $mailContent = validationMail($name, $valCode, $email);
-                    if ($mailContent) {
-                        $data["error"] = 0;
-                        redirect('/?ms=1', 'refresh');
-                        return;
+
+                    if ($this->user_model->emailExists($email)) {
+                        $data["error"] = 1;
+                        $data["error_message"] = "Email en uso.";
+                        $this->load->view('register_layout', $data);
+                    } else {
+                        if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
+                            $mailContent = validationMail($name, $valCode, $email);
+                            if ($mailContent) {
+                                $data["error"] = 0;
+                                redirect('/?ms=1', 'refresh');
+                                return;
+                            }
+
+                            $data["error"] = 0;
+                            redirect('/', 'refresh');
+                            return;
+                        }
+                        $data["error"] = 1;
+                        $data["error_message"] = "Ha ocurrido un error inesperado.";
+                        $this->load->view('register_layout', $data);
                     }
->>>>>>> origin/julito-branch
-                    $data["error"] = 0;
-                    redirect('/', 'refresh');
-                    return;
                 }
-                $data["error"] = 1;
-                $data["error_message"] = "Ha ocurrido un error inesperado.";
-                $this->load->view('register_layout', $data);
             }
         }
     }
@@ -363,15 +362,14 @@ class User extends MY_Controller {
         $userId = $this->session->userdata('userId');
 
         if ($this->user_model->followChannel($userId, $channelId)) {
-<<<<<<< HEAD
+
 //Envio de Email al dueño del canal NO ANDA
 //Falta el mail
 // newFollowMail($userId, $channelId);
-=======
             //Envio de Email al dueño del canal NO ANDA
             //Falta el mail
             newFollowMail($userId, $channelId);
->>>>>>> origin/julito-branch
+
             echo json_encode(array('result' => 'true', 'html' => '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>'));
             return;
         } else {
