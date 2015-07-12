@@ -31,6 +31,7 @@ $this->load->helper('url');
 
             $(function () {
                 $("#birthday").datepicker({
+                    dateFormat: "dd/mm/yy",
                     changeMonth: true,
                     changeYear: true,
                     showOn: "button",

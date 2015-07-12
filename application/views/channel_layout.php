@@ -17,6 +17,19 @@ $this->load->helper('url');
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <?php
+        if(isset($_GET["msg"])){ 
+            $success= $_GET["msg"] == "success"?  true: false;
+            ?> <div class="row" style="min-height:50px;">
+                <div class="col-lg-12">
+                    <div class="alert alert-dismissible <?php echo $success? "alert-success": "alert-danger"; ?> "><button type="button" class="close" data-dismiss="alert">×</button>
+           <?php   echo $success? "El video ha sido eliminado":"Error al eliminar el video"; ?>
+                    </div>
+                </div>
+            </div>
+        <?php
+        }
+        ?>
+        <?php
         if (isset($error) && $error && isset($error_message) && $error_message !== "") {
             ?> <div class="row" style="min-height:800px;">
                 <div class="col-lg-12">
@@ -59,6 +72,13 @@ $this->load->helper('url');
                             <p>
                                 <?php echo $v->views ?> Visualizaciones
                             </p>
+                            <?php 
+                            $id=$this->uri->segment(3, 0);
+                            if($id=="me"){
+                                echo "<a href='".base_url()."video/remove/".$v->id."'>Eliminar video</a>";
+                                //echo "<a href='"+ base_url(); +"channel/view" + "'>"+ $channel->id +"</a><br>";                                
+                            }   
+                            ?>
 
                         </div>
                     </div>

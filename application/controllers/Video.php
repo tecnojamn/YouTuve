@@ -305,5 +305,28 @@ class Video extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => 'Error: Inesperado'));
         return;
     }
+    public function remove() {
+        $userId = $this->session->userdata('userId');
+        $idVideo = $id=$this->uri->segment(3, 0);
+        if($idVideo){
+            $this->load->model("video_model");
+            if($this->video_model->belongsToUser($idVideo,$userId)){
+                if($this->video_model->remove($idVideo)){
+                    redirect("channel/view/me?msg=success");
+                }else{
+                    redirect("channel/view/me?msg=error");
+                }
+                
+                
+            }else{
+                echo "que hace?";
+            }
+        }else{
+            //404
+        }
+        
+            
+        
+    }
 
 }

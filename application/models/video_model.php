@@ -56,7 +56,7 @@ class Video_model extends MY_Model {
     public function selectById($idVideo) {
         $video = new VideoDTO();
         $conditions["video.id"] = $idVideo;
-        $conditions["active"] = 1;
+        $conditions["active"] = VIDEO_ACTIVE;
         $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
         $this->db->join("channel", "channel.id = video.idChannel");
         $result = $this->search($conditions, $this->table);
@@ -127,6 +127,7 @@ class Video_model extends MY_Model {
 
     public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
         $conditions["idChannel"] = $idChannel;
+        $conditions["video.active"] = VIDEO_ACTIVE;
         $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, "
                 . "active, idUser, nick, thumbUrl");
         $this->db->join("channel", "channel.id = video.idChannel");
@@ -200,7 +201,7 @@ class Video_model extends MY_Model {
     public function getVideosByNameLike($query, $limit, $offset) {
 
         $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
-        $this->db->where("video.active", "1");
+        $this->db->where("video.active", VIDEO_ACTIVE);
         $this->db->like("video.name", $query);
         $this->db->join("channel", "channel.id=video.idChannel");
         $this->db->limit($limit, $offset);
@@ -260,6 +261,7 @@ class Video_model extends MY_Model {
 
     public function selectByTagId($idTag) {
         $condition["idTag"] = $idTag;
+        $conditions["video.active"] = VIDEO_ACTIVE;
         $this->db->join("videotag", "videotag.idVideo=video.id");
         $result = $this->search($condition);
         $videoList = new VideoListDto();
@@ -312,7 +314,7 @@ class Video_model extends MY_Model {
             $this->db->where("channel.id", $channelId);
         }
 
-        $this->db->where("video.active", "1");
+        $this->db->where("video.active", VIDEO_ACTIVE);
         $this->db->join("channel", "video.idChannel=channel.id");
 
         $result = $this->db->get()->result();
@@ -360,7 +362,7 @@ class Video_model extends MY_Model {
     public function getVideosSusChan($idUser) {
         $this->db->select("video.*, channel.id as chanId, channel.name as chanName");
         $this->db->where("follower.idUser", $idUser);
-        $this->db->where("video.active", 1);
+        $this->db->where("video.active", VIDEO_ACTIVE);
         $this->db->join("channel", "channel.id=video.idChannel");
         $this->db->join("follower", "follower.idChannel=channel.id");
         $this->db->order_by("date", "desc");
@@ -413,5 +415,16 @@ class Video_model extends MY_Model {
         $this->db->where($data);
         return $this->db->count_all_results('viewtable');
     }
-
+    
+    /**
+     * Devuelve true si el video pertenece al usuario
+     */
+    public function belongsToUser($idVideo,$idUser){
+        $this->db->where('video.id', $idVideo);
+        $this->db->where('channel.idUser', $idUser);  
+        $this->db->join("channel", "channel.id=video.idChannel");
+        $result = $result = $this->search();
+        return count($result)==1? true: false;
+    }
+        
 }

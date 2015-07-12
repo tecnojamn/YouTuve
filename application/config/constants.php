@@ -99,3 +99,5 @@ define('ALT_PLAYLIST_PIC',"css/images/pl_default.png"); // highest automatically
 define('VIDEO_VIEWS_OFFSET_MINUTES',15); 
 //define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/portada.jpg");
 define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/default_cover.jpg");
+define('VIDEO_ACTIVE',1);
+define('VIDEO_INACTIVE',0);
