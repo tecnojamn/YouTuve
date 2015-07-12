@@ -148,14 +148,14 @@ class Video extends MY_Controller {
                 $this->load->view('video_layout', $data);
                 return;
             } else {
-                //404 es mejor
                 $data["error"] = 1;
-                $data["error_message"] = "Pagina no encontrada";
+                $data["error_message"] = "El video solicitado no existe o ha sido eliminado";
+                $this->load->view('home_layout', $data);
+                return;
             }
         }
-        $data["error"] = 1;
-        $data["error_msg"] = "El video solicitado no existe.";
-        $this->load->view('home_layout', $data);
+        show_404();
+        
     }
 
     /**
@@ -305,28 +305,24 @@ class Video extends MY_Controller {
         echo json_encode(array('result' => 'false', 'html' => 'Error: Inesperado'));
         return;
     }
+
     public function remove() {
         $userId = $this->session->userdata('userId');
-        $idVideo = $id=$this->uri->segment(3, 0);
-        if($idVideo){
+        $idVideo = $id = $this->uri->segment(3, 0);
+        if ($idVideo) {
             $this->load->model("video_model");
-            if($this->video_model->belongsToUser($idVideo,$userId)){
-                if($this->video_model->remove($idVideo)){
+            if ($this->video_model->belongsToUser($idVideo, $userId)) {
+                if ($this->video_model->remove($idVideo)) {
                     redirect("channel/view/me?msg=success");
-                }else{
+                } else {
                     redirect("channel/view/me?msg=error");
                 }
-                
-                
-            }else{
+            } else {
                 echo "que hace?";
             }
-        }else{
+        } else {
             //404
         }
-        
-            
-        
     }
 
 }

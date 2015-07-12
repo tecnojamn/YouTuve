@@ -42,7 +42,7 @@ class User extends MY_Controller {
                     $res->thumbUrl = base_url() . USER_THUMB_IMAGE_UPLOAD . $res->thumbUrl;
                 }
                 $data["user_data"] = $res;
-//aca habria que pedir videos
+                //aca habria que pedir videos
                 $this->load->view('user_layout', $data);
                 return; //andate de esta funcion  
             } else {
@@ -430,6 +430,33 @@ class User extends MY_Controller {
             $data["error_message"] = "Debes intentar con tu contraseña real.";
             $this->load->view('change_password_layout', $data);
         }
+    }
+
+    /*
+     * Verifica si esta usado el mail (AJAX)
+     * return: bool
+     */
+
+    public function isEmailAvailable() {
+        $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+        if ($this->form_validation->run() != FALSE) {
+            $email = $this->input->post('email');
+            $this->load->model('user_model');
+            $res = $this->user_model->isEmailAvailable($email);
+            echo json_encode(array('result' => $res));
+            return;
+        }
+        echo json_encode(array('result' => 'error'));
+        return;
+    }
+    
+    public function isNickAvailable() {
+        $nick = $this->input->post('nick');
+        $this->load->model('user_model');
+        $res = $this->user_model->isNickAvailable($nick);
+        echo json_encode(array('result' => $res));
+        return;
+
     }
 
 }

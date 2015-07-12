@@ -168,7 +168,7 @@ $this->load->helper('url');
 <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="col-lg-12">
-
+            
 
             <div class="row">
                 <div class="col-lg-12" >

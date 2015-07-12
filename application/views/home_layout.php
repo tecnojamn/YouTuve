@@ -58,6 +58,20 @@ $this->load->helper('url');
 
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        
+        <?php
+        if (isset($error) && $error && isset($error_message) && $error_message !== "") {
+            ?> <div class="row" style="min-height:50px;">
+                <div class="col-lg-12">
+                    <div class="alert alert-dismissible alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>
+                        <?php echo $error_message; ?>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+        
         <?php if (isset($validated) && !$validated) { ?>
             <div class="row" style=" padding: 0 30px;
                  ">

@@ -123,7 +123,7 @@ class User_model extends MY_Model {
     public function selectByNick($nick) {
         $condition["nick"] = $nick;
         $result = $this->search($condition);
-        if (count($result) === 1) {
+        if (count($result) > 0) {
             $user = new UserDTO();
             $user->lastname = $result[0]->lastname;
             $user->birthday = $result[0]->birthday;
@@ -226,5 +226,19 @@ class User_model extends MY_Model {
         }
         return false;
     }
-
+        
+    /*
+     * Verifica si esta sin usar el mail
+     * return: bool
+     */
+    public function isEmailAvailable($email){
+        $cond['email'] = $email;
+        $res=$this->search($cond,'user');
+        return count($res)==0?true:false;
+    }
+    public function isNickAvailable($nick){
+        $cond['nick'] = $nick;
+        $res=$this->search($cond,'user');
+        return count($res)==0?true:false;
+    }
 }

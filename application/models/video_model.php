@@ -426,5 +426,5 @@ class Video_model extends MY_Model {
         $result = $result = $this->search();
         return count($result)==1? true: false;
     }
-        
+
 }

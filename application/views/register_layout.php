@@ -39,7 +39,40 @@ $this->load->helper('url');
                     buttonImageOnly: true,
                     showButtonPanel: true,
                 })
-            })
+            });
+            $(document).ready(function () {
+                $("#btnSubmit").click(function (e) {
+                    $.post(
+                            "<?php echo base_url(); ?>user/isEmailAvailable",
+                            {email: $("#email").val()},
+                            function (data) {
+                                if (data.result === false) {
+                                    $("#alertEmailInUse").removeClass("hidden");
+                                    return false;
+                                } else{
+                                    $.post(
+                                        "<?php echo base_url(); ?>user/isNickAvailable",
+                                        {nick: $("#nick").val()},
+                                        function (data) {
+                                            if (data.result === false) {
+                                                $("#alertNickInUse").removeClass("hidden");
+                                                return false;
+                                            } else{
+                                                $("#form").submit();
+                                            }   
+                                        },
+                                        "json"
+                                    );
+                                }   
+                            },
+                            "json"
+                    );
+                    
+                        
+                    
+                })
+            });
+
         </script>
     </head>
 
@@ -59,7 +92,7 @@ $this->load->helper('url');
                     <?php
                 }
                 ?>
-                <form autocomplete="off" action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
+                <form id="form" autocomplete="off" action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
                     <div id="regFormHolder" class="well well-blue col-lg-12">
                         <fieldset>
                             <center><legend>Registro</legend></center>
@@ -68,6 +101,9 @@ $this->load->helper('url');
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
                                     <?php echo form_error('email', '<div class="error">', '</div>'); ?>
+                                    <div style="margin-top: 5px; text-align: center;">
+                                        <div style="padding: 0px;margin-bottom: 0px;" id="alertEmailInUse" class="hidden alert alert-dismissible alert-danger" >Email en uso!</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -75,6 +111,9 @@ $this->load->helper('url');
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Nickname" name="nick" id="nick"/>
                                     <?php echo form_error('nick', '<div class="error">', '</div>'); ?>
+                                    <div style="margin-top: 5px; text-align: center;">
+                                        <div style="padding: 0px;margin-bottom: 0px;" id="alertNickInUse" class="hidden alert alert-dismissible alert-danger" >Nick en uso!</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -128,7 +167,7 @@ $this->load->helper('url');
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-2">
-                                    <button type="submit" class="btn btn-primary " value="Enter" name="whocares">Submit</button>
+                                    <button id="btnSubmit" type="button" class="btn btn-primary " value="Enter" name="whocares">Submit</button>
                                 </div>
                             </div>
 
