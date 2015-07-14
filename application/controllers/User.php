@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -102,7 +102,7 @@ class User extends MY_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
-            $this->load->view('user_layout', $data);
+            redirect('/user/profile/me', 'refresh');
         } else {
             $name = $this->input->post('name');
             $lastname = $this->input->post('lastname');
@@ -310,18 +310,11 @@ class User extends MY_Controller {
             $thumbUrl = "";
 //inserta y redirige a algun lado todavia no sabemos
             $valCode = valCode();
-
-            if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
-                $to = $email;
-                $mailContent = validationMail($name, $valCode, $email);
-//NO ES NECESARIO$this->email->sendMail($to, $mailContent->message, $mailContent->subject);
-                if ($mailContent) {
-
-                    if ($this->user_model->emailExists($email)) {
+            if ($this->user_model->emailExists($email)) {
                         $data["error"] = 1;
                         $data["error_message"] = "Email en uso.";
                         $this->load->view('register_layout', $data);
-                    } else {
+            } else {
                         if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
                             $mailContent = validationMail($name, $valCode, $email);
                             if ($mailContent) {
@@ -331,16 +324,14 @@ class User extends MY_Controller {
                             }
 
                             $data["error"] = 0;
-                            redirect('/', 'refresh');
+                            redirect('/?confirmation_sent=false', 'refresh');
                             return;
                         }
                         $data["error"] = 1;
                         $data["error_message"] = "Ha ocurrido un error inesperado.";
                         $this->load->view('register_layout', $data);
-                    }
-                }
             }
-        }
+         }
     }
 
 //ajaxalyzed json borghes was here

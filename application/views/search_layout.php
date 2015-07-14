@@ -127,10 +127,7 @@ $this->load->helper('url');
                 </div>
             </div>
             <div class="row">
-
-                <div class="col-lg-8" style="padding:0 15px;"id="videos">
-
-                    <div class="col-lg-8" style="padding:0 15px;" id="videos">
+                    <div class="col-lg-12" style="padding:0 15px;" id="videos">
 
 
 <?php if ($searched_videos) { ?>
@@ -173,7 +170,7 @@ $this->load->helper('url');
 <?php }
 ?>
                     </div>
-                    <div class="col-lg-8" style="padding:0 15px;" id="channels">
+                    <div class="col-lg-12" style="padding:0 15px;" id="channels">
 
                         <?php
                         if ($searched_channels != null && $searched_channels->list != null) {
@@ -215,7 +212,7 @@ $this->load->helper('url');
 <?php }
 ?>
                     </div>
-                </div>
+               
 <?php $this->load->view('footer'); ?>
                 </body>
                 </html>

@@ -84,7 +84,7 @@ class Video extends MY_Controller {
                     $this->tags_model->pushTagsForVideo($videoId, $tags);
                 }
                 //envio mail a los seguidores del canal
-                newChannelVideoMail($idChannel->name, $videoId);
+                newChannelVideoMail($name, $videoId);
 
                 redirect('/', 'refresh');
             }
