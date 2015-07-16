@@ -168,11 +168,11 @@ class Video extends MY_Controller {
         }
         $search = $this->input->get("query");
         if ($search == NULL) {
-            $this->load->view("home_layout");
+            $this->load->view("home_layout", $data);
             return;
         }
         if ($search === "") {
-            $this->load->view("home_layout");
+            $this->load->view("home_layout", $data);
             return;
         }
         $page = ($this->input->get("page") !== NULL) ? $this->input->get("page") : 1;
@@ -180,8 +180,6 @@ class Video extends MY_Controller {
         $this->load->model("video_model");
         $this->load->model("channel_model");
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
-
-        $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
 
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_CHANNEL_LIMIT, ($page - 1) * SEARCH_CHANNEL_LIMIT);
 
