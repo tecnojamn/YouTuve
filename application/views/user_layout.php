@@ -12,6 +12,8 @@ $this->load->helper('url');
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+        
         <!--Calendar-->
         <link href="<?php echo base_url(); ?>css/calendar/css/calendario.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
@@ -210,15 +212,34 @@ $this->load->helper('url');
                 <div id="profile-content" class="tab-content">
                     <div class="tab-pane fade  active in" id="about_me" style="font-size: 20px;line-height: 50px;">
                         <!--esto sin ajax pero lo otro estaria bueno que lo cargue con ajax-->
-                        <p>Nick: <?php echo $user_data->nick; ?></p>
-                        <p>Email: <?php echo $user_data->email; ?></p>
-                        <p>Nombre: <?php echo $user_data->name; ?></p>
-                        <p>Apellido: <?php echo $user_data->lastname; ?></p>
-                        <p>Fecha de nacimiento: <?php echo $user_data->birthday; ?></p>
-                        <p>Sexo: <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></p>
+                        <table class="table table-condensed">
+                            <tr>
+                                <td>Nick:</td>
+                                <td><?php echo $user_data->nick; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Email:</td>
+                                <td><?php echo $user_data->email; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Nombre:</td>
+                                <td><?php echo $user_data->name; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Apellido:</td>
+                                <td><?php echo $user_data->lastname; ?></td>
+                            </tr>
+                                <td>Fecha de nacimiento:</td>
+                                <td><?php echo date('d/m/Y', strtotime($user_data->birthday)); ?></td>
+                            </tr>
+                            <tr>
+                                <td>Sexo:</td>
+                                <td><i class="fa <?php echo $user_data->gender===0?"fa-mars":"fa-venus";?>" ></i> <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></td>
+                            </tr>
+                        </table>
                         <?php if ($profile === "me") { ?>
-                            <a data-toggle="editModal" id="editBtn" href="#" style="font-size:15px">Editar</a><br>
-                            <a style=" display:block;font-size:15px;line-height: 15px;" href="<?php echo base_url(); ?>user/changePassForm" style="font-size:15px">Editar Contraseña</a>
+                            <a data-toggle="editModal" id="editBtn" class="btn btn-primary" href="#" style="font-size:15px">Editar Datos</a>
+                            <a style="font-size:15px" class="btn btn-primary" href="<?php echo base_url(); ?>user/changePassForm">Cambiar Contraseña</a>
                         <?php } ?>
                     </div>
                     <div class="tab-pane fade" id="my_channel">

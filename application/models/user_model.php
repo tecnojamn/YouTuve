@@ -17,7 +17,8 @@ class User_model extends MY_Model {
         $data["name"] = $name;
         $data["password"] = $password;
         $data["lastname"] = $lastname;
-        $bdaySQL = date('Y-m-d H:i:s', strtotime($birthday));
+        $date = DateTime::createFromFormat('d/m/Y', $birthday);
+        $bdaySQL  = $date->format('Y-m-d');
         $data["birthday"] = $bdaySQL;
         $data["gender"] = $gender;
         $data["thumbUrl"] = $thumbUrl;
@@ -62,7 +63,8 @@ class User_model extends MY_Model {
         if ($lastname !== "")
             $data["lastname"] = $lastname;
         if ($birthday !== "") {
-            $bdaySQL = date('Y-m-d', strtotime($birthday));
+            $date = DateTime::createFromFormat('d/m/Y', $birthday);
+            $bdaySQL  = $date->format('Y-m-d');
             $data["birthday"] = $bdaySQL;
         }
         if ($gender !== "")

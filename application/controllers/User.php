@@ -114,9 +114,11 @@ class User extends MY_Controller {
                 redirect(base_url().'user/profile/me', 'refresh');
                 return;
             }
-            $data["error"] = 1;
-            $data["error_message"] = "Ha ocurrido un error inesperado.";
-            $this->load->view('user_layout', $data);
+            
+            //NO SE HICIERON CAMBIOS
+            $data["error"] = 0;
+            redirect(base_url().'user/profile/me', 'refresh');
+            return;
         }
     }
 
