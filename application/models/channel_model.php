@@ -169,6 +169,10 @@ class Channel_model extends MY_Model {
         $channel = $this->selectByIdUser($videoList->list[0]->idUser);
         $channel->username = $videoList->list[0]->usernick;
         $channel->videos = $videoList;
+                
+        $followers = $this->search('idChannel = '.$idChannel,"follower");
+        $channel->followersCount = count($followers);
+                
         return $channel;
     }
 

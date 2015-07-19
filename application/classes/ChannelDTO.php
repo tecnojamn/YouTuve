@@ -16,6 +16,8 @@ class ChannelDTO {
     
     public $idUser;
     public $username;
+    
+    public $followersCount;
 
     function __construct() {
         

@@ -51,6 +51,9 @@ $this->load->helper('url');
                 <div style="background-color: white;width: 100%;height: auto;overflow: hidden; border-top: 1px solid rgb(242, 242, 242); padding: 15px">
                     <p><?php echo $channel->description ?></p>
                 </div>
+                <div style="background-color: white;width: 100%;height: auto;overflow: hidden; border-top: 1px solid rgb(242, 242, 242); padding: 15px">
+                    <p><?php echo $channel->followersCount ==1 ?  $channel->followersCount." suscripción" : $channel->followersCount." suscripciones";  ?></p>
+                </div>
                 <div style="  font-size: 20px;background-color:white; "class="col-lg-12">
                     <p>Videos:</p>
                 </div>
