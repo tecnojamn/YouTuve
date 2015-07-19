@@ -22,7 +22,12 @@ class AxForm extends CI_Controller {
     }
 
     public function formUserEditInfo() {
-        $formString = $this->load->view('axviews/ax_edit_user_info_form', '', true);
+        $data['name']= $this->input->post('name');
+        $data['lastname'] = $this->input->post('lastname');
+        $data['birthday'] = $this->input->post('birthday');
+        $data['gender'] = $this->input->post('gender');
+        
+        $formString = $this->load->view('axviews/ax_edit_user_info_form', $data, true);
         $arr = array('result' => 'true', 'html' => $formString);
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;

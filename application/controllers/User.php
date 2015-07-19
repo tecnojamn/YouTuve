@@ -102,7 +102,7 @@ class User extends MY_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
-            redirect('/user/profile/me', 'refresh');
+            redirect(base_url().'user/profile/me', 'refresh');
         } else {
             $name = $this->input->post('name');
             $lastname = $this->input->post('lastname');
@@ -111,7 +111,7 @@ class User extends MY_Controller {
             if ($this->user_model->edit($this->session->userdata('userId'), $name, $lastname, $birthday, $gender, "")) {
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
-                redirect('/user/profile/me', 'refresh');
+                redirect(base_url().'user/profile/me', 'refresh');
                 return;
             }
             $data["error"] = 1;

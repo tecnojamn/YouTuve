@@ -11,6 +11,10 @@ $this->load->helper('url');
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        
+        <!--Calendar-->
+        <link href="<?php echo base_url(); ?>css/calendar/css/calendario.css" rel="stylesheet" type="text/css"/>
+        <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
     </head>
 
     <body>
@@ -64,7 +68,14 @@ $this->load->helper('url');
                         console.log($('#editModal').find("#editFormHolder").data("loaded"));
                         //si el form no esta cargado lo vamos a buscar con AX
                         if ($('#editModal').find("#editFormHolder").data("loaded") === false) {
-                            $.get("<?php echo base_url(); ?>AXForm/formUserEditInfo", function (data) {
+                            $.post("<?php echo base_url(); ?>AXForm/formUserEditInfo",
+                            {
+                                name: "<?php echo $user_data->name;?>" ,
+                                lastname:"<?php echo $user_data->lastname;?>",
+                                birthday:"<?php echo $user_data->birthday;?>",
+                                gender:"<?php echo $user_data->gender;?>",
+                            },
+                            function (data) {
                                 if (data.result) {
                                     //si el resultado es verdadero lo agrego
                                     $("#editFormHolder").append(data.html);

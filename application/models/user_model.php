@@ -62,7 +62,7 @@ class User_model extends MY_Model {
         if ($lastname !== "")
             $data["lastname"] = $lastname;
         if ($birthday !== "") {
-            $bdaySQL = date('Y-m-d H:i:s', strtotime($birthday));
+            $bdaySQL = date('Y-m-d', strtotime($birthday));
             $data["birthday"] = $bdaySQL;
         }
         if ($gender !== "")
