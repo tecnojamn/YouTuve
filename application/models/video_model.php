@@ -423,8 +423,17 @@ class Video_model extends MY_Model {
         $this->db->where('video.id', $idVideo);
         $this->db->where('channel.idUser', $idUser);  
         $this->db->join("channel", "channel.id=video.idChannel");
-        $result = $result = $this->search();
+        $result = $this->search();
         return count($result)==1? true: false;
+    }
+    
+    /**
+     * Devuelve true si el video ya existe
+     */
+    public function alreadyExist($link){
+        $this->db->where('video.link',$link);
+        $res = $this->search();
+        return count($res)==1?true:false;       
     }
 
 }

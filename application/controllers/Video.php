@@ -65,6 +65,14 @@ class Video extends MY_Controller {
             $this->load->model('video_model');
             $this->load->model('channel_model');
             $this->load->helper('email_content');
+            
+            if($this->video_model->alreadyExist($link)){
+                $data["error"] = 1;
+                $data["error_message"] = "El video que intenta subir ya existe";
+                $this->load->view('upload_video_layout', $data);
+                return; //andate de esta funcion
+            }
+            
             //vemos si tiene un canal
             $idChannel = $this->getChannel($this->session->userdata('userId'));
             if (!$idChannel) {
