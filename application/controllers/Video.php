@@ -44,8 +44,6 @@ class Video extends MY_Controller {
             return; //andate de esta funcion
         }
 
-
-
         $data["log"] = 1;
         $this->form_validation->set_rules('name', 'name', 'trim|required');
         $this->form_validation->set_rules('link', 'link', 'trim|required');
@@ -65,33 +63,57 @@ class Video extends MY_Controller {
             $this->load->model('video_model');
             $this->load->model('channel_model');
             $this->load->helper('email_content');
+
             
-            if($this->video_model->alreadyExist($link)){
+            //Existance validation in YouTube system
+            
+            // Create a curl handle
+            $ch = curl_init();
+            $oembedURL = 'www.youtube.com/oembed?url=' . urlencode("https://www.youtube.com/watch?v=".$link) . '&format=json';
+            curl_setopt($ch, CURLOPT_URL, $oembedURL);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+            // Silent CURL execution
+            $output = curl_exec($ch);
+            unset($output);
+
+            $info = curl_getinfo($ch);
+            curl_close($ch);
+            
+            if($info['http_code'] === 404){
+                $data["error"] = 1;
+                $data["error_message"] = "El video no existe";
+                $this->load->view('upload_video_layout', $data);
+                return;
+            }
+
+            //Existance validation in YouTuve system
+            if ($this->video_model->alreadyExist($link)) {
                 $data["error"] = 1;
                 $data["error_message"] = "El video que intenta subir ya existe";
                 $this->load->view('upload_video_layout', $data);
                 return; //andate de esta funcion
             }
-            
-            //vemos si tiene un canal
+
+//vemos si tiene un canal
             $idChannel = $this->getChannel($this->session->userdata('userId'));
             if (!$idChannel) {
-                //crear canal
+//crear canal
                 $this->load->model('channel_model');
                 $idChannel = $this->channel_model->push($this->session->userdata('userId'), "El canal de " . $this->session->userdata('nick'), "", "");
             }
-            //intentamos insertarlo
+//intentamos insertarlo
             $videoId = $this->video_model->push($idChannel, $name, $link, date('Y-m-d H:i:s'), $duration, 1);
             if ($idChannel !== false && $videoId !== false) {
-                //Lo subió
-                //subimos las tags
+//Lo subió
+//subimos las tags
                 $tags = $this->input->post('tags');
                 $this->load->model('tags_model');
                 if ($tags !== NULL) {
-                    //faltaria chequear que me lleguen cosas lindas y no feas...
+//faltaria chequear que me lleguen cosas lindas y no feas...
                     $this->tags_model->pushTagsForVideo($videoId, $tags);
                 }
-                //envio mail a los seguidores del canal
+//envio mail a los seguidores del canal
                 newChannelVideoMail($name, $videoId);
 
                 redirect('/', 'refresh');
@@ -134,7 +156,7 @@ class Video extends MY_Controller {
             $video = $this->video_model->selectById($id);
             if ($video != FALSE) {
                 $userId = $this->session->userdata('userId');
-                //agrego al historial de vistas
+//agrego al historial de vistas
                 if ($this->isAuthorized())
                     $this->video_model->addView($id, $userId, date('Y-m-d H:i:s'));
 
@@ -163,7 +185,6 @@ class Video extends MY_Controller {
             }
         }
         show_404();
-        
     }
 
     /**
@@ -215,7 +236,7 @@ class Video extends MY_Controller {
             $this->load->view("home_layout");
             return;
         } else {
-            if( $this->isAuthorized() ){
+            if ($this->isAuthorized()) {
                 $data['log'] = 1;
             }
             $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT);
@@ -327,7 +348,7 @@ class Video extends MY_Controller {
                 echo "que hace?";
             }
         } else {
-            //404
+//404
         }
     }
 
