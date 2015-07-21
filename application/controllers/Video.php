@@ -64,12 +64,11 @@ class Video extends MY_Controller {
             $this->load->model('channel_model');
             $this->load->helper('email_content');
 
-            
+
             //Existance validation in YouTube system
-            
             // Create a curl handle
             $ch = curl_init();
-            $oembedURL = 'www.youtube.com/oembed?url=' . urlencode("https://www.youtube.com/watch?v=".$link) . '&format=json';
+            $oembedURL = 'www.youtube.com/oembed?url=' . urlencode("https://www.youtube.com/watch?v=" . $link) . '&format=json';
             curl_setopt($ch, CURLOPT_URL, $oembedURL);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
@@ -79,10 +78,13 @@ class Video extends MY_Controller {
 
             $info = curl_getinfo($ch);
             curl_close($ch);
-            
-            if($info['http_code'] === 404){
+
+            if ($info['http_code'] === 404) {
                 $data["error"] = 1;
                 $data["error_message"] = "El video no existe";
+                $this->load->model('tags_model');
+                $arrTags = $this->tags_model->getAllTags();
+                $data["tags"] = json_encode($arrTags);
                 $this->load->view('upload_video_layout', $data);
                 return;
             }
@@ -91,6 +93,9 @@ class Video extends MY_Controller {
             if ($this->video_model->alreadyExist($link)) {
                 $data["error"] = 1;
                 $data["error_message"] = "El video que intenta subir ya existe";
+                $this->load->model('tags_model');
+                $arrTags = $this->tags_model->getAllTags();
+                $data["tags"] = json_encode($arrTags);
                 $this->load->view('upload_video_layout', $data);
                 return; //andate de esta funcion
             }

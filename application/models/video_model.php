@@ -432,6 +432,7 @@ class Video_model extends MY_Model {
      */
     public function alreadyExist($link){
         $this->db->where('video.link',$link);
+        $this->db->where('video.active',VIDEO_ACTIVE);
         $res = $this->search();
         return count($res)==1?true:false;       
     }
