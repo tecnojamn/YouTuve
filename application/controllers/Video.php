@@ -78,18 +78,6 @@ class Video extends MY_Controller {
 
             $info = curl_getinfo($ch);
             curl_close($ch);
-            
-            //-----
-
-            $ch = curl_init('https://www.youtube.com/watch?v=f4ue1bTPL5M');
-
-// Ejecutar
-            curl_exec($ch);
-
-
-            $info2 = curl_getinfo($ch);
-            
-            var_dump($info2);
 
             if ($info['http_code'] === 404) {
                 $data["error"] = 1;

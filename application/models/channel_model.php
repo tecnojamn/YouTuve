@@ -166,9 +166,11 @@ class Channel_model extends MY_Model {
         }
         if($videoList->list==null) return false;
         $channel = new ChannelDTO();
-        $channel = $this->selectByIdUser($videoList->list[0]->idUser);
+        $idUser = $videoList->list[0]->idUser;
+        $channel = $this->selectByIdUser($idUser);
         $channel->username = $videoList->list[0]->usernick;
         $channel->videos = $videoList;
+        $channel->idUser = $idUser;
                 
         $followers = $this->search('idChannel = '.$idChannel,"follower");
         $channel->followersCount = count($followers);
