@@ -75,9 +75,8 @@ $this->load->helper('url');
                             <p>
                                 <?php echo $v->views ?> Visualizaciones
                             </p>
-                            <?php 
-                            $id=$this->uri->segment(3, 0);
-                            if($id=="me"){
+                            <?php
+                            if( $this->session->userdata("userId")==$channel->idUser){
                                 echo "<a href='".base_url()."video/remove/".$v->id."'>Eliminar video</a>";
                                 //echo "<a href='"+ base_url(); +"channel/view" + "'>"+ $channel->id +"</a><br>";                                
                             }   
