@@ -25,28 +25,22 @@ $this->load->helper('url');
             var can_load_more_video = true;//fix para que no viaje
             var curr_page_channel = 1;
             function loadMoreVideos() {
-
                 curr_page_video = curr_page_video + 1;
                 can_load_more_video = false;
-
                 can_load_more_video = false;
                 curr_page_video = curr_page_video + 1;
-
                 $.post("<?php echo base_url(); ?>video/searchMoreVideosAX", {searchPage: curr_page_video, searchText: '<?php echo $searched_query ?>'},
                 function (data) {
                     if (data.result === 'true') { //si el resultado es verdadero lo agrego
-                        $("#videosContent").append(data.html);
+                        $("#videos").append(data.html);
                         can_load_more_video = true;
                     } else {
-
                         paginator_ended_video = true;
                         can_load_more_video = true;
-
                         can_load_more_video = false;
                     }
                 }, "json");
             }
-
             function loadMoreChannels() {
                 curr_page_channel = curr_page_channel + 1;
                 can_load_more_channel = false;
@@ -63,7 +57,7 @@ $this->load->helper('url');
                         $.post("<?php echo base_url(); ?>channel/searchMoreChannelAX", {searchPage: curr_page_channel, searchText: '<?php echo $searched_query ?>'},
                         function (data) {
                             if (data.result === 'true') { //si el resultado es verdadero lo agrego
-                                $("#channelsContent").append(data.html);
+                                $("#channels").append(data.html);
                                 can_load_more_channel = true;
                             } else {
                                 can_load_more_channel = false;
@@ -93,7 +87,6 @@ $this->load->helper('url');
                     }
                 }
             }
-
             $(window).scroll(bindScroll);
             $(document).ready(function () {
                 $("#channels").hide();
@@ -134,7 +127,6 @@ $this->load->helper('url');
                             <div class = "col-lg-12 well" style = "overflow: hidden;
                                  background-color: transparent;
                                  border: none;
-
                                  min-height: 800px;">
 
 

@@ -234,7 +234,7 @@ $this->load->helper('url');
                             </tr>
                             <tr>
                                 <td>Sexo:</td>
-                                <td><i class="fa <?php echo $user_data->gender===0?"fa-mars":"fa-venus";?>" ></i> <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></td>
+                                <td><i class="fa <?php echo $user_data->gender==='0'?"fa-mars":"fa-venus";?>" ></i> <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></td>
                             </tr>
                         </table>
                         <?php if ($profile === "me") { ?>

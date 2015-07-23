@@ -81,7 +81,7 @@ $this->load->helper('url');
         <div class="row">
 
             <div class="col-lg-4"></div>
-            <div class="col-lg-4 col-lg-offset-0 col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+            <div class="col-lg-4 col-lg-offset-0">
 
                 <?php
                 if (isset($error) && $error && isset($error_message) && $error_message !== "") {
@@ -94,10 +94,10 @@ $this->load->helper('url');
                 ?>
                 <form id="form" autocomplete="off" action="<?php echo base_url(); ?>User/Register" method="post" class="form-horizontal">
                     <div id="regFormHolder" class="well well-blue col-lg-12">
+                        <div class="col-lg-11 col-lg-offset-1" >
                         <fieldset>
                             <center><legend>Registro</legend></center>
                             <div class="form-group">
-                                <label for="email" class="col-lg-2 control-label" style="text-align: left">Email </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Email" name="email" id="email"/>
                                     <?php echo form_error('email', '<div class="error">', '</div>'); ?>
@@ -107,7 +107,6 @@ $this->load->helper('url');
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="nick" class="col-lg-2 control-label" style="text-align: left">Nickname </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Nickname" name="nick" id="nick"/>
                                     <?php echo form_error('nick', '<div class="error">', '</div>'); ?>
@@ -117,37 +116,32 @@ $this->load->helper('url');
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="password" class="col-lg-2 control-label" style="text-align: left">Password </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="password" placeholder="Password" name="password" id="password"/>
                                     <?php echo form_error('password', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="passwordConf" class="col-lg-2 control-label" style="text-align: left">Confirmar password </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="password" placeholder="Confirmar password" name="passwordConf" id="passwordConf"/>
                                     <?php echo form_error('passwordConf', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="name" class="col-lg-2 control-label" style="text-align: left">Name </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Name" name="name" id="name"/>
                                     <?php echo form_error('name', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="lastname" class="col-lg-2 control-label" style="text-align: left">LastName </label>
                                 <div class="col-lg-10">
                                     <input class="form-control" type="text" placeholder="Last Name" name="lastname" id="lastname"/>
                                     <?php echo form_error('lastname', '<div class="error">', '</div>'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="birthday" class="col-lg-2 control-label" style="text-align: left">Birthday </label>
                                 <div class="col-lg-10">
-                                    <input class="form-control" type="text" placeholder="dd/mm/YYY" name="birthday" id="birthday"/>
+                                    <input class="form-control" type="text" placeholder="Birthday" name="birthday" id="birthday"/>
                                     <?php echo form_error('birthday', '<div class="error">', '</div>'); ?>
 
                                 </div>
@@ -156,7 +150,6 @@ $this->load->helper('url');
                             <!-- calendario -->
                             <!-- ACA UN JS QUE NOS DEJE ELEGIR LA FECHA-->
                             <div class="form-group">
-                                <label for="gender" class="col-lg-2 control-label" style="text-align: left">Gender </label>
                                 <div class="col-lg-10">
                                     <select class="form-control" id="gender" name="gender">
                                         <option value="0">Masculine</option>
@@ -172,7 +165,7 @@ $this->load->helper('url');
                             </div>
 
                         </fieldset>
-
+                        </div>
                     </div>
                 </form>
 
