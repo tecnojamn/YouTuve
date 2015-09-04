@@ -46,7 +46,9 @@
                 </div> 
             </nav>
         </div>
-
-
-
     </div>
+    <script>
+        var baseUrl = "<?php echo base_url(); ?>";
+    </script>
+    <script src="<?php echo base_url(); ?>js/local-storage-pattern.js"></script>
+    <script src="<?php echo base_url(); ?>js/adv-search.js"></script>

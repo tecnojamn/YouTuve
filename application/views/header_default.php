@@ -36,12 +36,12 @@ $this->load->helper('url');
                         <li><a href="<?php echo base_url(); ?>User/loginForm">Login</a></li>
                         <li><a href="<?php echo base_url(); ?>User/registerForm">Registro</a></li>
                     </ul>
-
-
                 </div>
-
             </nav>
-
         </div>
-
     </div>
+    <script>
+        var baseUrl = "<?php echo base_url(); ?>";
+    </script>
+    <script src="<?php echo base_url(); ?>js/local-storage-pattern.js"></script>
+    <script src="<?php echo base_url(); ?>js/adv-search.js"></script>
