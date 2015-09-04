@@ -16,7 +16,32 @@ $this->load->helper('url');
     </head>
 
     <body>
-
+        <script>
+            var id = '<?php echo $playlist->id ?>';
+            $(document).ready(function () {
+                loadVideosPlaylist();
+            });
+            function loadVideosPlaylist() {
+                $('#videosContainer').empty();
+                $.post('<?php echo base_url() . "playlist/getVideosAx" ?>', {idPlaylist: id}, function (data) {
+                    $('#videosContainer').append(data.html);
+                    $('.delVideo').bind('click', function (event) {
+                        delVideo(event);
+                    });
+                }, 'json');
+            }
+            function delVideo(event) {
+                var idVideoPlay = $(event.target.nextElementSibling).val();
+                $.post('<?php echo base_url() ?>playlist/delVideoAx', {idPlaylist: id, idVideo: idVideoPlay}, function (data) {
+                    $("body").append(data.html);
+                    $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
+                    setTimeout(function () {
+                        $('#messageBox').remove();
+                    }, 2001);
+                    loadVideosPlaylist();
+                }, 'json');
+            }
+        </script>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <?php if ($playlist !== null && $playlist->videos !== null) {
             ?>
@@ -29,22 +54,8 @@ $this->load->helper('url');
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
-               
-                <?php foreach ($playlist->videos->list as $row) { ?>
-                    <div class="col-lg-12 well-violet" style="background-color: white;
-                         padding: 15px;">
-                        <div class="col-lg-2" style="width: 138px">
-                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->id ?>">
-                                <img src="http://img.youtube.com/vi/<?php echo $row->link ?>/0.jpg" style="width: 100px;height: 100px;float: left;">
-                            </a>
-                        </div>
-                        <div class="col-lg-10">
-                            <a href="<?php echo base_url(); ?>video/view/<?php echo $row->id ?>"><?php echo $row->name ?></a><br>
-                         
-                        </div>
-                    </div>
-                <?php } ?>
+            <div id="videosContainer" class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
+
             </div>
         <?php } ?>
 

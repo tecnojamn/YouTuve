@@ -19,11 +19,16 @@ class Playlist_model extends MY_Model {
         $result = $this->save($data);
         return ($result > 0) ? true : false;
     }
-
+    //Elimina la playlist de la base de datos
     public function remove($idPlaylist) {
+        //Vacio la playlist
+        $this->db->where('idPlaylist', $idPlaylist);
+        $this->db->delete('videoplaylist');
+        $this->db->flush_cache();
+        //Borro la playlist
         $cond["id"] = $idPlaylist;
-        $result = $this->delete($cond);
-        return ($result > 0) ? true : false;
+        $this->delete($cond);
+        return ($this->db->affected_rows() > 0) ? true : false;
     }
 
     public function edit($id, $name, $isWatchLater) {
@@ -157,9 +162,9 @@ class Playlist_model extends MY_Model {
     }
 
     //chequea si existe el video en la playlist
-    public function checkIfExist($videoId, $playlistName) {
+    public function checkIfExist($videoId, $playlistId) {
         $condition['video.id'] = $videoId;
-        $condition['playlist.name'] = $playlistName;
+        $condition['playlist.id'] = $playlistId;
         $this->db->join("videoplaylist", "playlist.id = videoplaylist.idPlaylist");
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $result = $this->search($condition);
@@ -169,6 +174,13 @@ class Playlist_model extends MY_Model {
         } else {
             return FALSE;
         }
+    }
+    
+    public function checkUserOwner($idUser, $idPlaylist){
+        $cond["idUser"] = $idUser;
+        $cond["id"] = $idPlaylist;
+        $result = $this->search();
+        return ($result > 0) ? true : false;
     }
 
 }
