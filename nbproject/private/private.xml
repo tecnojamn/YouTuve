@@ -3,9 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/YouTuve/js/local-storage-pattern.js</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/header_default.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/js/adv-search.js</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/views/axviews/ax_load_more_videos.php</file>
         </group>
     </open-files>
 </project-private>
