@@ -80,7 +80,8 @@ $this->load->helper('url');
                             }
                         });
 
-                    return false;});
+                        return false;
+                    });
                     function loadPls() {
                         $("#addPlList li").each(function () {
                             $(this).remove();
@@ -117,7 +118,8 @@ $this->load->helper('url');
                                 }, 2001);
                             }
                         }, "json");
-                    return false;});
+                        return false;
+                    });
                     function loadPls() {
                         $("#addPlList li").each(function () {
                             $(this).remove();
@@ -165,10 +167,10 @@ $this->load->helper('url');
             }
             );
         </script>
-<?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
+        <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
 
         <div class="col-lg-12">
-            
+
 
             <div class="row">
                 <div class="col-lg-12" >
@@ -184,7 +186,10 @@ $this->load->helper('url');
             <div class="row" style="margin-top: 30px;">
                 <div class="col-lg-12" style=" ">
 
-                    <div class="col-lg-8 " style="padding-left:0; ">
+                    <div class="col-lg-8 " style="padding-left:0;">
+                        <div class="well well-blue " style="height: 60px;" >
+                                <?php $this->load->view('social_share_buttons.php');?>    
+                        </div>
                         <div id="videoDataContainer" class="well well-red" style="  height: auto;
                              overflow: hidden;">
                             <div class="col-lg-2" style="">

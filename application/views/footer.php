@@ -4,6 +4,9 @@
 
             <p>Hecho por Nicolás Carnebia, Julio Grajales,Maxi Sosa y Andres Peña </p>
             <p>CopyRight 2015, todos los derechos los afanamos.</p>
+            <div style="float:right">
+                <?php $this->load->view('social_share_buttons.php');?>
+            </div>
 
         </div>
     </div>
