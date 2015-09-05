@@ -461,7 +461,7 @@ class Video_model extends MY_Model {
             $this->db->where("video.date >=", date('Y-' . $current_month . '-01'));
         } else if (in_array("this_year", $filters)) {
             $current_year = date('Y');
-            $this->db->where("video.date >=", date($current_year . '-m-01'));
+            $this->db->where("video.date >=", date($current_year . '-01-01'));
         }
         if (in_array("most_viewed", $filters)) {
             //select changes????
@@ -479,24 +479,23 @@ class Video_model extends MY_Model {
             $this->db->where("video.source", 'youtube');
         } else if (in_array("vimeo", $filters)) {
             $this->db->where("video.source", 'vimeo');
-        } else if (in_array("other", $filters)) {
-            $this->db->where("video.source", 'other');
         }
-        if (in_array("Pelicula", $filters)) {
+        if (in_array("movie", $filters)) {
             $this->db->join("videotag", "videotag.idVideo=video.id");
             $this->db->join("tag", "videotag.idTag=tag.id");
             $this->db->where("tag.name", 'Pelicula');
-        } else if (in_array("Serie", $filters)) {
+        } else if (in_array("serie", $filters)) {
             $this->db->join("videotag", "videotag.idVideo=video.id");
             $this->db->join("tag", "videotag.idTag=tag.id");
             $this->db->where("tag.name", 'Serie');
-        } else if (in_array("Otros", $filters)) {
+        } else if (in_array("other", $filters)) {
             $this->db->join("videotag", "videotag.idVideo=video.id");
             $this->db->join("tag", "videotag.idTag=tag.id");
             $this->db->where("tag.name !=", 'Pelicula')->where("tag.name !=", 'Serie');
         }
         $this->db->limit($limit, $offset);
         $result = $this->db->get($this->table)->result();
+        var_dump($this->db->last_query());
         if (count($result) < 1) {
             return false;
         }
