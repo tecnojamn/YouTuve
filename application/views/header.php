@@ -27,6 +27,10 @@
                             </div>
                             <button type="submit" class="btn btn-primary">Buscar</button>
                         </form>
+                        <a href="<?php echo base_url(); ?>advancedsearch" style="
+                           line-height: 50px;
+                           font-size: 12px;
+                           ">Busqueda avanzada</a>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -46,7 +50,9 @@
                 </div> 
             </nav>
         </div>
-
-
-
     </div>
+    <script>
+        var baseUrl = "<?php echo base_url(); ?>";
+    </script>
+    <script src="<?php echo base_url(); ?>js/local-storage-pattern.js"></script>
+    <script src="<?php echo base_url(); ?>js/adv-search.js"></script>

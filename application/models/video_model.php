@@ -134,7 +134,7 @@ class Video_model extends MY_Model {
         $this->db->join("user", "channel.idUser = user.id");
 
         $result = $this->search($conditions, "video");
-        
+
         $videoList = new VideoListDto();
         foreach ($result as $row) {
             $video = new VideoDTO();
@@ -333,7 +333,7 @@ class Video_model extends MY_Model {
                 $video->rate = $row->rate;
             }
             $video->duration = $row->durationInSeconds;
-            
+
 //view del video
             $conditionsView["idVideo"] = $video->id;
             $this->db->where($conditionsView);
@@ -415,26 +415,103 @@ class Video_model extends MY_Model {
         $this->db->where($data);
         return $this->db->count_all_results('viewtable');
     }
-    
+
     /**
      * Devuelve true si el video pertenece al usuario
      */
-    public function belongsToUser($idVideo,$idUser){
+    public function belongsToUser($idVideo, $idUser) {
         $this->db->where('video.id', $idVideo);
-        $this->db->where('channel.idUser', $idUser);  
+        $this->db->where('channel.idUser', $idUser);
         $this->db->join("channel", "channel.id=video.idChannel");
         $result = $this->search();
-        return count($result)==1? true: false;
+        return count($result) == 1 ? true : false;
     }
-    
+
     /**
      * Devuelve true si el video ya existe
      */
-    public function alreadyExist($link){
-        $this->db->where('video.link',$link);
-        $this->db->where('video.active',VIDEO_ACTIVE);
+    public function alreadyExist($link) {
+        $this->db->where('video.link', $link);
+        $this->db->where('video.active', VIDEO_ACTIVE);
         $res = $this->search();
-        return count($res)==1?true:false;       
+        return count($res) == 1 ? true : false;
+    }
+
+    /* filters: 
+     * * time=>{today, this week, this month, this year}
+     * * rate/views =>{most viewed , most rated}
+     * * platform =>{youtuve, vimeo}
+     * * tagged as=>{Pelicula, Serie, whatever}
+     */
+
+    public function findAdvanced($query, $filters, $limit, $offset) {
+
+        $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
+        $this->db->where("video.active", VIDEO_ACTIVE);
+        $this->db->like("video.name", $query);
+        $this->db->join("channel", "channel.id=video.idChannel");
+        if (in_array("today", $filters)) {
+            $this->db->where("video.date >=", date('Y-m-d'));
+        } else if (in_array("this_week", $filters)) {
+            $day = date('w');
+            $week_end = date('Y-m-d', strtotime('+' . (6 - $day) . ' days'));
+            $this->db->where("video.date >=", $week_end);
+        } else if (in_array("this_month", $filters)) {
+            $current_month = date('m');
+            $this->db->where("video.date >=", date('Y-' . $current_month . '-01'));
+        } else if (in_array("this_year", $filters)) {
+            $current_year = date('Y');
+            $this->db->where("video.date >=", date($current_year . '-01-01'));
+        }
+        if (in_array("most_viewed", $filters)) {
+            //select changes????
+            $this->db->select("video.*,channel.id as idChannel, COUNT(video.id) as views,channel.name as channelName,video.name as videoName");
+            $this->db->join("viewhistory", "viewhistory.idVideo=video.id");
+            $this->db->group_by('video.id');
+            $this->db->order_by('views', 'desc');
+        } else if (in_array("most_rated", $filters)) {
+            $this->db->select("video.*,channel.id as idChannel, SUM(rate.rate) as rates,channel.name as channelName,video.name as videoName");
+            $this->db->join("rate", "rate.idVideo=video.id");
+            $this->db->group_by('video.id');
+            $this->db->order_by('rates', 'desc');
+        }
+        if (in_array("youtube", $filters)) {
+            $this->db->where("video.source", 'youtube');
+        } else if (in_array("vimeo", $filters)) {
+            $this->db->where("video.source", 'vimeo');
+        }
+        if (in_array("movie", $filters)) {
+            $this->db->join("videotag", "videotag.idVideo=video.id");
+            $this->db->join("tag", "videotag.idTag=tag.id");
+            $this->db->where("tag.name", 'Pelicula');
+        } else if (in_array("serie", $filters)) {
+            $this->db->join("videotag", "videotag.idVideo=video.id");
+            $this->db->join("tag", "videotag.idTag=tag.id");
+            $this->db->where("tag.name", 'Serie');
+        } else if (in_array("other", $filters)) {
+            $this->db->join("videotag", "videotag.idVideo=video.id");
+            $this->db->join("tag", "videotag.idTag=tag.id");
+            $this->db->where("tag.name !=", 'Pelicula')->where("tag.name !=", 'Serie');
+        }
+        $this->db->limit($limit, $offset);
+        $result = $this->db->get($this->table)->result();
+        var_dump($this->db->last_query());
+        if (count($result) < 1) {
+            return false;
+        }
+        $videos = new VideoListDto;
+        foreach ($result as $row) {
+            $video = new VideoDTO();
+            $video->id = $row->id;
+            $video->name = $row->videoName;
+            $video->link = $row->link;
+            $video->date = $row->date;
+            $video->idChannel = $row->idChannel;
+            $video->channelName = $row->channelName;
+            $video->duration = $row->durationInSeconds;
+            $videos->addVideo($video);
+        }
+        return $videos;
     }
 
 }
