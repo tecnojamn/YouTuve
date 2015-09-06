@@ -16,7 +16,7 @@ class Admin_model extends MY_Model {
         $result = $this->search($condition, "admin", 1, 0);
         if (count($result) === 1) {
             $admin = new AdminDTO();
-            $user->username = $result[0]->username;
+            $admin->username = $result[0]->username;
             return $admin;
         } else {
             return false;

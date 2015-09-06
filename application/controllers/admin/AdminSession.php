@@ -56,7 +56,15 @@ class AdminSession extends MY_Controller {
 
     //
     public function index() {
-        //dashboard
+        $this->load->view('admin/index_dashboard_layout', $this->data);
+        return;
+    }
+
+    public function signout() {
+        $this->load->view('admin/index_dashboard_layout');
+        $this->session->sess_destroy();
+        redirect('/admin/adminsession/index', 'refresh');
+        return;
     }
 
 }

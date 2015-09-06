@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-09-2015 a las 17:43:30
+-- Tiempo de generación: 06-09-2015 a las 18:23:33
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -33,6 +33,13 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `last_log` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `admin`
+--
+
+INSERT INTO `admin` (`id`, `username`, `password`, `last_log`) VALUES
+(1, 'admin', 'admin', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -44,16 +51,17 @@ CREATE TABLE IF NOT EXISTS `channel` (
   `idUser` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `description` varchar(500) NOT NULL,
-  `frontImgUrl` varchar(100) NOT NULL
+  `frontImgUrl` varchar(100) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `channel`
 --
 
-INSERT INTO `channel` (`id`, `idUser`, `name`, `description`, `frontImgUrl`) VALUES
-(1, 8, 'El canal de Peter', '', ''),
-(2, 11, 'El canal de asdasd', '', '');
+INSERT INTO `channel` (`id`, `idUser`, `name`, `description`, `frontImgUrl`, `active`) VALUES
+(1, 8, 'El canal de Peter', '', '', 1),
+(2, 11, 'El canal de asdasd', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -66,15 +74,16 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `idUser` int(11) NOT NULL,
   `idVideo` int(11) NOT NULL,
   `comment` varchar(150) NOT NULL,
-  `date` datetime NOT NULL
+  `date` datetime NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `comment`
 --
 
-INSERT INTO `comment` (`id`, `idUser`, `idVideo`, `comment`, `date`) VALUES
-(1, 11, 1, 'asd', '2015-07-14 05:17:52');
+INSERT INTO `comment` (`id`, `idUser`, `idVideo`, `comment`, `date`, `active`) VALUES
+(1, 11, 1, 'asd', '2015-07-14 05:17:52', 1);
 
 -- --------------------------------------------------------
 
