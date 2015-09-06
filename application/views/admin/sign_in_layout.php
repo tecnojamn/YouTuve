@@ -44,12 +44,20 @@ $this->load->helper('url');
         </style>
         <div class="col-lg-4 col-lg-offset-4">
 
-            <form class="form-signin" action="<?php echo base_url(); ?>admin/adminSession/signinpost">
+            <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
+                <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
+            <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
+                <div class="alert alert-success"> <?= $this->session->flashdata('message') ?> </div>
+            <?php } ?> 
+
+            <form method="POST" autocomplete="false" class="form-signin" action="<?php echo base_url(); ?>admin/adminSession/signinpost">
                 <h2 class="form-signin-heading">Admin panel Login</h2>
                 <label for="inputEmail" class="sr-only">Email address</label>
-                <input name="admin_user" type="text" id="inputEmail" class="form-control" placeholder="Usuario" required="true" autofocus="">
+                <?php echo form_error('admin_user'); ?>
+                <input name="admin_user" type="text" id="inputEmail" class="form-control" placeholder="Usuario"  autofocus="">
                 <label for="inputPassword" class="sr-only">Password</label>
-                <input name="admin_password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required="true">
+                <?php echo form_error('admin_password'); ?>
+                <input name="admin_password" type="password" id="inputPassword" class="form-control" placeholder="Contraseña" >
                 <br>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             </form>

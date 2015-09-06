@@ -26,29 +26,37 @@ class AdminSession extends MY_Controller {
 
     //lógica de login para admin
     public function signInPost() {
-        
+        $username = $this->input->post('admin_user', TRUE);
+        $password = $this->input->post('admin_password', TRUE);
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('admin_user', 'User', 'required');
+        $this->form_validation->set_rules('admin_password', 'Contraseña', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('admin/sign_in_layout', $this->data);
+            return;
+        } else {
+            $this->load->model('admin_model');
+            $admin = $this->admin_model->authorize($username, $password);
+            if ($admin) {
+                $session = array(
+                    'admin' => TRUE,
+                    'username' => $admin->username
+                );
+                $this->session->set_userdata($session); //guarda en session
+                redirect('/admin/adminsession/index', 'refresh');
+                return;
+            } else {
+                $this->session->set_flashdata('message', 'Usuario no encontrado.');
+                $this->session->set_flashdata('error', 1);
+                $this->load->view('admin/sign_in_layout', $this->data);
+                return;
+            }
+        }
     }
 
     //
     public function index() {
-        //get query and filters
-        //if no query show nothing on videos
-        $query = $this->input->get('query', TRUE);
-        $filters = $this->input->get('filters', TRUE);
-        $filters = explode(",", $filters, 20);
-        $page = ($this->input->get("page") !== NULL) ? $this->input->get("page") : 1;
-        $page = ($page > 0) ? $page : 1;
-        $this->load->model('video_model');
-        if (count($query) == "0") {
-            $this->data["searching"] = 0;
-            $this->data["searched_videos"] = null;
-        } else {
-            $this->data["searching"] = 1;
-            $videos = $this->video_model->findAdvanced($query, $filters, 10, ($page - 1) * 10);
-            $this->data["searched_videos"] = $videos;
-        }
-        $this->load->view('advanced_search_layout', $this->data);
-        return;
+        //dashboard
     }
 
 }
