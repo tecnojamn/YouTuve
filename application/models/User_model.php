@@ -179,7 +179,7 @@ class User_model extends MY_Model {
     public function isfollowingChannel($idUser, $idChannel) {
         $data["idUser"] = $idUser;
         $data["idChannel"] = $idChannel;
-        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        $row = $this->db->get_where('follower', array('idChannel' => $data['idChannel'], 'idUser' => $data['idUser']))->row();
         if ($row)
             return true;
         return false;
@@ -200,7 +200,7 @@ class User_model extends MY_Model {
         $data["confirmed"] = 0;
         $data["seen"] = 0;
 
-        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        $row = $this->db->get_where('follower', array('idChannel' => $data['idChannel'], 'idUser' => $data['idUser']))->row();
         if ($row)
             return false;
         $this->db->flush_cache();

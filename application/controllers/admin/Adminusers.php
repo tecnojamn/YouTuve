@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminUsers extends MY_Controller {
 
-    protected $data = [];
-    protected $authorizedActions = [];
+    protected $data = array();
+    protected $authorizedActions = array();
 
     function __construct() {
         parent::__construct();
@@ -14,7 +14,7 @@ class AdminUsers extends MY_Controller {
         $action = $this->router->fetch_method();
 
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
-            redirect('admin/adminSession/signin', 'refresh');
+            redirect('admin/adminsession/signin', 'refresh');
         }
     }
 
@@ -44,7 +44,7 @@ class AdminUsers extends MY_Controller {
             $this->session->set_flashdata('error', 1);
         }
 
-        redirect('/admin/AdminUsers/index');
+        redirect('/admin/adminusers/index');
     }
 
     //logical undelete
@@ -65,7 +65,7 @@ class AdminUsers extends MY_Controller {
             $this->session->set_flashdata('error', 1);
         }
 
-        redirect('/admin/AdminUsers/index');
+        redirect('/admin/adminusers/index');
     }
 
     //reset user password setting active to 0 and sending email with new token
@@ -88,7 +88,7 @@ class AdminUsers extends MY_Controller {
             $this->session->set_flashdata('error', 1);
         }
 
-        redirect('/admin/AdminUsers/index');
+        redirect('/admin/adminusers/index');
     }
     
     public function unban() {
@@ -106,7 +106,7 @@ class AdminUsers extends MY_Controller {
             $this->session->set_flashdata('error', 1);
         }
 
-        redirect('/admin/AdminUsers/index');
+        redirect('/admin/adminusers/index');
     }
 
 }
