@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminSession extends MY_Controller {
 
-    protected $data = [];
-    protected $authorizedActions = ['signin', 'signinpost'];
+    protected $data = array();
+    protected $authorizedActions = array('signin', 'signinpost');
 
     function __construct() {
         parent::__construct();
@@ -14,7 +14,7 @@ class AdminSession extends MY_Controller {
         $action = $this->router->fetch_method();
 
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
-            redirect('admin/adminSession/signin', 'refresh');
+            redirect('admin/adminsession/signin', 'refresh');
         }
     }
 
