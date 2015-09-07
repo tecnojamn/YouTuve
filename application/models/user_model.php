@@ -243,4 +243,20 @@ class User_model extends MY_Model {
         $res=$this->search($cond,'user');
         return count($res)==0?true:false;
     }
+    public function getUsers( $limit = 0, $offset = 0,$orderBy = "") {
+        if($limit != 0){
+            $this->db->limit($limit,$offset);
+        }
+        $users= $this->db->get('user')->result();
+
+        return $users;
+    }
+    public function deleteUser($idUser){
+        $data["active"] = 0;
+        return $this->update($data, "id=" . $idUser);
+    }
+    public function undeleteUser($idUser){
+        $data["active"] = 1;
+        return $this->update($data, "id=" . $idUser);
+    }
 }
