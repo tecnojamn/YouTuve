@@ -19,8 +19,14 @@ class MY_Controller extends CI_Controller {
 
     //Devuelve true si está logueado
     public function isAuthorized() {
-       $loged_in_data =$this->session->userdata();
+        $loged_in_data = $this->session->userdata();
         return (isset($loged_in_data["logged_in"]) && $loged_in_data["logged_in"] === TRUE);
+    }
+
+    //Devuelve true si está logueado un admin
+    public function isAdminSignedIn() {
+        $loged_in_data = $this->session->userdata();
+        return (isset($loged_in_data["admin"]) && $loged_in_data["admin"] === TRUE);
     }
 
     /**
