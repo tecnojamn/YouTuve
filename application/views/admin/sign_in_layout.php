@@ -50,7 +50,7 @@ $this->load->helper('url');
                 <div class="alert alert-success"> <?= $this->session->flashdata('message') ?> </div>
             <?php } ?> 
 
-            <form method="POST" autocomplete="false" class="form-signin" action="<?php echo base_url(); ?>admin/adminSession/signinpost">
+            <form method="POST" autocomplete="false" class="form-signin" action="<?php echo base_url(); ?>admin/adminsession/signinpost">
                 <h2 class="form-signin-heading">Admin panel Login</h2>
                 <label for="inputEmail" class="sr-only">Email address</label>
                 <?php echo form_error('admin_user'); ?>

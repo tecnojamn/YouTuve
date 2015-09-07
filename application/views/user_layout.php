@@ -152,7 +152,6 @@ $this->load->helper('url');
                     }, "json");
                     function delPlaylist(event) {
                         var id = $(event.target.nextElementSibling).val();
-                        alert(id);
                         $.post("<?php echo base_url(); ?>Playlist/delPlaylistAx", {idPlaylist: id}, function (data) {
                             if (data.result == "true") {
                                 $("body").append(data.html);

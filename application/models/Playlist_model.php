@@ -1,17 +1,13 @@
 <?php
-
 include_once APPPATH . 'classes/VideoDTO.php';
 include_once APPPATH . 'classes/VideoListDto.php';
 include_once APPPATH . 'classes/PlaylistDTO.php';
 include_once APPPATH . 'classes/PlaylistListDTO.php';
-
 class Playlist_model extends MY_Model {
-
     public function __construct() {
         parent::__construct();
         $this->table = "playlist";
     }
-
     public function push($idUser, $name, $isWatchLater) {
         $data["name"] = $name;
         $data["idUser"] = $idUser;
@@ -19,13 +15,17 @@ class Playlist_model extends MY_Model {
         $result = $this->save($data);
         return ($result > 0) ? true : false;
     }
-
+    //Elimina la playlist de la base de datos
     public function remove($idPlaylist) {
+        //Vacio la playlist
+        $this->db->where('idPlaylist', $idPlaylist);
+        $this->db->delete('videoplaylist');
+        $this->db->flush_cache();
+        //Borro la playlist
         $cond["id"] = $idPlaylist;
-        $result = $this->delete($cond);
-        return ($result > 0) ? true : false;
+        $this->delete($cond);
+        return ($this->db->affected_rows() > 0) ? true : false;
     }
-
     public function edit($id, $name, $isWatchLater) {
         if ($name !== "")
             $data["name"] = $name;
@@ -34,13 +34,11 @@ class Playlist_model extends MY_Model {
         $result = $this->update($data, "id=" . $id);
         return ($result > 0) ? true : false;
     }
-
     public function selectById($idPlaylist) {
         $this->db->select("idVideo, playlist.isWatchLater,playlist.created_date, idChannel, video.name, link, date, durationInSeconds, active, playlist.name as pname");
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
         $conditions["playlist.id"] = $idPlaylist;
-
         $result = $this->search($conditions, "videoplaylist");
         if ($result) {
             $PlayList = new PlaylistDTO();
@@ -56,7 +54,6 @@ class Playlist_model extends MY_Model {
                 $video->active = $row->active;
                 $videoList->addVideo($video);
             }
-
             $PlayList->videos = $videoList;
             $PlayList->created_date = $result[0]->created_date;
             $PlayList->id = $idPlaylist;
@@ -66,7 +63,6 @@ class Playlist_model extends MY_Model {
         }
         return false;
     }
-
     public function selectByName($name) {
         $condition["Name"] = $name;
         $result = $this->search($condition);
@@ -75,7 +71,6 @@ class Playlist_model extends MY_Model {
             $PlayList->isWatchLater = $result[0]->isWatchLater;
             $PlayList->id = $result[0]->id;
             $PlayList->name = $name;
-
             $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, active");
             $this->db->join("video", "video.id = videoplaylist.idVideo");
             $this->db->join("playlist", "playlist.id = videoplaylist.idPlaylist");
@@ -100,14 +95,12 @@ class Playlist_model extends MY_Model {
         }
         return FALSE;
     }
-
     public function addVideoToPlaylist($idPlaylist, $idVideo) {
         $data["idPlaylist"] = $idPlaylist;
         $data["idVideo"] = $idVideo;
         $result = $this->insert($data, "videoplaylist");
         return ($result > 0) ? true : false;
     }
-
     public function checkIfNameExists($idUser, $name) {
         $cond["idUser"] = $idUser;
         $cond["name"] = $name;
@@ -117,14 +110,12 @@ class Playlist_model extends MY_Model {
             return true;
         return false;
     }
-
     public function removeVideoFromPlaylist($idVideo, $idPlaylist) {
         $cond["idVideo"] = $idVideo;
         $cond["idPlaylist"] = $idPlaylist;
         $result = $this->delete($cond, "videoplaylist");
         return ($result > 0) ? true : false;
     }
-
     /**
      * 
      * @param type $idUser
@@ -155,20 +146,24 @@ class Playlist_model extends MY_Model {
             return $PlaylistList;
         }return false;
     }
-
     //chequea si existe el video en la playlist
-    public function checkIfExist($videoId, $playlistName) {
+    public function checkIfExist($videoId, $playlistId) {
         $condition['video.id'] = $videoId;
-        $condition['playlist.name'] = $playlistName;
+        $condition['playlist.id'] = $playlistId;
         $this->db->join("videoplaylist", "playlist.id = videoplaylist.idPlaylist");
         $this->db->join("video", "video.id = videoplaylist.idVideo");
         $result = $this->search($condition);
-
         if (count($result) > 0) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
-
+    
+    public function checkUserOwner($idUser, $idPlaylist){
+        $cond["idUser"] = $idUser;
+        $cond["id"] = $idPlaylist;
+        $result = $this->search();
+        return ($result > 0) ? true : false;
+    }
 }
