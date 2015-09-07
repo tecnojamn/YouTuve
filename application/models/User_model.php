@@ -179,9 +179,7 @@ class User_model extends MY_Model {
     public function isfollowingChannel($idUser, $idChannel) {
         $data["idUser"] = $idUser;
         $data["idChannel"] = $idChannel;
-        $filter['idChannel'] = $data['idChannel'];
-        $filter['idUser'] = $data['idUser'];
-        $row = $this->db->get_where('follower', $filter)->row();
+        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
         if ($row)
             return true;
         return false;
@@ -201,9 +199,8 @@ class User_model extends MY_Model {
         $data["date"] = $date;
         $data["confirmed"] = 0;
         $data["seen"] = 0;
-        $filter['idChannel'] = $data['idChannel'];
-        $filter['idUser'] = $data['idUser'];
-        $row = $this->db->get_where('follower', $filter)->row();
+
+        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
         if ($row)
             return false;
         $this->db->flush_cache();
@@ -245,6 +242,54 @@ class User_model extends MY_Model {
         $cond['nick'] = $nick;
         $res = $this->search($cond, 'user');
         return count($res) == 0 ? true : false;
+    }
+
+    public function getUsers($limit = 0, $offset = 0, $orderBy = "") {
+        if ($limit != 0) {
+            $this->db->limit($limit, $offset);
+        }
+        $users = $this->db->get('user')->result();
+
+        return $users;
+    }
+
+    public function deleteUser($id) {
+        $data["active"] = 0;
+        return $this->update($data, "id=" . $id);
+    }
+
+    public function undeleteUser($id) {
+        $data["active"] = 1;
+        return $this->update($data, "id=" . $id);
+    }
+
+    public function ban($id) {
+        $this->load->helper('date');
+        $user = $this->db->get_where('user', array('id' => $id))->result();
+        if ($user[0]->banned_until == "0000-00-00") {
+            $data["banned_until"] = mdate('%Y-%m-%d',  strtotime("+1 months"));
+        } else{
+           $data["banned_until"] = date('Y-m-d', strtotime('+1 months',strtotime($user[0]->banned_until)));
+        }
+        $result['success'] = $this->update($data,"id=" . $id);
+        $result["nick"] = $user[0]->nick;
+        $result["banned_until"] = $data["banned_until"];
+        return $result;
+        
+    }
+    public function unban($id) {
+        $this->load->helper('date');
+        $user = $this->db->get_where('user', array('id' => $id))->result();
+        if (!($user[0]->banned_until == "0000-00-00")) {
+            $data["banned_until"] = '0000-00-00';
+        } else{
+           return $result['success'] = 0; //No tiene ban para eliminar
+        }
+        $result['success'] = $this->update($data,"id=" . $id);
+        $result["nick"] = $user[0]->nick;
+        $result["banned_until"] = $data["banned_until"];
+        return $result;
+        
     }
 
 }

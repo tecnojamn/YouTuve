@@ -17,6 +17,12 @@ $this->load->helper('url');
         <style>
 
         </style>
+        <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
+            <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
+        <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
+            <div class="alert alert-success"> <?= $this->session->flashdata('message') ?> </div>
+        <?php } ?> 
+
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" rel="home" href="#">Admin Panel</a>
@@ -51,6 +57,59 @@ $this->load->helper('url');
                 </div>
             </div>
         </nav>
+        <div class="container-fluid">
+            <div class="bs-example" data-example-id="condensed-table">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Nick</th>
+                            <th>Estado</th>
+                            <th>Baneado hasta</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (isset($users)) {
+                            foreach ($users as $user) {
+                                ?>
+                                <tr>
+                                    <th scope="row"><?php echo $user->id ?></th>
+                                    <td><?php echo $user->email; ?></td>
+                                    <td><?php echo $user->name; ?></td>
+                                    <td><?php echo $user->lastname; ?></td>
+                                    <td><?php echo $user->nick; ?></td>
+                                    <td><?php echo $user->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
+                                    <td><?php if(!($user->banned_until == '0000-00-00')) {
+                                        echo date("d/m/Y", strtotime($user->banned_until)); ?> 
+                                        <a title="Eliminar ban" href="<?php echo base_url().'admin/AdminUsers/unban/'.$user->id;?>">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                   <?php  } ?>  
+                                    </td>
 
+                                    <td>
+                                        <a title="Dar de <?php echo $user->active==1?'baja':'alta'; ?>" href="<?php echo base_url().'admin/AdminUsers/'. ($user->active==1?'delete':'undelete').'/'.$user->id;?>">
+                                            <span class="glyphicon <?php echo $user->active==1?"glyphicon-remove":"glyphicon-ok" ?>" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="Agregar un mes de ban" href="<?php echo base_url().'admin/AdminUsers/ban/'.$user->id;?>">
+                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </body>
 </html>
