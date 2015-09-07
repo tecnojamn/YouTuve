@@ -41,6 +41,26 @@ class Playlist extends MY_Controller {
         return;
     }
 
+    public function getVideosAx() {
+        if ($this->isAuthorized()) {
+            $idUser = $this->session->userdata('userId');
+
+            $idPlaylist = $this->input->post("idPlaylist");
+            $this->load->model('playlist_model');
+
+            if ($this->playlist_model->checkUserOwner($idUser, $idPlaylist)) {
+                $playlist = $this->playlist_model->selectById($idPlaylist);
+
+                $data["playlist"] = $playlist;
+                $view = $this->load->view('axviews/ax_videos_playlist', $data, true);
+                $arr = array('result' => 'true', 'html' => $view);
+                echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+                return;
+            }
+        }
+        return;
+    }
+
     /**
      * 
      * params : 
@@ -82,7 +102,7 @@ class Playlist extends MY_Controller {
         }
         $name = $this->input->get("pl_name");
         if ($name === null || $name === "") {
-             $data["type"] = "error";
+            $data["type"] = "error";
             $data["messageText"] = "Falta de datos";
             $view = $this->load->view('axviews/ax_message', $data, TRUE);
             $arr = array('result' => 'false', 'html' => $view);
@@ -134,8 +154,8 @@ class Playlist extends MY_Controller {
             echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
             return;
         }
-
-        if ($this->playlist_model->checkIfExist($vidId, $plname)) {
+        $playlistAux = $this->playlist_model->selectByName($plname);
+        if ($this->playlist_model->checkIfExist($vidId, $playlistAux->id)) {
             $data["type"] = "error";
             $data["messageText"] = "El video ya existe en playlist";
             $view = $this->load->view('axviews/ax_message', $data, TRUE);
@@ -181,6 +201,65 @@ class Playlist extends MY_Controller {
             return;
         }
         $arr = array('result' => 'false', 'html' => ' ');
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
+    }
+
+    public function delVideoAx() {
+        if ($this->isAuthorized()) {
+            $idUser = $this->session->userdata('userId');
+        } else {
+            header("Location: " . BASEPATH);
+            return;
+        }
+        $this->load->model('playlist_model');
+        $idPlaylist = $this->input->post('idPlaylist');
+        $idVideo = $this->input->post('idVideo');
+        //chequeo si existe video en playlist sino "seteo" error
+        if ($this->playlist_model->checkIfExist($idVideo, $idPlaylist)) {
+            //chequeo si ha sido borrado exitosamente y "seteo" el mensaje o error correspondiente
+            if ($this->playlist_model->removeVideoFromPlaylist($idVideo, $idPlaylist)) {
+                $data["type"] = 'message';
+                $data["messageText"] = 'El video ha sido eliminado con exito';
+            } else {
+                $data["type"] = 'error';
+                $data["messageText"] = 'El video no ha podido ser eliminado';
+            }
+        } else {
+            $data["type"] = 'warning';
+            $data["messageText"] = 'El video no pertenece a esta playlist';
+        }
+
+        $view = $this->load->view('axviews/ax_message', $data, true);
+        $arr = array('result' => 'true', 'html' => $view);
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
+    }
+
+    public function delPlaylistAx() {
+        if ($this->isAuthorized()) {
+            $idUser = $this->session->userdata('userId');
+        } else {
+            header("Location: " . BASEPATH);
+            return;
+        }
+        $idPlaylist = $this->input->post('idPlaylist');
+        $this->load->model('playlist_model');
+        if ($this->playlist_model->checkUserOwner($idUser, $idPlaylist)) {
+            if ($this->playlist_model->remove($idPlaylist)) {
+                $data["type"] = 'message';
+                $data["messageText"] = 'La playlist ha sido eliminada con exito';
+            } else {
+                $data["type"] = 'error';
+                $data["messageText"] = 'La playlist no ha podido ser eliminada ' . $idPlaylist . 'algo';
+            }
+        } else {
+            $data["type"] = 'warning';
+            $data["messageText"] = 'La playlist no existe';
+        }
+
+        $view = $this->load->view('axviews/ax_message', $data, true);
+        $arr = array('result' => 'true', 'html' => $view);
         echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
         return;
     }

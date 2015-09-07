@@ -11,9 +11,9 @@ $this->load->helper('url');
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        
+
         <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-        
+
         <!--Calendar-->
         <link href="<?php echo base_url(); ?>css/calendar/css/calendario.css" rel="stylesheet" type="text/css"/>
         <script src="<?php echo base_url(); ?>css/calendar/js/calendario.js" type="text/javascript"></script>
@@ -31,22 +31,12 @@ $this->load->helper('url');
                     $("#listLoaderTrigger").click(function () {
 
                         if (plFirstLoad === 0) {
-
                             plFirstLoad = 1;
-                            $.get("<?php echo base_url(); ?>Playlist/getFromUserAX", function (data) {
-                                if (data.result === 'true') {
-                                    $("#my_lists .progress").delay(1000).hide();
-                                    $("#listHolder").append(data.html);
-                                } else {
-
-                                    $("#my_lists .progress").delay(1000).hide();
-                                    $("#listHolder").append("No hay listas para mostrar");
-                                }
-
-                            }, "json");
+                            loadPlaylsit();
                         }
 
                     });
+
                     $("#channelLoaderTrigger").click(function () {
 
                         if (chFirstLoad === 0) {
@@ -71,19 +61,19 @@ $this->load->helper('url');
                         //si el form no esta cargado lo vamos a buscar con AX
                         if ($('#editModal').find("#editFormHolder").data("loaded") === false) {
                             $.post("<?php echo base_url(); ?>AXForm/formUserEditInfo",
-                            {
-                                name: "<?php echo $user_data->name;?>" ,
-                                lastname:"<?php echo $user_data->lastname;?>",
-                                birthday:"<?php echo $user_data->birthday;?>",
-                                gender:"<?php echo $user_data->gender;?>",
-                            },
-                            function (data) {
-                                if (data.result) {
-                                    //si el resultado es verdadero lo agrego
-                                    $("#editFormHolder").append(data.html);
-                                    $('#editModal').find("#editFormHolder").data("loaded", "true")
-                                }
-                            }, "json");
+                                    {
+                                        name: "<?php echo $user_data->name; ?>",
+                                        lastname: "<?php echo $user_data->lastname; ?>",
+                                        birthday: "<?php echo $user_data->birthday; ?>",
+                                        gender: "<?php echo $user_data->gender; ?>",
+                                    },
+                                    function (data) {
+                                        if (data.result) {
+                                            //si el resultado es verdadero lo agrego
+                                            $("#editFormHolder").append(data.html);
+                                            $('#editModal').find("#editFormHolder").data("loaded", "true")
+                                        }
+                                    }, "json");
                         }
                     });
                     //LOAD EDIT THUMB MODAL
@@ -143,6 +133,37 @@ $this->load->helper('url');
                         return false;
                     });
                 });
+
+                function loadPlaylsit() {
+                    $.get("<?php echo base_url(); ?>Playlist/getFromUserAX", function (data) {
+                        if (data.result === 'true') {
+                            $("#my_lists .progress").delay(1000).hide();
+                            $("#listHolder").empty();
+                            $("#listHolder").append(data.html);
+                            $(".delPlaylist").bind("click", function (event) {
+                                delPlaylist(event);
+                            });
+                        } else {
+
+                            $("#my_lists .progress").delay(1000).hide();
+                            $("#listHolder").append("No hay listas para mostrar");
+                        }
+
+                    }, "json");
+                    function delPlaylist(event) {
+                        var id = $(event.target.nextElementSibling).val();
+                        $.post("<?php echo base_url(); ?>Playlist/delPlaylistAx", {idPlaylist: id}, function (data) {
+                            if (data.result == "true") {
+                                $("body").append(data.html);
+                                $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
+                                setTimeout(function () {
+                                    $('#messageBox').remove();
+                                }, 2001);
+                                loadPlaylsit();
+                            }
+                        }, "json");
+                    }
+                }
             </script>
         <?php } ?>
 
@@ -229,12 +250,12 @@ $this->load->helper('url');
                                 <td>Apellido:</td>
                                 <td><?php echo $user_data->lastname; ?></td>
                             </tr>
-                                <td>Fecha de nacimiento:</td>
-                                <td><?php echo date('d/m/Y', strtotime($user_data->birthday)); ?></td>
+                            <td>Fecha de nacimiento:</td>
+                            <td><?php echo date('d/m/Y', strtotime($user_data->birthday)); ?></td>
                             </tr>
                             <tr>
                                 <td>Sexo:</td>
-                                <td><i class="fa <?php echo $user_data->gender==='0'?"fa-mars":"fa-venus";?>" ></i> <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></td>
+                                <td><i class="fa <?php echo $user_data->gender === '0' ? "fa-mars" : "fa-venus"; ?>" ></i> <?php echo ($user_data->gender === '0') ? "Hombre" : "Mujer"; ?></td>
                             </tr>
                         </table>
                         <?php if ($profile === "me") { ?>

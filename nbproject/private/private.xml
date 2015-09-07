@@ -3,8 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< .merge_file_LALRJ8
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/user_layout.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/Playlist.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/video_layout.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/playlist_layout.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/axviews/ax_videos_playlist.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/models/playlist_model.php</file>
+=======
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/axviews/ax_load_more_videos.php</file>
+>>>>>>> .merge_file_3FhXw5
         </group>
     </open-files>
 </project-private>
