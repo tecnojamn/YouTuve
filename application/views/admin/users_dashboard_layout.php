@@ -79,19 +79,25 @@ $this->load->helper('url');
                                 ?>
                                 <tr>
                                     <th scope="row"><?php echo $user->id ?></th>
-                                    <td><?php echo $user->email ?></td>
-                                    <td><?php echo $user->name ?></td>
-                                    <td><?php echo $user->lastname ?></td>
-                                    <td><?php echo $user->nick ?></td>
+                                    <td><?php echo $user->email; ?></td>
+                                    <td><?php echo $user->name; ?></td>
+                                    <td><?php echo $user->lastname; ?></td>
+                                    <td><?php echo $user->nick; ?></td>
                                     <td><?php echo $user->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
-                                    <td><?php echo $user->banned_until ?></td>
+                                    <td><?php if(!($user->banned_until == '0000-00-00')) {
+                                        echo date("d/m/Y", strtotime($user->banned_until)); ?> 
+                                        <a title="Eliminar ban" href="<?php echo base_url().'admin/AdminUsers/unban/'.$user->id;?>">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </a>
+                                   <?php  } ?>  
+                                    </td>
 
                                     <td>
                                         <a title="Dar de <?php echo $user->active==1?'baja':'alta'; ?>" href="<?php echo base_url().'admin/AdminUsers/'. ($user->active==1?'delete':'undelete').'/'.$user->id;?>">
                                             <span class="glyphicon <?php echo $user->active==1?"glyphicon-remove":"glyphicon-ok" ?>" aria-hidden="true"></span>
                                         </a>
-                                        <a title="Ir a" href="url-ir-a/ID OBJETO PHP">
-                                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                        <a title="Agregar un mes de ban" href="<?php echo base_url().'admin/AdminUsers/ban/'.$user->id;?>">
+                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
                                         </a>
                                     </td>
                                 </tr>

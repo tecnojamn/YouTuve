@@ -18,7 +18,7 @@ class User_model extends MY_Model {
         $data["password"] = $password;
         $data["lastname"] = $lastname;
         $date = DateTime::createFromFormat('d/m/Y', $birthday);
-        $bdaySQL  = $date->format('Y-m-d');
+        $bdaySQL = $date->format('Y-m-d');
         $data["birthday"] = $bdaySQL;
         $data["gender"] = $gender;
         $data["thumbUrl"] = $thumbUrl;
@@ -46,8 +46,6 @@ class User_model extends MY_Model {
         return ($r > 0) ? true : false;
     }
 
-
-
     public function changePasswordByCode($code, $newPass) {
         $upd["active"] = 1;
         $upd["password"] = $newPass;
@@ -64,7 +62,7 @@ class User_model extends MY_Model {
             $data["lastname"] = $lastname;
         if ($birthday !== "") {
             $date = DateTime::createFromFormat('d/m/Y', $birthday);
-            $bdaySQL  = $date->format('Y-m-d');
+            $bdaySQL = $date->format('Y-m-d');
             $data["birthday"] = $bdaySQL;
         }
         if ($gender !== "")
@@ -228,35 +226,70 @@ class User_model extends MY_Model {
         }
         return false;
     }
-        
+
     /*
      * Verifica si esta sin usar el mail
      * return: bool
      */
-    public function isEmailAvailable($email){
+
+    public function isEmailAvailable($email) {
         $cond['email'] = $email;
-        $res=$this->search($cond,'user');
-        return count($res)==0?true:false;
+        $res = $this->search($cond, 'user');
+        return count($res) == 0 ? true : false;
     }
-    public function isNickAvailable($nick){
+
+    public function isNickAvailable($nick) {
         $cond['nick'] = $nick;
-        $res=$this->search($cond,'user');
-        return count($res)==0?true:false;
+        $res = $this->search($cond, 'user');
+        return count($res) == 0 ? true : false;
     }
-    public function getUsers( $limit = 0, $offset = 0,$orderBy = "") {
-        if($limit != 0){
-            $this->db->limit($limit,$offset);
+
+    public function getUsers($limit = 0, $offset = 0, $orderBy = "") {
+        if ($limit != 0) {
+            $this->db->limit($limit, $offset);
         }
-        $users= $this->db->get('user')->result();
+        $users = $this->db->get('user')->result();
 
         return $users;
     }
-    public function deleteUser($idUser){
+
+    public function deleteUser($id) {
         $data["active"] = 0;
-        return $this->update($data, "id=" . $idUser);
+        return $this->update($data, "id=" . $id);
     }
-    public function undeleteUser($idUser){
+
+    public function undeleteUser($id) {
         $data["active"] = 1;
-        return $this->update($data, "id=" . $idUser);
+        return $this->update($data, "id=" . $id);
     }
+
+    public function ban($id) {
+        $this->load->helper('date');
+        $user = $this->db->get_where('user', array('id' => $id))->result();
+        if ($user[0]->banned_until == "0000-00-00") {
+            $data["banned_until"] = mdate('%Y-%m-%d',  strtotime("+1 months"));
+        } else{
+           $data["banned_until"] = date('Y-m-d', strtotime('+1 months',strtotime($user[0]->banned_until)));
+        }
+        $result['success'] = $this->update($data,"id=" . $id);
+        $result["nick"] = $user[0]->nick;
+        $result["banned_until"] = $data["banned_until"];
+        return $result;
+        
+    }
+    public function unban($id) {
+        $this->load->helper('date');
+        $user = $this->db->get_where('user', array('id' => $id))->result();
+        if (!($user[0]->banned_until == "0000-00-00")) {
+            $data["banned_until"] = '0000-00-00';
+        } else{
+           return $result['success'] = 0; //No tiene ban para eliminar
+        }
+        $result['success'] = $this->update($data,"id=" . $id);
+        $result["nick"] = $user[0]->nick;
+        $result["banned_until"] = $data["banned_until"];
+        return $result;
+        
+    }
+
 }
