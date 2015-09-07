@@ -18,7 +18,7 @@ class User_model extends MY_Model {
         $data["password"] = $password;
         $data["lastname"] = $lastname;
         $date = DateTime::createFromFormat('d/m/Y', $birthday);
-        $bdaySQL  = $date->format('Y-m-d');
+        $bdaySQL = $date->format('Y-m-d');
         $data["birthday"] = $bdaySQL;
         $data["gender"] = $gender;
         $data["thumbUrl"] = $thumbUrl;
@@ -46,8 +46,6 @@ class User_model extends MY_Model {
         return ($r > 0) ? true : false;
     }
 
-
-
     public function changePasswordByCode($code, $newPass) {
         $upd["active"] = 1;
         $upd["password"] = $newPass;
@@ -64,7 +62,7 @@ class User_model extends MY_Model {
             $data["lastname"] = $lastname;
         if ($birthday !== "") {
             $date = DateTime::createFromFormat('d/m/Y', $birthday);
-            $bdaySQL  = $date->format('Y-m-d');
+            $bdaySQL = $date->format('Y-m-d');
             $data["birthday"] = $bdaySQL;
         }
         if ($gender !== "")
@@ -181,7 +179,9 @@ class User_model extends MY_Model {
     public function isfollowingChannel($idUser, $idChannel) {
         $data["idUser"] = $idUser;
         $data["idChannel"] = $idChannel;
-        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        $filter['idChannel'] = $data['idChannel'];
+        $filter['idUser'] = $data['idUser'];
+        $row = $this->db->get_where('follower', $filter)->row();
         if ($row)
             return true;
         return false;
@@ -201,8 +201,9 @@ class User_model extends MY_Model {
         $data["date"] = $date;
         $data["confirmed"] = 0;
         $data["seen"] = 0;
-
-        $row = $this->db->get_where('follower', ['idChannel' => $data['idChannel'], 'idUser' => $data['idUser']])->row();
+        $filter['idChannel'] = $data['idChannel'];
+        $filter['idUser'] = $data['idUser'];
+        $row = $this->db->get_where('follower', $filter)->row();
         if ($row)
             return false;
         $this->db->flush_cache();
@@ -228,19 +229,22 @@ class User_model extends MY_Model {
         }
         return false;
     }
-        
+
     /*
      * Verifica si esta sin usar el mail
      * return: bool
      */
-    public function isEmailAvailable($email){
+
+    public function isEmailAvailable($email) {
         $cond['email'] = $email;
-        $res=$this->search($cond,'user');
-        return count($res)==0?true:false;
+        $res = $this->search($cond, 'user');
+        return count($res) == 0 ? true : false;
     }
-    public function isNickAvailable($nick){
+
+    public function isNickAvailable($nick) {
         $cond['nick'] = $nick;
-        $res=$this->search($cond,'user');
-        return count($res)==0?true:false;
+        $res = $this->search($cond, 'user');
+        return count($res) == 0 ? true : false;
     }
+
 }

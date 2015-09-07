@@ -24,7 +24,7 @@ class Tags_model extends MY_Model {
      * @return type
      */
     public function pushTagsForVideo($idVideo, $tagsArr) {
-        $tagData = [];
+        $tagData = array();
         $i = 0;
         foreach ($tagsArr as $tag) {
             $tagData[$i] = array(

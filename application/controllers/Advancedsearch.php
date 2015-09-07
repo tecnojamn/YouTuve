@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdvancedSearch extends MY_Controller {
 
-    protected $data = [];
+    protected $data;
 
     function __construct() {
         parent::__construct();
