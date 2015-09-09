@@ -99,6 +99,9 @@ $this->load->helper('url');
                                         <a title="Agregar un mes de ban" href="<?php echo base_url().'admin/adminusers/ban/'.$user->id;?>">
                                             <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
                                         </a>
+                                        <a title="Resetear Contraseña" href="<?php echo base_url().'admin/adminusers/resetPassword/'.$user->id;?>">
+                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                                        </a>
                                     </td>
                                 </tr>
                                 <?php
