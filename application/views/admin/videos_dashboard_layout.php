@@ -65,8 +65,8 @@ $this->load->helper('url');
                     <tbody>
 
                         <tr>
-                            <?php if ($Videos !== NULL && count($Videos->list) > 0) {
-                                foreach ($Videos->list as $video) {
+                            <?php if ($videos !== NULL && count($videos->list) > 0) {
+                                foreach ($videos->list as $video) {
                                     ?>
                                     <th scope="row"><?php echo $video->id ?></th>
                                     <td><?php echo $video->name ?></td>

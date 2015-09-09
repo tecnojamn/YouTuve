@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class AdminComments extends MY_Controller {
+class AdminVideos extends MY_Controller {
 
     protected $data = [];
     protected $authorizedActions = [];
@@ -27,8 +27,9 @@ class AdminComments extends MY_Controller {
             $data["log"] = 1;
         }*/
         $this->load->model("admin_model");
+        $this->load->model("video_model");
         $videos = $this->video_model->getVideos(0,20);
-        $data["videos"] = $videos;
+        $data=array('videos'=>$videos);
         $this->load->view('admin/videos_dashboard_layout', $data);
         return;
     }
