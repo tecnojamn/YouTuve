@@ -56,7 +56,7 @@ class Video_model extends MY_Model {
     public function selectById($idVideo) {
         $video = new VideoDTO();
         $conditions["video.id"] = $idVideo;
-        $conditions["active"] = VIDEO_ACTIVE;
+        $conditions["video.active"] = VIDEO_ACTIVE;
         $this->db->select("video.*,channel.id as idChannel,channel.name as channelName,video.name as videoName");
         $this->db->join("channel", "channel.id = video.idChannel");
         $result = $this->search($conditions, $this->table);

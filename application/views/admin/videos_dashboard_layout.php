@@ -51,6 +51,47 @@ $this->load->helper('url');
                 </div>
             </div>
         </nav>
+        <div class="container-fluid">
+            <div class="bs-example" data-example-id="condensed-table">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>State</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <?php if ($Videos !== NULL && count($Videos->list) > 0) {
+                                foreach ($Videos->list as $video) {
+                                    ?>
+                                    <th scope="row"><?php echo $video->id ?></th>
+                                    <td><?php echo $video->name ?></td>
+                                    <td><?php if ($video->active == 0) {
+                                echo "Active";
+                            } else {
+                                echo "Inactive";
+                            }
+                            ?></td>
+                                    <td>
+                                        <a title="dar baja" href="url-admin-borrar/ID OBJETO PHP">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="dar alta" href="url-admin-levantar/ID OBJETO PHP">
+                                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="ir a" href="url-ir-a/ID OBJETO PHP">
+                                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                            <?php }} ?>
+                        </tr>
+                    </tbody>
+                </table>
+            </div></div>
 
     </body>
 </html>

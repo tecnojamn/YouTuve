@@ -23,4 +23,24 @@ class Admin_model extends MY_Model {
         }
     }
 
+    public function getVideos($offset, $limit) {
+        $Videos = new VideoListDto();
+        $this->db->select("id,name,active");
+        $this->db->limit($limit, $offset);
+        $this->db->order_by("id", "desc");
+        $result = $this->search("video");
+        if (count($result) < 0) {
+            return false;
+        } else {
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->active = $row->active;
+                $video->id = $row->id;
+                $video->name = $row->name;
+                $Videos->addVideo($video);
+            }
+            return $Videos;
+        }
+    }
+
 }
