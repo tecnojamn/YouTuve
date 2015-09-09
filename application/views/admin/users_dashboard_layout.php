@@ -100,7 +100,7 @@ $this->load->helper('url');
                                             <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
                                         </a>
                                         <a title="Resetear Contraseña" href="<?php echo base_url().'admin/adminusers/resetPassword/'.$user->id;?>">
-                                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                                         </a>
                                     </td>
                                 </tr>
