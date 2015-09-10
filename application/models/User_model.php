@@ -267,7 +267,7 @@ class User_model extends MY_Model {
     public function ban($id) {
         $this->load->helper('date');
         $user = $this->db->get_where('user', array('id' => $id))->result();
-        if ($user[0]->banned_until == "0000-00-00") {
+        if (strtotime($user[0]->banned_until) <= strtotime(date('Y-m-d'))) {
             $data["banned_until"] = mdate('%Y-%m-%d',  strtotime("+1 months"));
         } else{
            $data["banned_until"] = date('Y-m-d', strtotime('+1 months',strtotime($user[0]->banned_until)));
