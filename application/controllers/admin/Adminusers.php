@@ -21,7 +21,18 @@ class AdminUsers extends MY_Controller {
     //the table view here
     public function index() {
         $this->load->model('user_model');
-        $this->data["users"] = $this->user_model->getUsers(30, 0);
+        $this->load->library('pagination');
+        
+        $offset = $this->uri->segment(4);
+        $page = 10;
+        
+        $configPager['base_url'] = base_url() . 'admin/adminusers/index';
+        $configPager['total_rows'] = $this->user_model->getUsersQuantity();
+        $configPager['per_page'] = $page;
+        $this->pagination->initialize($configPager);    
+        $this->data['pagerLinks'] = $this->pagination->create_links();
+        
+        $this->data["users"] = $this->user_model->getUsers($page, $offset);
         $this->load->view('admin/users_dashboard_layout', $this->data);
         return;
     }

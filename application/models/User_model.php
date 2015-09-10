@@ -303,5 +303,9 @@ class User_model extends MY_Model {
         }
         return FALSE;
     }
+    
+    public function getUsersQuantity () {
+        return count($this->db->get('user')->result());
+    }
 
 }

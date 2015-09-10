@@ -17,6 +17,14 @@ $this->load->helper('url');
         <style>
 
         </style>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("ul.pagination a").wrap("<li></li>");
+                $("ul.pagination strong").wrap("<li class='active'><a></a></li>");
+
+
+            });
+        </script>
         <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
             <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
         <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
@@ -84,22 +92,23 @@ $this->load->helper('url');
                                     <td><?php echo $user->lastname; ?></td>
                                     <td><?php echo $user->nick; ?></td>
                                     <td><?php echo $user->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
-                                    <td><?php if(!($user->banned_until == '0000-00-00')) {
-                                        echo date("d/m/Y", strtotime($user->banned_until)); ?> 
-                                        <a title="Eliminar ban" href="<?php echo base_url().'admin/adminusers/unban/'.$user->id;?>">
-                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </a>
-                                   <?php  } ?>  
+                                    <td><?php if (!($user->banned_until == '0000-00-00')) {
+                            echo date("d/m/Y", strtotime($user->banned_until));
+                                    ?> 
+                                            <a title="Eliminar ban" href="<?php echo base_url() . 'admin/adminusers/unban/' . $user->id; ?>">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </a>
+        <?php } ?>  
                                     </td>
 
                                     <td>
-                                        <a title="Dar de <?php echo $user->active==1?'baja':'alta'; ?>" href="<?php echo base_url().'admin/adminusers/'. ($user->active==1?'delete':'undelete').'/'.$user->id;?>">
-                                            <span class="glyphicon <?php echo $user->active==1?"glyphicon-remove":"glyphicon-ok" ?>" aria-hidden="true"></span>
+                                        <a title="Dar de <?php echo $user->active == 1 ? 'baja' : 'alta'; ?>" href="<?php echo base_url() . 'admin/adminusers/' . ($user->active == 1 ? 'delete' : 'undelete') . '/' . $user->id; ?>">
+                                            <span class="glyphicon <?php echo $user->active == 1 ? "glyphicon-remove" : "glyphicon-ok" ?>" aria-hidden="true"></span>
                                         </a>
-                                        <a title="Agregar un mes de ban" href="<?php echo base_url().'admin/adminusers/ban/'.$user->id;?>">
+                                        <a title="Agregar un mes de ban" href="<?php echo base_url() . 'admin/adminusers/ban/' . $user->id; ?>">
                                             <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
                                         </a>
-                                        <a title="Resetear Contraseña" href="<?php echo base_url().'admin/adminusers/resetPassword/'.$user->id;?>">
+                                        <a title="Resetear Contraseña" href="<?php echo base_url() . 'admin/adminusers/resetPassword/' . $user->id; ?>">
                                             <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
                                         </a>
                                     </td>
@@ -112,6 +121,11 @@ $this->load->helper('url');
 
                     </tbody>
                 </table>
+                <div style="text-align: center;">
+                    <ul class="pagination">
+                        <?php echo $pagerLinks; ?>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>
