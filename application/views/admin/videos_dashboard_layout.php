@@ -62,34 +62,41 @@ $this->load->helper('url');
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
 
-                        <tr>
-                            <?php if ($videos !== NULL && count($videos->list) > 0) {
-                                foreach ($videos->list as $video) {
-                                    ?>
-                                    <th scope="row"><?php echo $video->id ?></th>
-                                    <td><?php echo $video->name ?></td>
-                                    <td><?php if ($video->active == 0) {
-                                echo "Active";
-                            } else {
-                                echo "Inactive";
-                            }
-                            ?></td>
-                                    <td>
-                                        <a title="dar baja" href="url-admin-borrar/ID OBJETO PHP">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </a>
-                                        <a title="dar alta" href="url-admin-levantar/ID OBJETO PHP">
-                                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                                        </a>
-                                        <a title="ir a" href="url-ir-a/ID OBJETO PHP">
-                                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-                                        </a>
-                                    </td>
-                            <?php }} ?>
-                        </tr>
-                    </tbody>
+                            <tbody>
+                    <?php
+                    if ($videos !== NULL && count($videos->list) > 0) {
+                        foreach ($videos->list as $video) {
+                            ?>
+                            <th scope="row"><?php echo $video->id ?></th>
+                            <td><?php echo $video->name ?></td>
+                            <td><?php
+                                if ($video->active == 1) {
+                                    echo "Active";
+                                } else {
+                                    echo "Inactive";
+                                }
+                                ?>
+                            </td>
+                            <tr>
+                                <td>
+                                    <a title="dar baja" href="url-admin-borrar/ID OBJETO PHP">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </a>
+                                    <a title="dar alta" href="url-admin-levantar/ID OBJETO PHP">
+                                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                                    </a>
+                                    <a title="ir a" href="url-ir-a/ID OBJETO PHP">
+                                        <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                                                    <?php
+                        }
+                    }
+                    ?>
+                            </tbody>
+
                 </table>
             </div></div>
 

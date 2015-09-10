@@ -514,4 +514,24 @@ class Video_model extends MY_Model {
         return $videos;
     }
 
+        public function getVideosForAdmin($offset, $limit) {
+        $videos = new VideoListDto();
+        $this->db->select("id,name,active");
+        $this->db->limit($limit, $offset);
+        $this->db->order_by("id", "desc");
+        $conditions = "";
+        $result = $this->search($conditions,"video");
+        if (count($result) < 0) {
+            return false;
+        } else {
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->active = $row->active;
+                $video->id = $row->id;
+                $video->name = $row->name;
+                $videos->addVideo($video);
+            }
+            return $videos;
+        }
+    }
 }
