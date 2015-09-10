@@ -29,7 +29,7 @@ $this->load->helper('url');
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">Usuarios</a></li>
+                    <li><a href="<?php echo base_url().'admin/adminusers' ?>">Usuarios</a></li>
                     <li><a href="#">Videos</a></li>
                     <li><a href="#">Comentarios</a></li>
                     <li class="dropdown">

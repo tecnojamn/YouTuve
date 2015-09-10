@@ -71,6 +71,29 @@ class AdminUsers extends MY_Controller {
     //reset user password setting active to 0 and sending email with new token
     public function resetPassword() {
         
+        $this->load->helper("email_content");
+        $this->load->library("email");
+        $this->load->model('user_model');
+        $idUser = $this->uri->segment(4);
+        $mail = $this->user_model->getMailById($idUser);
+        if (isset($mail) && $mail !== "") {
+
+            $valCode = valCode();
+            $to = $mail;
+            $this->user_model->updateValidationCode($mail, $valCode);
+       
+            forgotPasswordMail($valCode, $mail);
+            $this->user_model->deleteUser($idUser);
+            $this->session->set_flashdata('message', 'El password del usuario '. $mail.' fue reseteado.');
+            $this->session->set_flashdata('error', 0);
+
+        } else {
+            
+            $this->session->set_flashdata('message', 'Error');
+            $this->session->set_flashdata('error', 1);
+            
+        }
+        redirect('/admin/adminusers/index');
     }
 
     //use banned until DB field ->example: banned_until="date()+1 month"
@@ -80,7 +103,7 @@ class AdminUsers extends MY_Controller {
         if (isset($idUser)) {
             $result = $this->user_model->ban($idUser);
             if ($result['success'] == 1) {
-                $this->session->set_flashdata('message', 'Usuario ' . $result['nick'] . ' baneado hasta el día '.date("d/m/Y", strtotime($result['banned_until'])));
+                $this->session->set_flashdata('message', 'Usuario ' . $result['nick'] . ' baneado hasta el día ' . date("d/m/Y", strtotime($result['banned_until'])));
                 $this->session->set_flashdata('error', 0);
             }
         } else {
@@ -90,7 +113,7 @@ class AdminUsers extends MY_Controller {
 
         redirect('/admin/adminusers/index');
     }
-    
+
     public function unban() {
         $this->load->model('user_model');
         $idUser = $this->uri->segment(4);
@@ -108,5 +131,5 @@ class AdminUsers extends MY_Controller {
 
         redirect('/admin/adminusers/index');
     }
-
+  
 }

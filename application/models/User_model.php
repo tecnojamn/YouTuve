@@ -291,5 +291,17 @@ class User_model extends MY_Model {
         return $result;
         
     }
+    
+    public function getMailById($idUser){
+        $condition["id"] = $idUser;
+
+        $this->search($condition);
+
+        $result = $this->search($condition);
+        if (count($result > 0)) {
+            return $result[0]->email;
+        }
+        return FALSE;
+    }
 
 }

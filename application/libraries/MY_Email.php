@@ -714,6 +714,7 @@ class MY_Email extends CI_Email {
         $this->subject($subject);
         $this->message($message);
         $result = $this->send();
+        var_dump($result);
         
         return $result;
     }

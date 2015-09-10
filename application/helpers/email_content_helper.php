@@ -30,6 +30,7 @@ if (!function_exists('forgotPasswordMail')) {
                 . "<a href='" . base_url() . "User/changeForgottenPassword/" . $valCode . "'>Click aqui para activar cuenta</a>";
         $subject = "Correo de confirmacion YouTuve";
         $ret = $CI->email->sendMail($email, $message, $subject);
+        var_dump($ret);
         return $ret;
     }
 
