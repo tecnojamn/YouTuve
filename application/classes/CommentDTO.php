@@ -17,6 +17,7 @@ class CommentDTO {
     public $idVideo;
     public $comment;
     public $date;
+    public $active;
     //datos del usuario
     public $idUser;
     public $usernick;
