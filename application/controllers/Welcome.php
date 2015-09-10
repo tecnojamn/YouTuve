@@ -30,6 +30,7 @@ class Welcome extends MY_Controller {
         $data["mailSent"] = $this->input->get("ms") && $this->input->get("ms") == 1;
         $data["validated"] = ($this->input->get("vd")) ? $this->input->get("vd") : NULL;
         /*                             */
+        //$this->load->view('home_layout', $data);
         $this->load->view('home_layout', $data);
     }
 

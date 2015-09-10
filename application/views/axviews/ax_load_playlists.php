@@ -4,7 +4,7 @@ $this->load->helper('date');
 if ($playlists !== NULL && $playlists->list !== NULL) {
     foreach ($playlists->list as $p) {
         ?>
-        <div class=""col-lg-12 style="  height: auto;
+        <div class="col-lg-12" style="  height: auto;
              overflow: hidden;
              padding: 20px;
              margin-bottom: 20px;

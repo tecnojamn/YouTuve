@@ -17,21 +17,122 @@ $this->load->helper('url');
 
     <body>
         <script>
+            // This code loads the IFrame Player API code asynchronously.
+            var tag = document.createElement('script');
+
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            //This function creates an <iframe> (and YouTube player)
+            //    after the API code downloads.
+            var player;
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    height: '390',
+                    width: '640',
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
+
+            //The API will call this function when the video player is ready.
+            function onPlayerReady(event) {
+                player.cueVideoById(videoLink, 1, "large");
+                event.target.playVideo();
+            }
+
+            //The API calls this function when the player's state changes.
+            function onPlayerStateChange(event) {
+                if (event.data == 0) {
+                    playNext();
+                }
+            }
+
+        </script>
+        <script>
             var id = '<?php echo $playlist->id ?>';
+            var actualVideoId = 0;
+            var videoLink = 0;
+            var player;
             $(document).ready(function () {
                 loadVideosPlaylist();
+                actualVideoId = $('#videosContainer').children().first().children('input#id').val();
+                videoLink = $('#videosContainer').children().first().children('input#link').val();
             });
+
             function loadVideosPlaylist() {
                 $('#videosContainer').empty();
-                $.post('<?php echo base_url() . "playlist/getVideosAx" ?>', {idPlaylist: id}, function (data) {
-                    $('#videosContainer').append(data.html);
-                    $('.delVideo').bind('click', function (event) {
-                        delVideo(event);
-                    });
-                }, 'json');
+                $.ajax({
+                    url: '<?php echo base_url() . "playlist/getVideosAx" ?>',
+                    method: "POST",
+                    async: false,
+                    data: {idPlaylist: id},
+                    success: function (data) {
+                        $('#videosContainer').append(data.html);
+                        $('.delVideo').bind('click', function () {
+                            delVideo(event);
+                        });
+                        $('.changeVideo').bind('click', function () {
+                            changeVideo(event);
+                        });
+                        $('.changeVideoImg').bind('click', function () {
+                            changeVideoImg(event);
+                        });
+                    },
+                    dataType: 'json'
+                })
             }
+            function changeVideo(event) {
+                //obtiene el link del video
+                videoLink = $(event.target).parent().parent().children('input#link').val();
+                player.cueVideoById(videoLink, 1, "large");
+                actualVideoId = $(event.target).parent().parent().children('input#id').val();
+                player.playVideo();
+            }
+            function changeVideoImg(event) {
+                //obtiene el link del video
+                videoLink = $(event.target).parent().parent().parent().children('input#link').val();
+                player.cueVideoById(videoLink, 1, "large");
+                actualVideoId = $(event.target).parent().parent().children('input#id').val();
+                player.playVideo();
+            }
+            function playNext() {
+                var isNext = false; //indica si es el siguiente video 
+                var auxId = 0;
+                var lastId = $('#videosContainer').children().last().children('input#id').val();
+                //Si el video es el ultimo vuelve al primero y lo deja en stop;
+                if (lastId == actualVideoId) {
+                    actualVideoId = $('#videosContainer').children().first().children('input#id').val();
+                    videoLink = $('#videosContainer').children().first().children('input#link').val();
+                    player.cueVideoById(videoLink, 1, "large");
+                } else {
+                    $('.videoInfo').each(function () {
+                        auxId = $(this).children('input#id').val();
+                        if (isNext) {
+                            actualVideoId = auxId;
+                            videoLink = $(this).children('input#link').val();
+                            player.cueVideoById(videoLink, 1, "large");
+                            player.playVideo();
+                            isNext = false;
+                            return;
+                        }
+
+                        if (auxId == actualVideoId) {
+                            isNext = true;//asi en el proximo bucle cambia de video
+                        }
+                    });
+                }
+            }
+
             function delVideo(event) {
-                var idVideoPlay = $(event.target.nextElementSibling).val();
+                //obtiene id del video
+                var idVideoPlay = $(event.target).parent().parent().children('input#id').val();
+                if (actualVideoId = idVideoPlay) {
+                    playNext();
+                }
                 $.post('<?php echo base_url() ?>playlist/delVideoAx', {idPlaylist: id, idVideo: idVideoPlay}, function (data) {
                     $("body").append(data.html);
                     $("#messageBox").delay(1500).animate({opacity: "0.1"}, 500);
@@ -41,6 +142,7 @@ $this->load->helper('url');
                     loadVideosPlaylist();
                 }, 'json');
             }
+
         </script>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
         <?php if ($playlist !== null && $playlist->videos !== null) {
@@ -54,8 +156,11 @@ $this->load->helper('url');
                     </div>
                 </div>
             </div>
-            <div id="videosContainer" class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
-
+            <div class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
+                <div class="col-lg-8">
+                    <div id="player"></div>
+                </div>
+                <div id="videosContainer"></div>
             </div>
         <?php } ?>
 
