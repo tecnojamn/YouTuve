@@ -66,7 +66,7 @@ $this->load->helper('url');
             </div>
 
         </div>
-        <?php echo (isset($error) && $error == 1) ? $error_message : ""; ?>
+        <?php //echo (isset($error) && $error == 1) ? $error_message : ""; ?>
         <?php $this->load->view('footer'); ?>
     </body>
 </html>

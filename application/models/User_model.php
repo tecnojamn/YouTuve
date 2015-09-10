@@ -164,6 +164,7 @@ class User_model extends MY_Model {
             $user->id = $result[0]->id;
             $user->nick = $result[0]->nick;
             $user->email = $result[0]->email;
+            $user->banned_until = $result[0]->banned_until;
             return $user;
         } else {
             return false;

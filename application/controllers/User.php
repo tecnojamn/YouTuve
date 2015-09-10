@@ -1,5 +1,4 @@
 ﻿<?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends MY_Controller {
@@ -102,7 +101,7 @@ class User extends MY_Controller {
         if ($this->form_validation->run() == FALSE) {
             $data["error"] = 1;
             $data["error_message"] = "Asegurese que escribió correctamente.";
-            redirect(base_url().'user/profile/me', 'refresh');
+            redirect(base_url() . 'user/profile/me', 'refresh');
         } else {
             $name = $this->input->post('name');
             $lastname = $this->input->post('lastname');
@@ -111,13 +110,13 @@ class User extends MY_Controller {
             if ($this->user_model->edit($this->session->userdata('userId'), $name, $lastname, $birthday, $gender, "")) {
 //muestra alguna pagina todavia no sabemos cual
                 $data["error"] = 0;
-                redirect(base_url().'user/profile/me', 'refresh');
+                redirect(base_url() . 'user/profile/me', 'refresh');
                 return;
             }
-            
+
             //NO SE HICIERON CAMBIOS
             $data["error"] = 0;
-            redirect(base_url().'user/profile/me', 'refresh');
+            redirect(base_url() . 'user/profile/me', 'refresh');
             return;
         }
     }
@@ -170,8 +169,21 @@ class User extends MY_Controller {
             $email = $this->input->post('email');
             $password = do_hash($this->input->post('password'), 'md5');
             $user = $this->user_model->authorize($email, $password);
-            if ($user) {
-//armo session 
+
+            if (!$user) {
+
+                $data["error"] = 1;
+                $data["error_message"] = "Email o contraseña invalidos.";
+                $this->load->view('login_layout', $data);
+                
+            } else if (strtotime($user->banned_until) >= strtotime(date('Y-m-d'))) {
+                
+                $data["error"] = 1;
+                $data["error_message"] = "Cuenta Baneada hasta el día " . date('d/m/Y', strtotime($user->banned_until));
+                $this->load->view('login_layout', $data);
+                
+            } else {
+
                 $session = array(
                     'userId' => $user->id,
                     'email' => $user->email,
@@ -184,9 +196,6 @@ class User extends MY_Controller {
                 redirect('/', 'refresh');
                 return;
             }
-            $data["error"] = 1;
-            $data["error_message"] = "Email o contraseña invalidos.";
-            $this->load->view('login_layout', $data);
         }
     }
 
@@ -313,27 +322,27 @@ class User extends MY_Controller {
 //inserta y redirige a algun lado todavia no sabemos
             $valCode = valCode();
             if ($this->user_model->emailExists($email)) {
-                        $data["error"] = 1;
-                        $data["error_message"] = "Email en uso.";
-                        $this->load->view('register_layout', $data);
+                $data["error"] = 1;
+                $data["error_message"] = "Email en uso.";
+                $this->load->view('register_layout', $data);
             } else {
-                        if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
-                            $mailContent = validationMail($name, $valCode, $email);
-                            if ($mailContent) {
-                                $data["error"] = 0;
-                                redirect('/?ms=1', 'refresh');
-                                return;
-                            }
+                if ($this->user_model->push($email, $nick, $name, $password, $lastname, $birthday, $gender, $thumbUrl, $valCode)) {
+                    $mailContent = validationMail($name, $valCode, $email);
+                    if ($mailContent) {
+                        $data["error"] = 0;
+                        redirect('/?ms=1', 'refresh');
+                        return;
+                    }
 
-                            $data["error"] = 0;
-                            redirect('/?confirmation_sent=false', 'refresh');
-                            return;
-                        }
-                        $data["error"] = 1;
-                        $data["error_message"] = "Ha ocurrido un error inesperado.";
-                        $this->load->view('register_layout', $data);
+                    $data["error"] = 0;
+                    redirect('/?confirmation_sent=false', 'refresh');
+                    return;
+                }
+                $data["error"] = 1;
+                $data["error_message"] = "Ha ocurrido un error inesperado.";
+                $this->load->view('register_layout', $data);
             }
-         }
+        }
     }
 
 //ajaxalyzed json borghes was here
@@ -442,14 +451,13 @@ class User extends MY_Controller {
         echo json_encode(array('result' => 'error'));
         return;
     }
-    
+
     public function isNickAvailable() {
         $nick = $this->input->post('nick');
         $this->load->model('user_model');
         $res = $this->user_model->isNickAvailable($nick);
         echo json_encode(array('result' => $res));
         return;
-
     }
 
 }
