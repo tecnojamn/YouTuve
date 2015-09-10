@@ -49,8 +49,8 @@ class AdminComments extends MY_Controller {
             $this->session->set_flashdata('message', 'Error');
             $this->session->set_flashdata('error', 1);
         }
-
-        redirect('/admin/admincomments/viewCommentsFromVideo?videoId=20');
+        //Deja al usuario en la misma pagina de donde llamo a la funcion
+        redirect($_SERVER['HTTP_REFERER']);
     }
 
     //logical undelete
@@ -70,18 +70,18 @@ class AdminComments extends MY_Controller {
             $this->session->set_flashdata('message', 'Error');
             $this->session->set_flashdata('error', 1);
         }
-
-        redirect('/admin/admincomments/viewCommentsFromVideo?videoId=20');
+        //Deja al usuario en la misma pagina de donde llamo a la funcion
+        redirect($_SERVER['HTTP_REFERER']);
     }
 
     public function gotoComment() {
         
     }
-    
+
     public function viewCommentsFromVideo() {
         $this->load->model('comments_model');
         $videoId = $this->input->get('videoId');
-        $comments = $this->comments_model->selectByVideo($videoId,10,0);
+        $comments = $this->comments_model->selectByVideo($videoId, 10, 0);
         $data['comments'] = $comments;
         $this->load->view('admin/comments_dashboard_layout', $data);
         return;
