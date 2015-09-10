@@ -17,12 +17,6 @@ $this->load->helper('url');
         <style>
 
         </style>
-        <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
-            <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
-        <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
-            <div class="alert alert-success"> <?= $this->session->flashdata('message') ?> </div>
-        <?php } ?> 
-
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" rel="home" href="#">Admin Panel</a>
@@ -64,27 +58,21 @@ $this->load->helper('url');
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Usuario</th>
-                            <th>Fecha</th>
-                            <th>Comentario</th>
-                            <th>Estado</th>
+                            <th>Nombre del video</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        if (isset($comments) && isset($comments->list)) {
-                            foreach ($comments->list as $comment) {
+                        if (isset($videos) && isset($videos->list)) {
+                            foreach ($videos->list as $video) {
                                 ?>
                                 <tr>
-                                    <th scope="row"><?php echo $comment->id ?></th>
-                                    <td><?php echo $comment->usernick; ?></td>
-                                    <td><?php echo $comment->date; ?></td>
-                                    <td><?php echo $comment->comment; ?></td>
-                                    <td><?php echo $comment->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
+                                    <th scope="row"><?php echo $video->id ?></th>
+                                    <td><?php echo $video->name; ?></td>
                                     <td>
-                                        <a title="Dar de <?php echo $comment->active == 1 ? 'baja' : 'alta'; ?>" href="<?php echo base_url() . 'admin/admincomments/' . ($comment->active == 1 ? 'delete' : 'undelete') . '/' . $comment->id; ?>">
-                                            <span class="glyphicon <?php echo $comment->active == 1 ? "glyphicon-remove" : "glyphicon-ok" ?>" aria-hidden="true"></span>
+                                        <a title="Ver comments" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo?videoId=<?php echo $video->id?>">
+                                            <p>Ver comentarios</p>
                                         </a>
                                     </td>
                                 </tr>

@@ -24,21 +24,67 @@ class AdminComments extends MY_Controller {
         //this->data=comments
         //load view
         //set view data
-        //return;
+        $this->load->model('video_model');
+        $videos = $this->video_model->getVideos();
+        $data['videos'] = $videos;
+        //var_dump($videos);
+        $this->load->view('admin/comment_video_dashboard_layout', $data);
+        return;
     }
 
     //logical delete
     public function delete() {
-        
+        $this->load->model('comments_model');
+        $idComment = $this->uri->segment(4);
+        if (isset($idComment)) {
+            $success = $this->comments_model->deleteComment($idComment);
+            if ($success == 1) {
+                $this->session->set_flashdata('message', 'El comentario ha sido dado de baja.');
+                $this->session->set_flashdata('error', 0);
+            } else {
+                $this->session->set_flashdata('message', 'Ha ocurrido un error');
+                $this->session->set_flashdata('error', 1);
+            }
+        } else {
+            $this->session->set_flashdata('message', 'Error');
+            $this->session->set_flashdata('error', 1);
+        }
+        //Deja al usuario en la misma pagina de donde llamo a la funcion
+        redirect($_SERVER['HTTP_REFERER']);
     }
 
     //logical undelete
     public function undelete() {
-        
+        $this->load->model('comments_model');
+        $idComment = $this->uri->segment(4);
+        if (isset($idComment)) {
+            $success = $this->comments_model->undeleteComment($idComment);
+            if ($success == 1) {
+                $this->session->set_flashdata('message', 'El comentario ha sido dado de alta.');
+                $this->session->set_flashdata('error', 0);
+            } else {
+                $this->session->set_flashdata('message', 'Ha ocurrido un error');
+                $this->session->set_flashdata('error', 1);
+            }
+        } else {
+            $this->session->set_flashdata('message', 'Error');
+            $this->session->set_flashdata('error', 1);
+        }
+        //Deja al usuario en la misma pagina de donde llamo a la funcion
+        redirect($_SERVER['HTTP_REFERER']);
     }
 
     public function gotoComment() {
         
+    }
+
+    public function viewCommentsFromVideo() {
+        $this->load->model('comments_model');
+        $videoId = $this->input->get('videoId');
+        $comments = $this->comments_model->selectByVideo($videoId, 10, 0);
+        $data['comments'] = $comments;
+        $this->load->view('admin/comments_dashboard_layout', $data);
+        return;
     }
 
 }
