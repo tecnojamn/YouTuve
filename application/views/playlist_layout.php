@@ -61,6 +61,12 @@ $this->load->helper('url');
                 loadVideosPlaylist();
                 actualVideoId = $('#videosContainer').children().first().children('input#id').val();
                 videoLink = $('#videosContainer').children().first().children('input#link').val();
+
+                $(".videoInfo").each(function (v) {
+                    $(this).removeClass("col-lg-4").removeClass("well-violet");
+                    $(this).removeClass("col-lg-12").css("overflow", "hidden").css("margin", "0")
+                            .css('border-top', '1px solid #ECECEC');
+                })
             });
 
             function loadVideosPlaylist() {
@@ -156,11 +162,16 @@ $this->load->helper('url');
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12" style="min-height: 800px;background-color: rgb(219, 219, 219);margin-bottom: 20px;padding-bottom: 15px;">
-                <div class="col-lg-8">
+            <div class="col-lg-12" style="min-height: 400px;background-color: black;margin-bottom: 20px;padding-bottom: 15px;">
+                <div class="col-lg-7" style="padding:0;">
                     <div id="player"></div>
                 </div>
-                <div id="videosContainer"></div>
+               
+                <div id="videosContainer" class="col-lg-5" style="    padding: 0;
+                     height: 400px;
+                     background-color: #EAEAEA;
+                     overflow-y: scroll;    overflow-x: hidden;">
+                </div>
             </div>
         <?php } ?>
 
