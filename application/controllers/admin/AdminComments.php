@@ -80,10 +80,19 @@ class AdminComments extends MY_Controller {
 
     public function viewCommentsFromVideo() {
         $this->load->model('comments_model');
-        $videoId = $this->input->get('videoId');
-        $comments = $this->comments_model->selectByVideo($videoId, 10, 0);
-        $data['comments'] = $comments;
-        $this->load->view('admin/comments_dashboard_layout', $data);
+        $this->load->library('pagination');
+        $page = 10;
+        $idVideo = $this->uri->segment(4);
+        $offset = $this->uri->segment(5);
+        $configPager['base_url'] = base_url() . 'admin/admincomments/viewCommentsFromVideo/'.$idVideo;
+        $configPager['total_rows'] = $this->comments_model->commentQuantityByVideo($idVideo);
+        $configPager['per_page'] = $page;
+        $configPager['uri_segment'] = 5;
+        $this->pagination->initialize($configPager);    
+        $this->data['pagerLinks'] = $this->pagination->create_links();
+        $comments = $this->comments_model->selectByVideo($idVideo, $page, $offset);
+        $this->data['comments'] = $comments;
+        $this->load->view('admin/comments_dashboard_layout', $this->data);
         return;
     }
 
