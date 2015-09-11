@@ -4,12 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/E:/xampp/htdocs/YouTuve/application/views/admin/users_dashboard_layout.php</file>
-            <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/admin/AdminComments.php</file>
-            <file>file:/E:/xampp/htdocs/YouTuve/application/views/admin/comment_video_dashboard_layout.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/classes/CommentDTO.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/views/admin/comments_dashboard_layout.php</file>
+            <file>file:/E:/xampp/htdocs/YouTuve/application/views/playlist_layout.php</file>
             <file>file:/E:/xampp/htdocs/YouTuve/application/models/Comments_model.php</file>
-            <file>file:/E:/xampp/htdocs/YouTuve/application/controllers/admin/Adminusers.php</file>
         </group>
     </open-files>
 </project-private>

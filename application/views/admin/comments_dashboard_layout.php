@@ -17,6 +17,14 @@ $this->load->helper('url');
         <style>
 
         </style>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("ul.pagination a").wrap("<li></li>");
+                $("ul.pagination strong").wrap("<li class='active'><a></a></li>");
+
+
+            });
+        </script>
         <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
             <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
         <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
@@ -94,7 +102,11 @@ $this->load->helper('url');
                         ?>
                     </tbody>
                 </table>
-
+                <div style="text-align: center;">
+                    <ul class="pagination">
+                        <?php echo $pagerLinks; ?>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>

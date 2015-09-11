@@ -142,7 +142,7 @@ class Comments_model extends MY_Model {
         $result = $this->update($data, $conditions);
         return ($result > 0) ? true : false;
     }
-    
+
     public function undeleteComment($idComment) {
         $conditions["id"] = $idComment;
         $data["active"] = 1;
@@ -159,6 +159,12 @@ class Comments_model extends MY_Model {
         } else {
             return false;
         }
+    }
+
+    public function commentQuantityByVideo($idVideo) {
+        $this->db->where('idVideo', $idVideo);
+        $this->db->from('comment');
+        return $this->db->count_all_results();
     }
 
 }

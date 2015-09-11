@@ -71,7 +71,7 @@ $this->load->helper('url');
                                     <th scope="row"><?php echo $video->id ?></th>
                                     <td><?php echo $video->name; ?></td>
                                     <td>
-                                        <a title="Ver comments" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo?videoId=<?php echo $video->id?>">
+                                        <a title="Ver comments" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id?>">
                                             <p>Ver comentarios</p>
                                         </a>
                                     </td>
