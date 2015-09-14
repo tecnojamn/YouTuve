@@ -22,6 +22,10 @@ $this->load->helper('url');
                     }
                 }, "json");
 
+                $.get("<?php echo base_url(); ?>Tag/getAllTagAx", function (data) {
+                    $('#tagsList').append(data.html);
+                }, 'json');
+
                 $("#seeMorelastVideos").click(function (e) {
                     e.preventDefault();
                     $("#lastVideos").animate({
@@ -58,7 +62,7 @@ $this->load->helper('url');
 
     <body>
         <?php (isset($log) && $log) ? $this->load->view('header') : $this->load->view('header_default'); ?>
-        
+
         <?php
         if (isset($error) && $error && isset($error_message) && $error_message !== "") {
             ?> <div class="row" style="min-height:50px;">
@@ -71,7 +75,7 @@ $this->load->helper('url');
             <?php
         }
         ?>
-        
+
         <?php if (isset($validated) && !$validated) { ?>
             <div class="row" style=" padding: 0 30px;
                  ">
@@ -93,45 +97,49 @@ $this->load->helper('url');
                     Tu cuenta ha sido activada, puedes hacer login.
                 </div></div>
         <?php } ?>
-        <div class="row" style="
-             padding: 0 30px;
-             ">
-            <div id="lastVideos" class="well well-blue" style="width: 100%;float: left;  background-color: #f8f8f8;">
-                <p style="  margin: 15px 40px;
-                   padding-bottom: 5px;
-                   border-bottom: 1px solid #eeeeee;
-                   font-size: 18px;
-                   position: relative;">Ultimos Videos</p>
-                <a style="  float: right;
-                   position: relative;
-                   top: -40px;
-                   left: -50px;" id="seeMorelastVideos" data-href="<?php echo base_url(); ?>video/showList?orderBy=date" href="#" style="float: right">Ver mas</a>
-            </div></div>
-        <div class="row"style="
-             padding: 0 30px;
-             "> <div id="topVideos"  class="well well-green" style="width: 100%;float: left;  background-color: #f8f8f8;">
-                <p style="  margin: 15px 40px;
-                   padding-bottom: 5px;
-                   border-bottom: 1px solid #eeeeee;
-                   font-size: 18px;
-                   position: relative;">Top Videos</p>
-                <a  style="  float: right;
-                    position: relative;
-                    top: -40px;
-                    left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
-            </div></div>
-        <?php if (isset($log) && $log) { ?>
-            <div class="row"style="
-                 padding: 0 30px;
-                 "> <div id="channelVideos" class="well well-yellow" style="width: 100%;float: left;  background-color: #f8f8f8;">
+
+        <div id="content-left" style="width: 73%">
+            <div class="row" style="padding: 0 30px;">
+                <div id="lastVideos" class="well well-blue" style="width: 100%;float: left;  background-color: #f8f8f8;">
                     <p style="  margin: 15px 40px;
                        padding-bottom: 5px;
                        border-bottom: 1px solid #eeeeee;
                        font-size: 18px;
-                       position: relative;">Videos de Canales que Sigues</p>
-
+                       position: relative;">Ultimos Videos</p>
+                    <a style="  float: right;
+                       position: relative;
+                       top: -40px;
+                       left: -50px;" id="seeMorelastVideos" data-href="<?php echo base_url(); ?>video/showList?orderBy=date" href="#" style="float: right">Ver mas</a>
                 </div></div>
-        <?php } ?>
+            <div class="row"style="
+                 padding: 0 30px;
+                 "> <div id="topVideos"  class="well well-green" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                    <p style="  margin: 15px 40px;
+                       padding-bottom: 5px;
+                       border-bottom: 1px solid #eeeeee;
+                       font-size: 18px;
+                       position: relative;">Top Videos</p>
+                    <a  style="  float: right;
+                        position: relative;
+                        top: -40px;
+                        left: -50px;" href="<?php echo base_url(); ?>video/showList?orderBy=rate" style="float: right">Ver mas</a>
+                </div></div>
+            <?php if (isset($log) && $log) { ?>
+                <div class="row"style="
+                     padding: 0 30px;
+                     "> <div id="channelVideos" class="well well-yellow" style="width: 100%;float: left;  background-color: #f8f8f8;">
+                        <p style="  margin: 15px 40px;
+                           padding-bottom: 5px;
+                           border-bottom: 1px solid #eeeeee;
+                           font-size: 18px;
+                           position: relative;">Videos de Canales que Sigues</p>
+
+                    </div></div>
+            <?php } ?>
+        </div>
+        <div id="content-right">
+            <div id="tagsList"></div>
+        </div>
         <?php $this->load->view('footer'); ?>
 
     </body>

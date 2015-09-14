@@ -53,9 +53,14 @@ class Tag extends CI_Controller {
         }
     }
 
-    public function getAllTag() {
+    public function getAllTagAx() {
         $this->load->model("tags_model");
-        $tagList = $this->tags_model->getAllTag();
+        $tagList = $this->tags_model->getAllTags();
+        $data['tagList'] = $tagList;
+        $formString = $this->load->view('tags_list', $data, true);
+        $arr = array('result' => 'true', 'html' => $formString);
+        echo json_encode($arr, JSON_HEX_QUOT | JSON_HEX_TAG);
+        return;
         //enviar a algun view con los tags
     }
 

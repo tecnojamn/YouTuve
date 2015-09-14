@@ -235,21 +235,30 @@ class Video extends MY_Controller {
     }
 
     public function showList() {
-        $orderBy = $this->input->get("orderBy");
         $this->load->model("video_model");
+
+        $tag = $this->input->get("tag");
+        $orderBy = $this->input->get("orderBy");
+
         if ($orderBy != "rate" && $orderBy != "date") {
-            $this->load->view("home_layout");
-            return;
-        } else {
-            if ($this->isAuthorized()) {
-                $data['log'] = 1;
-            }
-            $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT);
-            $data["searched_videos"] = $videos;
-            $data["orderby"] = $orderBy;
-            $this->load->view("video_list_layout", $data);
-            return;
+            $orderBy = "date";
         }
+        if ($this->isAuthorized()) {
+            $data['log'] = 1;
+        }
+        if (isset($tag) && is_numeric($tag) && $tag > 0) {
+            //El 0 corresponde al offset
+            $videos = $this->video_model->getVideos('rate', SEARCH_VIDEOS_LIMIT, 0, $tag);
+        }else{
+            //Tag 0 representa que no hay tag
+            $tag = 0;
+            $videos = $this->video_model->getVideos($orderBy, SEARCH_VIDEOS_LIMIT);
+        }
+        $data["searched_videos"] = $videos;
+        $data["orderby"] = $orderBy;
+        $data["tag"] = $tag;
+        $this->load->view("video_list_layout", $data);
+        return;
     }
 
     /**
@@ -281,7 +290,7 @@ class Video extends MY_Controller {
             $videos = $this->video_model->getVideosSusChan($userId);
         } else {
             $orderBy = $this->input->post("orderBy");
-            $videos = $this->video_model->getVideos($orderBy, 0, 4);
+            $videos = $this->video_model->getVideos($orderBy, 4);
         }
         if ($videos) {
             $data["videos"] = $videos;
@@ -300,9 +309,14 @@ class Video extends MY_Controller {
     public function getMoreVideosAX() {
         $this->load->model("video_model");
         $orderBy = $this->input->post("orderBy");
+        $tag = $this->input->post("tag");
         $searchPage = ($this->input->post("searchPage") !== NULL) ? $this->input->post("searchPage") : 1;
         $searchPage = ($searchPage > 0) ? $searchPage : 1;
-        $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        if(isset($tag) && $tag!=0 && is_numeric($tag)){
+            $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT, $tag);
+        }else{
+            $videos = $this->video_model->getVideos($orderBy, 0, SEARCH_VIDEOS_LIMIT, ($searchPage - 1) * SEARCH_VIDEOS_LIMIT);
+        }
         if ($videos) {
             $data["videos"] = $videos;
             $formString = $this->load->view('axviews/ax_load_more_videos', $data, true);

@@ -286,7 +286,7 @@ class Video_model extends MY_Model {
      * @param type $offset
      * @return \VideoListDto
      */
-    public function getVideos($orderBy = "date", $channelId = 0, $limit = 0, $offset = 0) {
+    public function getVideos($orderBy = "date", $limit = 0, $offset = 0, $tagId = 0, $channelId = 0) {
 
         //selecciona videos con sus respectivo rate ( avg(rate) de la tabla rate )
         if ($orderBy == "rate") {
@@ -317,6 +317,10 @@ class Video_model extends MY_Model {
         $this->db->where("video.active", VIDEO_ACTIVE);
         $this->db->join("channel", "video.idChannel=channel.id");
 
+        if ($tagId !== 0) {
+            $this->db->where("videotag.idtag", $tagId);
+            $this->db->join("videotag", "video.id=videotag.idVideo");
+        }
         $result = $this->db->get()->result();
 
         $videos = new VideoListDto();

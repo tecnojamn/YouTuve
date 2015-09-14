@@ -14,7 +14,11 @@ $this->load->helper('url');
     </head>
 
     <body>
+        <input type="hidden" id="orderBy" value="<?php echo $orderby ?>">
+        <input type="hidden" id="tagId" value="<?php echo $tag ?>">
         <script>
+            var orderBy = $('body').children('input#orderBy').val(); 
+            var tag = $('body').children('input#tagId').val(); 
             var curr_page = 1;
             var paginator_ended = false;//fix para que no viaje
             //var can_load_more = true;//fix para que no viaje
@@ -24,7 +28,7 @@ $this->load->helper('url');
                 $.ajax({
                     type: 'POST',
                     url: "<?php echo base_url(); ?>video/getMoreVideosAX",
-                    data: {searchPage: curr_page, orderBy: '<?php echo $orderby ?>'},
+                    data: {searchPage: curr_page, orderBy: orderBy, tag: tag},
                     success: function (data) {
                         if (data.result === 'true') { //si el resultado es verdadero lo agrego
                             $("#videosContent").append(data.html);
