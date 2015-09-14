@@ -13,6 +13,11 @@ $this->load->helper('url');
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     </head>
 
+    <script> $(document).ready(function () {
+            $("ul.pagination a").wrap("<li></li>");
+            $("ul.pagination strong").wrap("<li class='active'><a></a></li>");
+        });
+        ></script>
     <body style="    padding-top: 70px;">
         <style>
 
@@ -63,42 +68,52 @@ $this->load->helper('url');
                         </tr>
                     </thead>
 
-                            <tbody>
-                    <?php
-                    if ($videos !== NULL && count($videos->list) > 0) {
-                        foreach ($videos->list as $video) {
-                            ?>
-                            <th scope="row"><?php echo $video->id ?></th>
-                            <td><?php echo $video->name ?></td>
-                            <td><?php
-                                if ($video->active == 1) {
-                                    echo "Active";
-                                } else {
-                                    echo "Inactive";
-                                }
+                    <tbody>
+                        <?php
+                        $cont = 0;
+                        if ($videos !== NULL && count($videos->list) > 0) {
+                            foreach ($videos->list as $video) {
                                 ?>
-                            </td>
-                            <tr>
-                                <td>
-                                    <a title="dar baja" href="url-admin-borrar/ID OBJETO PHP">
-                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                    </a>
-                                    <a title="dar alta" href="url-admin-levantar/ID OBJETO PHP">
-                                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                                    </a>
-                                    <a title="ir a" href="url-ir-a/ID OBJETO PHP">
-                                        <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-                                    </a>
-                                </td>
-                            </tr>
-                                                    <?php
+                                <tr id="<?php echo $cont; ?>">
+
+                                    <th scope="row"><?php echo $video->id ?></th>
+                                    <td><?php echo $video->name ?></td>
+                                    <td><?php
+                                        if ($video->active == 1) {
+                                            echo "Active";
+                                        } else {
+                                            echo "Inactive";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <a title="dar baja" href="<?php echo base_url(); ?>admin/adminvideos/deactivate/<?php echo $video->id ?>">
+                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
+                                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="ir a" href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
+                                            <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php
+                                $cont++;
+                            }
                         }
-                    }
-                    ?>
-                            </tbody>
+                        ?>
+                    </tbody>
 
                 </table>
-            </div></div>
+            </div>
+
+        </div>
+        <div style="text-align: center;">
+            <ul class="pagination">
+                <?php echo $links; ?>
+            </ul>
+        </div>
 
     </body>
 </html>

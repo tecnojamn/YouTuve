@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/index.html</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/ViewHistory.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/views/admin/index_dashboard_layout.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/models/video_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/admin/AdminSession.php</file>
+            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/admin/AdminVideos.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/admin/videos_dashboard_layout.php</file>
-            <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/admin/index.html</file>
         </group>
     </open-files>
 </project-private>
