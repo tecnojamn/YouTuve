@@ -199,6 +199,8 @@ class Video extends MY_Controller {
     public function search() {
         if ($this->isAuthorized()) {
             $data["log"] = 1;
+        }else{
+            $data["log"] = 0;
         }
         $search = $this->input->get("query");
         if ($search == NULL) {
