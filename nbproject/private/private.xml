@@ -3,11 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/Video.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/controllers/admin/AdminVideos.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/views/admin/videos_dashboard_layout.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/models/Video_model.php</file>
             <file>file:/C:/xampp/htdocs/YouTuve/application/config/config.php</file>
+=======
+            <file>file:/C:/Users/Andres/Documents/GitHub%20Repo/YouTuve/YouTuve/application/controllers/User.php</file>
+            <file>file:/C:/Users/Andres/Documents/GitHub%20Repo/YouTuve/YouTuve/application/views/admin/users_dashboard_layout.php</file>
+            <file>file:/C:/Users/Andres/Documents/GitHub%20Repo/YouTuve/YouTuve/application/controllers/admin/Adminusers.php</file>
+            <file>file:/C:/Users/Andres/Documents/GitHub%20Repo/YouTuve/YouTuve/application/controllers/Advancedsearch.php</file>
+            <file>file:/C:/Users/Andres/Documents/GitHub%20Repo/YouTuve/YouTuve/application/models/User_model.php</file>
+>>>>>>> origin/master
         </group>
     </open-files>
 </project-private>
