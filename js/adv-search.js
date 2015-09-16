@@ -22,7 +22,8 @@ var Filter = function (name, category) {
 };
 //se crea Objeto para guardar datos
 var advStorage = new Storage();
-var advSearchSrcUrl = baseUrl + "advancedsearch"
+var advSearchSrcUrl = baseUrl + "advancedsearch";
+var filterColumnClass = ".advs-filters-colum";
 var mainContainerClass = '.advs-container';//config
 var filterTagClass = '.advs-filter';//config
 var filterSelectedClass = 'advs-filter-selected';//config
@@ -55,6 +56,22 @@ $(document).ready(function () {
     function setQueryParam(value) {
         $("#advs-query").val(value);
     }
+
+    $("#advs-query").keyup(function (e) {
+        if (e.keyCode === 13) {
+            //do search
+            var page = getUrlParameter('page');
+            if (page === undefined)
+                page = '1';
+            filters = '';
+            appliedFilters.forEach(function (n) {
+                filters += n + ",";
+            });
+            window.location.href = advSearchSrcUrl + '?query=' + $(this).val() + '&filters=' + filters + '&page=' + page;
+            return;
+        }
+    });
+
     $(filterTagClass).click(function () {
 
         var query = getQueryParam();
@@ -65,6 +82,20 @@ $(document).ready(function () {
         var name = $(this).attr('data-filter-name');
         if (!$(this).hasClass(filterSelectedClass)) {
 
+            //check if there is already a value selected in this column to unselect it
+            var sibilings = $(this).parents(filterColumnClass).find(filterTagClass);
+            sibilings.each(function (i, o) {
+                if ($(o).hasClass(filterSelectedClass)) {
+                    var oname = $(o).attr('data-filter-name');
+                    $(o).removeClass(filterSelectedClass);
+                    appliedFilters.forEach(function (n, index) {
+                        if (n === oname) {
+                            appliedFilters.splice(index, 1);
+                        }
+                    });
+                }
+            });
+            //adding. . .
             appliedFilters.push(name);
             advStorage.setSiteWideValue("advs-applied-filters", JSON.stringify(appliedFilters));
             $(this).addClass(filterSelectedClass);
@@ -74,13 +105,12 @@ $(document).ready(function () {
                 page = '1';
             filters = '';
             appliedFilters.forEach(function (n) {
-                console.log(n);
                 filters += n + ",";
             });
             window.location.href = advSearchSrcUrl + '?query=' + query + '&filters=' + filters + '&page=' + page;
             return;
         } else {
-            //diselection
+            //removing. . .
             $(this).removeClass(filterSelectedClass);
             //sacar del array appliedFilters
             appliedFilters.forEach(function (n, index) {
@@ -96,7 +126,6 @@ $(document).ready(function () {
                 page = '1';
             filters = '';
             appliedFilters.forEach(function (n) {
-                console.log(n);
                 filters += n + ",";
             });
             window.location.href = advSearchSrcUrl + '?query=' + query + '&filters=' + filters + '&page=' + page;

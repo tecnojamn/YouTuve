@@ -7,6 +7,7 @@ $this->load->helper('url');
         <meta charset="utf-8">
         <title><?php $title ?></title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>css/bootswatch.min.css">
         <link rel="stylesheet" href="<?php echo base_url(); ?>css/style.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -23,7 +24,7 @@ $this->load->helper('url');
                             color: #FFFFFF;
                             background-color: #158CBA;
                             padding: 5px;}
-            .advs-container{height: auto;overflow: hidden;background-color: #F8F8F8;border-bottom: 3px solid #FF6060;}
+            .advs-container{padding:0px;height: auto;overflow: hidden;background-color: #F8F8F8;border-bottom: 3px solid #FF6060;}
             .advs-container ul{    list-style: none;
                                    padding:0;
                                    margin-bottom: 0;}
@@ -45,7 +46,7 @@ $this->load->helper('url');
             </style>
             <div class="row" style="padding: 0 15px;">
 
-            <div class="advs-container col-lg-12" style="">
+            <div class="advs-container" style="">
                 <div class="advs-main-title">Busqueda avanzada</div>
                 <div style="    padding-top: 15px;padding-left: 25px;padding-right: 25px;">
                     <input id="advs-query" style="padding: 5px;font-size: 15px; width: 100%;" type="text" placeholder="Buscar" value=""/></div>
@@ -75,15 +76,15 @@ $this->load->helper('url');
                 </div>
             </div>
 
-            <div class="row" style="min-height: 250px;">
+            <div class="row" style="min-height: 800px;">
                 <div class="col-lg-12" style=";padding:0 15px;" id="videos">
 
-                    <div class="row" style="min-height: 250px;">
+                    <div class="row" style="min-height: 800px;">
                         <?php if ($searched_videos) { ?>
                             <div class = "col-lg-12 well" style = "overflow: hidden;
                                  background-color: transparent;
                                  border: none;
-                                 min-height: 250px;">
+                                 min-height: 800px;">
 
 
                                 <?php
@@ -94,13 +95,12 @@ $this->load->helper('url');
                                         <div class = "col-lg-3">
                                             <a href = "<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
                                                 <img src = "http://img.youtube.com/vi/<?php echo $video->link ?>/0.jpg" style = "width:100%">
-                                            </a>
-                                        </div>
-                                        <div class = "col-lg-9"><label ><?php echo $video->name ?></label> <br>
+                                            </a></div>
+                                        <div class = "col-lg-9"><label ><?php echo $video->name
+                                    ?></label> <br>
                                             <a href="<?php echo base_url(); ?>channel/view/<?php echo $video->idChannel ?>"> <?php echo $video->channelName ?> </a> <br>
                                             <label >Publicado el <?php echo $video->date ?></label> <br>
-                                            <label ><?php echo $video->views ?> Visualizaciones</label>
-                                        </div>
+                                            <label ><?php echo $video->views ?> Visualizaciones</label></div>
                                     </div>
                                     <?php
                                 }
@@ -123,11 +123,9 @@ $this->load->helper('url');
 
                         <?php } ?>
 
-                    </div>   
-                </div>
-            </div>
+                        <div></div></div>
 
 
-            <?php $this->load->view('footer'); ?>
-    </body>
-</html>
+                    <?php $this->load->view('footer'); ?>
+                    </body>
+                    </html>

@@ -495,7 +495,7 @@ class Video_model extends MY_Model {
         }
         $this->db->limit($limit, $offset);
         $result = $this->db->get($this->table)->result();
-        var_dump($this->db->last_query());
+        //var_dump($this->db->last_query());
         if (count($result) < 1) {
             return false;
         }
