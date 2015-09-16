@@ -193,7 +193,7 @@ class Video_model extends MY_Model {
         return $this->update($data, "id=" . $idVideo);
     }
 
-    private function deactivate($idVideo) {
+    public function deactivate($idVideo) {
         $data["active"] = 0;
         return $this->update($data, "id=" . $idVideo);
     }
@@ -514,4 +514,28 @@ class Video_model extends MY_Model {
         return $videos;
     }
 
+        public function getVideosForAdmin($offset, $limit) {
+        $videos = new VideoListDto();
+        $this->db->select("id,name,active");
+        $this->db->limit($limit, $offset);
+        $this->db->order_by("id", "asc");
+        $result = $this->db->get("video")->result();
+        if (count($result) < 0) {
+            return false;
+        } else {
+            foreach ($result as $row) {
+                $video = new VideoDTO();
+                $video->active = $row->active;
+                $video->id = $row->id;
+                $video->name = $row->name;
+                $videos->addVideo($video);
+            }
+            return $videos;
+        }
+    }
+    public function getVideosQuantity(){
+        $cont = 0;
+        $cont = $this->db->count_all('video');
+        return $cont;
+    }
 }
