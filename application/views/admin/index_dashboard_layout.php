@@ -30,7 +30,7 @@ $this->load->helper('url');
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="<?php echo base_url().'admin/adminusers' ?>">Usuarios</a></li>
-                    <li><a href="#">Videos</a></li>
+                    <li><a href="<?php echo base_url(); ?>admin/adminvideos/index">Videos</a></li>
                     <li><a href="#">Comentarios</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
@@ -97,6 +97,5 @@ $this->load->helper('url');
                     </tbody>
                 </table>
             </div></div>
-        <a target="blank" href="http://getbootstrap.com/components/">PARA LOS BOTONES MIREN ACÄ</a>
     </body>
 </html>
