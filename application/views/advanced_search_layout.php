@@ -23,7 +23,7 @@ $this->load->helper('url');
                             color: #FFFFFF;
                             background-color: #158CBA;
                             padding: 5px;}
-            .advs-container{height: auto;overflow: hidden;background-color: #F8F8F8;border-bottom: 3px solid #FF6060;}
+            .advs-container{padding:0px;height: auto;overflow: hidden;background-color: #F8F8F8;border-bottom: 3px solid #FF6060;}
             .advs-container ul{    list-style: none;
                                    padding:0;
                                    margin-bottom: 0;}
