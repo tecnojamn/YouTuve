@@ -4,15 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminComments extends MY_Controller {
 
-    protected $data = [];
-    protected $authorizedActions = [];
+    protected $data = array();
+    protected $authorizedActions = array();
 
     function __construct() {
         parent::__construct();
         $this->load->helper(array('form', 'url'));
         $this->load->library('session');
         $action = $this->router->fetch_method();
-
+        if ($this->isAdminSignedIn()) {
+            $this->data["adminname"] = $this->session->userdata['username'];
+        }
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
             redirect('admin/adminSession/signin', 'refresh');
         }
@@ -26,9 +28,9 @@ class AdminComments extends MY_Controller {
         //set view data
         $this->load->model('video_model');
         $videos = $this->video_model->getVideos();
-        $data['videos'] = $videos;
+        $this->data['videos'] = $videos;
         //var_dump($videos);
-        $this->load->view('admin/comment_video_dashboard_layout', $data);
+        $this->load->view('admin/comment_video_dashboard_layout', $this->data);
         return;
     }
 
@@ -84,11 +86,11 @@ class AdminComments extends MY_Controller {
         $page = 10;
         $idVideo = $this->uri->segment(4);
         $offset = $this->uri->segment(5);
-        $configPager['base_url'] = base_url() . 'admin/admincomments/viewCommentsFromVideo/'.$idVideo;
+        $configPager['base_url'] = base_url() . 'admin/admincomments/viewCommentsFromVideo/' . $idVideo;
         $configPager['total_rows'] = $this->comments_model->commentQuantityByVideo($idVideo);
         $configPager['per_page'] = $page;
         $configPager['uri_segment'] = 5;
-        $this->pagination->initialize($configPager);    
+        $this->pagination->initialize($configPager);
         $this->data['pagerLinks'] = $this->pagination->create_links();
         $comments = $this->comments_model->selectByVideo($idVideo, $page, $offset);
         $this->data['comments'] = $comments;

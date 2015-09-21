@@ -12,7 +12,9 @@ class AdminUsers extends MY_Controller {
         $this->load->helper(array('form', 'url'));
         $this->load->library('session');
         $action = $this->router->fetch_method();
-
+        if ($this->isAdminSignedIn()) {
+            $this->data["adminname"] = $this->session->userdata['username'];
+        }
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
             redirect('admin/adminsession/signin', 'refresh');
         }
@@ -22,16 +24,16 @@ class AdminUsers extends MY_Controller {
     public function index() {
         $this->load->model('user_model');
         $this->load->library('pagination');
-        
+
         $offset = $this->uri->segment(4);
         $page = 10;
-        
+
         $configPager['base_url'] = base_url() . 'admin/adminusers/index';
         $configPager['total_rows'] = $this->user_model->getUsersQuantity();
         $configPager['per_page'] = $page;
-        $this->pagination->initialize($configPager);    
+        $this->pagination->initialize($configPager);
         $this->data['pagerLinks'] = $this->pagination->create_links();
-        
+
         $this->data["users"] = $this->user_model->getUsers($page, $offset);
         $this->load->view('admin/users_dashboard_layout', $this->data);
         return;
@@ -81,7 +83,7 @@ class AdminUsers extends MY_Controller {
 
     //reset user password setting active to 0 and sending email with new token
     public function resetPassword() {
-        
+
         $this->load->helper("email_content");
         $this->load->library("email");
         $this->load->model('user_model');
@@ -92,17 +94,15 @@ class AdminUsers extends MY_Controller {
             $valCode = valCode();
             $to = $mail;
             $this->user_model->updateValidationCode($mail, $valCode);
-       
+
             forgotPasswordMail($valCode, $mail);
             $this->user_model->deleteUser($idUser);
-            $this->session->set_flashdata('message', 'El password del usuario '. $mail.' fue reseteado.');
+            $this->session->set_flashdata('message', 'El password del usuario ' . $mail . ' fue reseteado.');
             $this->session->set_flashdata('error', 0);
-
         } else {
-            
+
             $this->session->set_flashdata('message', 'Error');
             $this->session->set_flashdata('error', 1);
-            
         }
         redirect('/admin/adminusers/index');
     }
@@ -142,5 +142,5 @@ class AdminUsers extends MY_Controller {
 
         redirect('/admin/adminusers/index');
     }
-  
+
 }

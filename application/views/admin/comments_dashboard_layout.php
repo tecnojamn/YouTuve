@@ -35,7 +35,7 @@ $this->load->helper('url');
 
         <div class="container-fluid">
             <div class="bs-example" data-example-id="condensed-table">
-                <table class="table table-responsive">
+                <table class="table table-responsive table-striped table-condensed">
                     <thead>
                         <tr>
                             <th>#</th>

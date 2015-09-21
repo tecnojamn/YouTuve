@@ -13,8 +13,15 @@ class AdminSession extends MY_Controller {
         $this->load->library('session');
         $action = $this->router->fetch_method();
 
+        if($action=="signin" && $this->isAdminSignedIn()){
+            redirect('admin/adminsession/index', 'refresh');
+        }
+        
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
             redirect('admin/adminsession/signin', 'refresh');
+        }
+        if($this->isAdminSignedIn()){
+            $this->data["adminname"]=$this->session->userdata['username'];
         }
     }
 

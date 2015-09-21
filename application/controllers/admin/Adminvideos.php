@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminVideos extends MY_Controller {
 
-    protected $data = [];
-    protected $authorizedActions = [];
+    protected $data = array();
+    protected $authorizedActions = array();
 
     function __construct() {
         parent::__construct();
@@ -13,8 +13,32 @@ class AdminVideos extends MY_Controller {
         $this->load->library('session');
         $action = $this->router->fetch_method();
 
+        if ($this->isAdminSignedIn()) {
+            $this->data["adminname"] = $this->session->userdata['username'];
+        }
+
         if (!$this->isAdminSignedIn() && !in_array($action, $this->authorizedActions)) {
             redirect('admin/adminSession/signin', 'refresh');
+        }
+    }
+
+    public function charts() {
+        $this->load->model("video_model");
+        $views_data = $this->video_model->getViewsPerMonthById(1, 6);
+        //prepare data
+        $prep_data = array();
+        $month = (int)date("m");
+
+        for ($i = 0; $i < 6; $i++) {
+
+            $prep_data[$i]["month"] = $month;
+            $prep_data[$i]["views"] = 0;
+            $month--;
+            for ($j = 0; $j < count($views_data); $j++) {
+                if ($views_data[$j]["month"] === $prep_data[$i]["month"]) {
+                    $prep_data[$i]["views"] = $views_data[$j]["views"];
+                }
+            }
         }
     }
 
@@ -34,10 +58,10 @@ class AdminVideos extends MY_Controller {
         $configPager['per_page'] = 10;
         $this->pagination->initialize($configPager);
         $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        $data['links'] = $this->pagination->create_links();
+        $this->data['links'] = $this->pagination->create_links();
         $videos = $this->video_model->getVideosForAdmin($page, $configPager['per_page']);
-        $data['videos'] = $videos;
-        $this->load->view('admin/videos_dashboard_layout', $data);
+        $this->data['videos'] = $videos;
+        $this->load->view('admin/videos_dashboard_layout', $this->data);
         return;
     }
 

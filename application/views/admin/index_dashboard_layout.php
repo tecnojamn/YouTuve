@@ -20,50 +20,7 @@ $this->load->helper('url');
         <?php $this->load->view('admin/header_dashboard_layout'); ?>
         
         <div class="container-fluid">
-            <div class="bs-example" data-example-id="condensed-table">
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>
-                                <a title="dar baja" href="url-admin-borrar/ID OBJETO PHP">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </a>
-                                <a title="dar alta" href="url-admin-levantar/ID OBJETO PHP">
-                                    <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                                </a>
-                                <a title="ir a" href="url-ir-a/ID OBJETO PHP">
-                                    <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div></div>
+            
+            </div>
     </body>
 </html>
