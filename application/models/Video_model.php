@@ -553,7 +553,6 @@ class Video_model extends MY_Model {
     public function getViewsPerMonthById($idVideo, $limit = 6) {
         $this->db->select("video.* , COUNT( * ) AS views, MONTH( vh.date ) AS MONTH");
         $this->db->join("viewhistory vh", "vh.idVideo = video.id");
-        $this->db->order_by("vh.date");
         $this->db->group_by("MONTH( vh.date )");
         $this->db->limit($limit);
         $this->db->where("video.id ", $idVideo);
@@ -561,9 +560,9 @@ class Video_model extends MY_Model {
         if ($result) {
             $arr = array();
             foreach ($result as $r) {
-                $auxarr["month"] = (int)$r->MONTH;
+                $auxarr["month"] = (int) $r->MONTH;
                 $auxarr["views"] = $r->views;
-                $arr[]=$auxarr;
+                $arr[] = $auxarr;
             }
             return $arr;
         }

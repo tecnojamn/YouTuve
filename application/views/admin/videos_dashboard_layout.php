@@ -17,14 +17,14 @@ $this->load->helper('url');
             $("ul.pagination a").wrap("<li></li>");
             $("ul.pagination strong").wrap("<li class='active'><a></a></li>");
         });
-        </script>
+    </script>
     <body style="    padding-top: 70px;">
         <style>
 
         </style>
-        
+
         <?php $this->load->view('admin/header_dashboard_layout'); ?>
-        
+
         <div class="container-fluid">
             <div class="bs-example" data-example-id="condensed-table">
                 <table class="table table-responsive  table-striped table-condensed">
@@ -62,8 +62,11 @@ $this->load->helper('url');
                                         <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
                                             <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
                                         </a>
-                                        <a title="ir a" href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
+                                        <a target="blank" title="ir a" href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
                                             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="vistas por mes" href="<?php echo base_url(); ?>admin/adminvideos/viewschart/<?php echo $video->id ?>">
+                                            <span class=" glyphicon glyphicon-equalizer" aria-hidden="true"></span>
                                         </a>
                                     </td>
                                 </tr>

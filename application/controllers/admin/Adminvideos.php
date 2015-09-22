@@ -22,24 +22,83 @@ class AdminVideos extends MY_Controller {
         }
     }
 
-    public function charts() {
+    public function viewsChart($idVideo) {
         $this->load->model("video_model");
-        $views_data = $this->video_model->getViewsPerMonthById(1, 6);
+        $views_data = $this->video_model->getViewsPerMonthById($idVideo, 6);
         //prepare data
-        $prep_data = array();
-        $month = (int)date("m");
-
+        $raw_data = array();
+        $month = (int) date("m");
         for ($i = 0; $i < 6; $i++) {
-
-            $prep_data[$i]["month"] = $month;
-            $prep_data[$i]["views"] = 0;
-            $month--;
+            $raw_data[$i]["month"] = $month;
+            $raw_data[$i]["month_string"] = ucfirst($this->monthToSpanishString($month));
+            $raw_data[$i]["views"] = 0;
             for ($j = 0; $j < count($views_data); $j++) {
-                if ($views_data[$j]["month"] === $prep_data[$i]["month"]) {
-                    $prep_data[$i]["views"] = $views_data[$j]["views"];
+                if ($views_data[$j]["month"] === $raw_data[$i]["month"]) {
+                    $raw_data[$i]["views"] = (int) $views_data[$j]["views"];
                 }
             }
+            if ($month == 1)
+                $month = 13; //fix
+            $month--;
         }
+        $raw_data = array_reverse($raw_data);
+        $this->data["chart"] = json_encode($this->prepareViewsChartData($raw_data));
+        $this->load->view('admin/chart_video_views_layout', $this->data);
+        //var_dump($this->data["chart"]);
+    }
+
+    private function prepareViewsChartData($chart_raw_data) {
+        $chart_data = new stdClass();
+        $labels = array();
+        $views_data = array();
+        for ($i = 0; $i < count($chart_raw_data); $i++) {
+            $views_data[] = $chart_raw_data[$i]["views"];
+            $labels[] = $chart_raw_data[$i]["month_string"];
+        }
+        $chart_data->labels = $labels;
+        $chart_data->datasets[] = array('label' => "Vistas en los ultimos 6 meses",
+            'data' => $views_data, "fillColor" => "rgba(220,220,220,0.5)",
+            "strokeColor" => "rgba(220,220,220,0.8)",
+            "highlightStroke" => "rgba(220,220,220,1)",
+            "highlightFill" => "rgba(220,220,220,0.5)");
+        return $chart_data;
+
+        /* var data = {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [
+          {
+          label: "My First dataset",
+          fillColor: "rgba(220,220,220,0.5)",
+          strokeColor: "rgba(220,220,220,0.8)",
+          highlightFill: "rgba(220,220,220,0.75)",
+          highlightStroke: "rgba(220,220,220,1)",
+          data: [65, 59, 80, 81, 56, 55, 40]
+          }]}; */
+    }
+
+    //util function
+    private function monthToString($int_month) {
+        $dateObj = DateTime::createFromFormat('!m', $int_month);
+        /* @var $monthName String */
+        return $monthName = $dateObj->format('F'); // March
+    }
+
+    private function monthToSpanishString($int_month) {
+        $spanish_months = array(
+            'January' => 'enero',
+            'February' => 'febrero',
+            'March' => 'marzo',
+            'April' => 'abril',
+            'May' => 'mayo',
+            'June' => 'junio',
+            'July' => 'julio',
+            'August' => 'agosto',
+            'September' => 'septiembre',
+            'October' => 'octubre',
+            'November' => 'noviembre',
+            'December' => 'diciembre'
+        );
+        return $spanish_months[$this->monthToString($int_month)];
     }
 
     //the table view here
