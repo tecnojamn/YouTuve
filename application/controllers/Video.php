@@ -277,7 +277,7 @@ class Video extends MY_Controller {
         $fromChannel = $this->input->post("channelVideos");
         if (isset($fromChannel)) {
             $userId = $this->session->userdata('userId');
-            $videos = $this->video_model->getVideosSusChan($userId);
+            $videos = $this->video_model->getVideosSusChan($userId, 4);
         } else {
             $orderBy = $this->input->post("orderBy");
             $videos = $this->video_model->getVideos($orderBy, 0, 4);

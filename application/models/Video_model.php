@@ -359,17 +359,17 @@ class Video_model extends MY_Model {
      * Devuelve solo videos de canales que siga el usuario
      * @param type $idUser
      */
-    public function getVideosSusChan($idUser) {
+    public function getVideosSusChan($idUser, $limit = 0, $offset = 0) {
         $this->db->select("video.*, channel.id as chanId, channel.name as chanName");
         $this->db->where("follower.idUser", $idUser);
         $this->db->where("video.active", VIDEO_ACTIVE);
         $this->db->join("channel", "channel.id=video.idChannel");
         $this->db->join("follower", "follower.idChannel=channel.id");
-        $this->db->order_by("date", "desc");
-        $result = $this->search();
-        if ($result) {
+        $this->db->order_by("date", "desc")->limit($limit, $offset);
+        $r = $this->db->get($this->table)->result();
+        if ($r) {
             $videoList = new VideoListDto();
-            foreach ($result as $row) {
+            foreach ($r as $row) {
                 $video = new VideoDTO();
                 $video->id = $row->id;
                 $video->name = $row->name;
