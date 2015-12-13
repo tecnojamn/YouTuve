@@ -44,7 +44,8 @@ $this->load->helper('url');
                                  background-color: #158CBA;
                                  color: white;}
             </style>
-            <div class="row" style="padding: 0 15px;">
+            <div class="row" style="    margin-top: 65px;
+            padding: 10px 30px;">
 
             <div class="advs-container" style="">
                 <div class="advs-main-title">Busqueda avanzada</div>
