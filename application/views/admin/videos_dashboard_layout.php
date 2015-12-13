@@ -56,12 +56,21 @@ $this->load->helper('url');
                                         ?>
                                     </td>
                                     <td>
-                                        <a title="dar baja" href="<?php echo base_url(); ?>admin/adminvideos/deactivate/<?php echo $video->id ?>">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </a>
-                                        <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
-                                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                                        </a>
+                                        <?php if ($video->active == 1) {
+                                            ?>
+                                            <a title="dar baja" href="<?php echo base_url(); ?>admin/adminvideos/deactivate/<?php echo $video->id ?>">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </a>
+                                        <?php }
+                                        ?>
+                                        <?php if ($video->active == 0) {
+                                            ?>
+                                            <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
+                                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                            </a>
+                                            <?php
+                                        }
+                                        ?>
                                         <a target="blank" title="ir a" href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
                                             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                                         </a>

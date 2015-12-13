@@ -216,8 +216,7 @@ class Video extends MY_Controller {
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
 
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_CHANNEL_LIMIT, ($page - 1) * SEARCH_CHANNEL_LIMIT);
-
-
+        
         if ($channels != null) {
             foreach ($channels->list as $ch) {
                 if ($ch->frontImgUrl === "") {
