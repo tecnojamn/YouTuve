@@ -166,5 +166,10 @@ class Comments_model extends MY_Model {
         $this->db->from('comment');
         return $this->db->count_all_results();
     }
+    
+    public function getTotalComments($active = COMMENT_ACTIVE) {
+        $cond["active"] = $active;
+        return count($this->search($cond, 'comment'));
+    }
 
 }

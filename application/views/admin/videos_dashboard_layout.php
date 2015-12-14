@@ -47,14 +47,7 @@ $this->load->helper('url');
 
                                     <th scope="row"><?php echo $video->id ?></th>
                                     <td><?php echo $video->name ?></td>
-                                    <td><?php
-                                        if ($video->active == 1) {
-                                            echo "Active";
-                                        } else {
-                                            echo "Inactive";
-                                        }
-                                        ?>
-                                    </td>
+                                    <td><?php echo $video->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
                                     <td>
                                         <?php if ($video->active == 1) {
                                             ?>
@@ -76,6 +69,9 @@ $this->load->helper('url');
                                         </a>
                                         <a title="vistas por mes" href="<?php echo base_url(); ?>admin/adminvideos/viewschart/<?php echo $video->id ?>">
                                             <span class=" glyphicon glyphicon-equalizer" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="ver comentarios" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id?>">
+                                            <span class=" glyphicon glyphicon-list" aria-hidden="true"></span>
                                         </a>
                                     </td>
                                 </tr>

@@ -101,3 +101,7 @@ define('VIDEO_VIEWS_OFFSET_MINUTES',15);
 define('ALT_CHANNEL_BACKGROUND_PIC',"css/images/default_cover.jpg");
 define('VIDEO_ACTIVE',1);
 define('VIDEO_INACTIVE',0);
+define('USER_ACTIVE',1);
+define('USER_INACTIVE',0);
+define('COMMENT_ACTIVE',1);
+define('COMMENT_INACTIVE',0);

@@ -306,7 +306,12 @@ class User_model extends MY_Model {
     }
     
     public function getUsersQuantity () {
-        return count($this->db->get('user')->result());
+            return count($this->db->get('user')->result());
+    }
+    
+    public function getTotalUsers($active = USER_ACTIVE) {
+        $cond["active"] = $active;
+        return count($this->search($cond, 'user'));
     }
 
 }
