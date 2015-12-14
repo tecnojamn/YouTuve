@@ -64,9 +64,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => 'tecnocompetition.ddns.net:3306',
 	'username' => 'root',
-	'password' => '',
+	'password' => '123123123',
 	'database' => 'youtuve',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

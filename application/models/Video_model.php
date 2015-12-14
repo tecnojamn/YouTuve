@@ -568,5 +568,10 @@ class Video_model extends MY_Model {
         }
         return false;
     }
+    
+    public function getTotalVideos($active = VIDEO_ACTIVE) {
+        $cond["active"] = $active;
+        return count($this->search($cond, 'video'));
+    }
 
 }

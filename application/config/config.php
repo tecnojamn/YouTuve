@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].':8080/YouTuve';
+$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].':9999/YouTuve';
 //$config['base_url'] = 'http://'.$_SERVER['SERVER_NAME'].':8080/YouTuve';
 
 //$config['index_page'] = '';

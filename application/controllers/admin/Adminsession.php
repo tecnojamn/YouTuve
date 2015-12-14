@@ -63,6 +63,33 @@ class AdminSession extends MY_Controller {
 
     //
     public function index() {
+        $this->load->model('user_model');
+        $totalActiveUsers = $this->user_model->getTotalUsers();
+        $totalInactiveUsers = $this->user_model->getTotalUsers(USER_INACTIVE);
+        $userTotals['active'] = $totalActiveUsers;
+        $userTotals['inactive']  = $totalInactiveUsers;
+        $userTotals['total'] = $totalActiveUsers + $totalInactiveUsers;
+        
+        $this->load->model('video_model');
+        $totalActiveVideos = $this->video_model->getTotalVideos();
+        $totalInactiveVideos = $this->video_model->getTotalVideos(VIDEO_INACTIVE);
+        $videoTotals['active'] = $totalActiveVideos;
+        $videoTotals['inactive']  = $totalInactiveVideos;
+        $videoTotals['total'] = $totalActiveVideos + $totalInactiveVideos;;
+        
+        $this->load->model('comments_model');
+        $totalActiveComments = $this->comments_model->getTotalComments();
+        $totalInactiveComments = $this->comments_model->getTotalComments(COMMENT_INACTIVE);
+        $commentTotals['active'] = $totalActiveComments;
+        $commentTotals['inactive']  = $totalInactiveComments;
+        $commentTotals['total'] = $totalActiveComments + $totalInactiveComments;
+        
+        $totals['users'] = $userTotals;
+        $totals['videos'] = $videoTotals;
+        $totals['comments'] = $commentTotals;
+        
+        $this->data['totals']= $totals;
+        
         $this->load->view('admin/index_dashboard_layout', $this->data);
         return;
     }
