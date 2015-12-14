@@ -70,6 +70,9 @@ $this->load->helper('url');
                                         <a title="vistas por mes" href="<?php echo base_url(); ?>admin/adminvideos/viewschart/<?php echo $video->id ?>">
                                             <span class=" glyphicon glyphicon-equalizer" aria-hidden="true"></span>
                                         </a>
+                                        <a title="ver comentarios" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id?>">
+                                            <span class=" glyphicon glyphicon-list" aria-hidden="true"></span>
+                                        </a>
                                     </td>
                                 </tr>
                                 <?php

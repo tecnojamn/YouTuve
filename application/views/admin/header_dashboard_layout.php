@@ -14,7 +14,6 @@
         <ul class="nav navbar-nav">
             <li><a href="<?php echo base_url() . 'admin/adminusers' ?>">Usuarios</a></li>
             <li><a href="<?php echo base_url() . 'admin/adminvideos' ?>">Videos</a></li>
-            <li><a href="<?php echo base_url() . 'admin/admincomments' ?>">Comentarios</a></li>
         </ul>
         <div class="col-sm-3 col-md-3 pull-right">
             <ul class="nav navbar-nav">
