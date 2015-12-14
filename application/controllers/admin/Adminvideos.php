@@ -131,6 +131,8 @@ class AdminVideos extends MY_Controller {
         $this->load->model("admin_model");
         $id = $this->uri->segment(4, 0);
         $this->video_model->activate($id);
+        $this->session->set_flashdata('message', 'Video dado de alta.');
+        $this->session->set_flashdata('error', 0);
         redirect('admin/adminVideos/index', 'refresh');
         return;
     }
@@ -142,6 +144,8 @@ class AdminVideos extends MY_Controller {
         $this->load->model("admin_model");
         $id = $this->uri->segment(4, 0);
         $this->video_model->deactivate($id);
+        $this->session->set_flashdata('message', 'Video dado de baja.');
+        $this->session->set_flashdata('error', 0);
         redirect('admin/adminVideos/index', 'refresh');
         return;
     }

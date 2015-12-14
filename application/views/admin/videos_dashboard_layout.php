@@ -18,6 +18,11 @@ $this->load->helper('url');
             $("ul.pagination strong").wrap("<li class='active'><a></a></li>");
         });
     </script>
+    <?php if ($this->session->flashdata('message') && $this->session->flashdata('error') === 1) { ?>
+        <div class="alert alert-danger"> <?= $this->session->flashdata('message') ?> </div>
+    <?php } else if ($this->session->flashdata('message') && $this->session->flashdata('error') === 0) { ?>
+        <div class="alert alert-success"> <?= $this->session->flashdata('message') ?> </div>
+    <?php } ?> 
     <body style="    padding-top: 70px;">
         <style>
 
@@ -70,7 +75,7 @@ $this->load->helper('url');
                                         <a title="vistas por mes" href="<?php echo base_url(); ?>admin/adminvideos/viewschart/<?php echo $video->id ?>">
                                             <span class=" glyphicon glyphicon-equalizer" aria-hidden="true"></span>
                                         </a>
-                                        <a title="ver comentarios" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id?>">
+                                        <a title="ver comentarios" href="<?php echo base_url(); ?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id ?>">
                                             <span class=" glyphicon glyphicon-list" aria-hidden="true"></span>
                                         </a>
                                     </td>
