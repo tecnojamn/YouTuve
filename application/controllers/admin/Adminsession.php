@@ -75,7 +75,7 @@ class AdminSession extends MY_Controller {
         $totalInactiveVideos = $this->video_model->getTotalVideos(VIDEO_INACTIVE);
         $videoTotals['active'] = $totalActiveVideos;
         $videoTotals['inactive']  = $totalInactiveVideos;
-        $videoTotals['total'] = $totalActiveVideos + $totalInactiveVideos;;
+        $videoTotals['total'] = $totalActiveVideos + $totalInactiveVideos;
         
         $this->load->model('comments_model');
         $totalActiveComments = $this->comments_model->getTotalComments();

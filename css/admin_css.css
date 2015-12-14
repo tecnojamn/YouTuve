@@ -9,11 +9,15 @@ and open the template in the editor.
 */
 
 .panel-primary {
-        border: 0;
-}
-.panel {
     border: 0;
-    /* border-width: 0 1px 4px 1px; */
+}
+.panel .panel-heading span.glyphicon{
+    font-size: 50px;
+}
+.huge{font-size: 40px;}
+.panel {    border: 1px solid #DADADA;
+
+            /* border-width: 0 1px 4px 1px; */
 }
 .panel-green .panel-heading {
     border-color: #5cb85c;
