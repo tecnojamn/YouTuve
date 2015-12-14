@@ -216,8 +216,7 @@ class Video extends MY_Controller {
         $videos = $this->video_model->getVideosByNameLike($search, SEARCH_VIDEOS_LIMIT, ($page - 1) * SEARCH_VIDEOS_LIMIT);
 
         $channels = $this->channel_model->getChannelByNameLike($search, SEARCH_CHANNEL_LIMIT, ($page - 1) * SEARCH_CHANNEL_LIMIT);
-
-
+        
         if ($channels != null) {
             foreach ($channels->list as $ch) {
                 if ($ch->frontImgUrl === "") {
@@ -278,7 +277,7 @@ class Video extends MY_Controller {
         $fromChannel = $this->input->post("channelVideos");
         if (isset($fromChannel)) {
             $userId = $this->session->userdata('userId');
-            $videos = $this->video_model->getVideosSusChan($userId);
+            $videos = $this->video_model->getVideosSusChan($userId, 4);
         } else {
             $orderBy = $this->input->post("orderBy");
             $videos = $this->video_model->getVideos($orderBy, 0, 4);

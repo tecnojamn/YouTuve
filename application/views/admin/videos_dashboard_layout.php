@@ -47,26 +47,31 @@ $this->load->helper('url');
 
                                     <th scope="row"><?php echo $video->id ?></th>
                                     <td><?php echo $video->name ?></td>
-                                    <td><?php
-                                        if ($video->active == 1) {
-                                            echo "Active";
-                                        } else {
-                                            echo "Inactive";
+                                    <td><?php echo $video->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
+                                    <td>
+                                        <?php if ($video->active == 1) {
+                                            ?>
+                                            <a title="dar baja" href="<?php echo base_url(); ?>admin/adminvideos/deactivate/<?php echo $video->id ?>">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </a>
+                                        <?php }
+                                        ?>
+                                        <?php if ($video->active == 0) {
+                                            ?>
+                                            <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
+                                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                            </a>
+                                            <?php
                                         }
                                         ?>
-                                    </td>
-                                    <td>
-                                        <a title="dar baja" href="<?php echo base_url(); ?>admin/adminvideos/deactivate/<?php echo $video->id ?>">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                        </a>
-                                        <a title="dar alta" href="<?php echo base_url(); ?>admin/adminvideos/activate/<?php echo $video->id ?>">
-                                            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                                        </a>
                                         <a target="blank" title="ir a" href="<?php echo base_url(); ?>video/view/<?php echo $video->id ?>">
                                             <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
                                         </a>
                                         <a title="vistas por mes" href="<?php echo base_url(); ?>admin/adminvideos/viewschart/<?php echo $video->id ?>">
                                             <span class=" glyphicon glyphicon-equalizer" aria-hidden="true"></span>
+                                        </a>
+                                        <a title="ver comentarios" href="<?php echo base_url();?>admin/admincomments/viewCommentsFromVideo/<?php echo $video->id?>">
+                                            <span class=" glyphicon glyphicon-list" aria-hidden="true"></span>
                                         </a>
                                     </td>
                                 </tr>

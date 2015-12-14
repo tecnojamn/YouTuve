@@ -86,7 +86,7 @@ class Channel_model extends MY_Model {
         $conditions["idUser"] = $idUser;
         $conditions["id"] = $idChannel;
         $result = $this->search($conditions, $this->table, 1, 0);
-        return count($result)==1? true: false;
+        return count($result) == 1 ? true : false;
     }
 
 //devuelve true se pudo suscribir
@@ -105,7 +105,8 @@ class Channel_model extends MY_Model {
 //return
     }
 
-    public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
+    private function getVideosFromChannel($idChannel) {
+
         $conditions["idChannel"] = $idChannel;
         $conditions["video.active"] = VIDEO_ACTIVE;
         $this->db->select("video.id, idChannel, video.name, link, date, durationInSeconds, "
@@ -115,7 +116,8 @@ class Channel_model extends MY_Model {
 
         $result = $this->search($conditions, "video");
         $videoList = new VideoListDto();
-        foreach ($result as $row) {
+        if($result != null){
+           foreach ($result as $row) {
             $video = new VideoDTO();
             $video->id = $row->id;
             $video->idChannel = $row->idChannel;
@@ -164,17 +166,28 @@ class Channel_model extends MY_Model {
             $video->tags = $tagList;
             $videoList->addVideo($video);
         }
-        if($videoList->list==null) return false;
+        return $videoList; 
+        }else{
+            return null;
+        }
+    }
+
+    public function selectByIdChannel($idChannel, $limit = 1, $offset = 0) {
+
         $channel = new ChannelDTO();
-        $idUser = $videoList->list[0]->idUser;
-        $channel = $this->selectByIdUser($idUser);
-        $channel->username = $videoList->list[0]->usernick;
-        $channel->videos = $videoList;
-        $channel->idUser = $idUser;
-                
-        $followers = $this->search('idChannel = '.$idChannel,"follower");
+        $conditions["channel.id"] = $idChannel;
+        $this->db->select("channel.id as idChannel, channel.description as desc , channel.name as channelName,user.id as idUser, user.nick as nickName");
+        $this->db->join("user", "channel.idUser = user.id");
+        $result = $this->search($conditions);
+        $channel->description = $result[0]->desc;
+        $channel->id = $result[0]->idChannel;
+        $channel->name = $result[0]->channelName;
+        $channel->idUser = $result[0]->idUser;
+        $channel->username = $result[0]->idUser;
+        $channel->videos = $this->getVideosFromChannel($idChannel);
+        $followers = $this->search('idChannel = ' . $idChannel, "follower");
         $channel->followersCount = count($followers);
-                
+
         return $channel;
     }
 
@@ -218,8 +231,6 @@ class Channel_model extends MY_Model {
         $this->db->join("user", "channel.idUser=user.id");
         $this->db->limit($limit, $offset);
 
-        $result = $this->search();
-
         $result = $this->db->get($this->table)->result();
 
         if (count($result) < 1) {
@@ -233,7 +244,7 @@ class Channel_model extends MY_Model {
             $channel->description = $row->description;
             $channel->frontImgUrl = $row->frontImgUrl;
             $channel->idUser = $row->idUser;
-          //  $channel->username = $row->userName;
+            //  $channel->username = $row->userName;
             $channelList->addChannel($channel);
         }
         return $channelList;
