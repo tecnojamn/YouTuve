@@ -47,14 +47,7 @@ $this->load->helper('url');
 
                                     <th scope="row"><?php echo $video->id ?></th>
                                     <td><?php echo $video->name ?></td>
-                                    <td><?php
-                                        if ($video->active == 1) {
-                                            echo "Active";
-                                        } else {
-                                            echo "Inactive";
-                                        }
-                                        ?>
-                                    </td>
+                                    <td><?php echo $video->active == 1 ? "<b style='color:#00FF00'>Activo</b>" : "<b style='color:#FF0000'>Inactivo</b>"; ?></td>
                                     <td>
                                         <?php if ($video->active == 1) {
                                             ?>
